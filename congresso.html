@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏛️ CONGRESSO — Campanha 4090</title>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#b0bec5;--green:#10b981;--gold:#f59e0b;--red:#ef4444;--blue:#818cf8;--purple:#a78bfa;--cyan:#22d3ee;--orange:#fb923c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);padding:12px;font-size:16px;line-height:1.5}
+.header{text-align:center;margin-bottom:16px;padding:20px 16px;background:linear-gradient(135deg,#1e3a5f,#0f172a);border-radius:12px;border:1px solid var(--border)}
+.header h1{font-size:1.5em;margin-bottom:4px}
+.header .sub{color:var(--muted);font-size:.85em;line-height:1.4}
+.live-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}
+.live{display:inline-block;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:20px;padding:4px 12px;font-size:.8em;color:var(--green)}
+.live .dot{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:4px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-refresh{background:rgba(99,102,241,.2);color:var(--blue);border:1px solid rgba(99,102,241,.3);padding:3px 10px;border-radius:20px;font-size:.7em;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-refresh:hover{background:rgba(99,102,241,.4)}
+
+/* Source indicator */
+.source-indicator{text-align:center;margin-bottom:12px;padding:6px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:8px;font-size:.78em;color:var(--muted);display:inline-block}
+.source-indicator.sheets{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.2);color:var(--green)}
+.source-indicator.api{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.2);color:var(--gold)}
+.source-wrap{text-align:center;margin-bottom:14px}
+
+/* KPI Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.card-label{font-size:.75em;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.card-value{font-size:1.8em;font-weight:700;font-family:'SF Mono',Consolas,monospace}
+.card-sub{font-size:.78em;color:var(--muted);margin-top:2px}
+
+/* Charts row */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:700px){.row2{grid-template-columns:1fr}}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+
+/* Timeline section */
+.timeline-section{margin-bottom:16px}
+.timeline-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+
+/* Proposições Table */
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;overflow-x:auto}
+.tbl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.tbl-header h3{font-size:.95em;color:var(--muted);text-transform:uppercase;margin:0}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{padding:6px 14px;border-radius:16px;font-size:.82em;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
+.filter-btn:hover{background:rgba(255,255,255,.05)}
+.filter-btn.active{background:rgba(99,102,241,.2);color:var(--blue);border-color:rgba(99,102,241,.4)}
+.count-badge{background:rgba(99,102,241,.2);color:var(--blue);padding:2px 8px;border-radius:10px;font-size:.7em;margin-left:8px}
+
+/* Proposição cards */
+.prop-list{display:flex;flex-direction:column;gap:10px}
+.prop-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;border-left:4px solid var(--blue);transition:all .2s}
+.prop-item:hover{border-color:rgba(99,102,241,.4)}
+.prop-item.relevante{border-left-color:var(--green);background:rgba(16,185,129,.03)}
+.prop-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.prop-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:10px;font-size:.72em;font-weight:600;display:inline-block;text-transform:uppercase;letter-spacing:.03em}
+.b-pl{background:rgba(99,102,241,.15);color:var(--blue)}
+.b-pec{background:rgba(239,68,68,.15);color:var(--red)}
+.b-plp{background:rgba(245,158,11,.15);color:var(--gold)}
+.b-outro{background:rgba(107,114,128,.15);color:var(--muted)}
+.b-tema{background:rgba(34,211,238,.12);color:var(--cyan);font-size:.68em}
+.b-relevancia{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.3);font-size:.68em;animation:glow 2s ease-in-out infinite alternate}
+@keyframes glow{from{opacity:.85}to{opacity:1}}
+.prop-numero{font-weight:700;color:var(--text);font-size:1em}
+.prop-ementa{font-size:.95em;line-height:1.5;margin-bottom:8px;color:var(--text)}
+.prop-meta{display:flex;align-items:center;gap:12px;font-size:.78em;color:var(--muted);flex-wrap:wrap}
+.prop-meta .autor{color:var(--blue);font-weight:600}
+.prop-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.btn-ver{background:rgba(99,102,241,.15);color:var(--blue);border:1px solid rgba(99,102,241,.4);padding:7px 16px;border-radius:8px;font-size:.88em;text-decoration:none;font-weight:600;transition:all .2s}
+.btn-ver:hover{background:rgba(99,102,241,.3);transform:translateY(-1px)}
+.btn-situacao{padding:4px 10px;border-radius:6px;font-size:.72em;font-weight:600;border:none}
+.sit-tramitando{background:rgba(245,158,11,.15);color:var(--gold)}
+.sit-aprovado{background:rgba(16,185,129,.15);color:var(--green)}
+.sit-arquivado{background:rgba(107,114,128,.15);color:var(--muted)}
+
+.footer{text-align:center;color:var(--muted);font-size:.72em;margin-top:16px;padding:12px}
+.footer a{color:var(--blue);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+#loading{text-align:center;padding:40px;color:var(--muted);font-size:1em}
+.empty-state{text-align:center;padding:30px;color:var(--muted);font-size:.9em}
+</style>
+</head>
+<body>
+<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
+  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
+  <span style="color:#475569;">|</span>
+  <a href="redes.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📡 QG Redes</a>
+  <a href="congresso.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">🏛️ Congresso</a>
+  <a href="votar.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🗳️ Votar</a>
+  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
+  <a href="leads.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">👥 Leads</a>
+  <a href="analytics.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📊 Analytics</a>
+  <a href="conteudo.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📝 Conteúdo</a>
+  <a href="config.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">⚙️ Config</a>
+</nav>
+
+<div class="header">
+  <h1>🏛️ CONGRESSO — Campanha 4090</h1>
+  <div class="sub">Projetos de Lei em Tramitação • Visão Estratégica • Auto-atualiza a cada 5 min</div>
+  <div class="live-row">
+    <div class="live"><span class="dot"></span>AO VIVO — Atualiza a cada 5 min</div>
+    <button class="btn-refresh" onclick="load()">⟳ Atualizar</button>
+  </div>
+</div>
+
+<div class="source-wrap"><span class="source-indicator" id="sourceIndicator">Carregando fonte de dados...</span></div>
+
+<div class="grid" id="kpis"><div id="loading">Carregando dados do Congresso...</div></div>
+
+<div class="row2">
+  <div class="chart-card"><div id="chartTemas" style="height:300px"></div></div>
+  <div class="chart-card"><div id="chartPartidos" style="height:300px"></div></div>
+</div>
+
+<div class="timeline-section">
+  <div class="timeline-card"><div id="chartTimeline" style="height:220px"></div></div>
+</div>
+
+<div class="tbl">
+  <div class="tbl-header">
+    <h3>📋 Proposições <span class="count-badge" id="totalCount">0</span></h3>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Todos</button>
+      <button class="filter-btn" data-filter="PL" onclick="setFilter('PL')">PL</button>
+      <button class="filter-btn" data-filter="PEC" onclick="setFilter('PEC')">PEC</button>
+      <button class="filter-btn" data-filter="PLP" onclick="setFilter('PLP')">PLP</button>
+    </div>
+  </div>
+  <div class="prop-list" id="propList"></div>
+</div>
+
+<footer style="background:#0f172a;border-top:2px solid #6366f1;padding:16px;text-align:center;color:#64748b;font-size:0.85em;margin-top:40px;">
+  Campanha Luciano da Luz — 4090 PSB-SP | Sistema de Inteligência Eleitoral v3.0 | 
+  <a href="https://vozdapaulista.com" target="_blank" style="color:#6366f1;">vozdapaulista.com</a>
+<span id="ts" style="display:block;text-align:center;color:#64748b;font-size:0.75em;margin-top:4px;"></span>
+</footer>
+
+<script>
+// ═══ CONFIG ═══
+var SHEET_ID = '1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
+var SHEET_NAME = 'Página1';
+var REFRESH_MS = 5 * 60 * 1000; // 5 min
+
+var GVIZ_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
+var CAMARA_API_URL = 'https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=PL,PEC,PLP&dataApresentacaoInicio=2026-01-01&ordem=DESC&ordenarPor=dataApresentacao&itens=50';
+
+// Keywords relevantes para a campanha
+var KEYWORDS_CAMPANHA = ['periferia','periferias','saneamento','fiscaliza','parque','parques','agricultura','mandato aberto','consulta pública','consulta publica','transparência','transparencia','participação popular','participacao popular'];
+
+// Tema classification keywords
+var TEMA_MAP = {
+  'Saúde': ['saúde','saude','sus','hospital','médic','medic','vacinaç','vacinac','sanitár','sanitari','farmácia','farmacia','enferm','pandemia','doença','doenc'],
+  'Segurança': ['segurança','seguranca','polícia','policia','crime','criminal','penal','arma','violência','violencia','preso','prisão','prisao','trânsito','transito'],
+  'Meio Ambiente': ['ambiental','meio ambiente','clima','floresta','desmatamento','poluiç','carbono','sustentável','sustentavel','resíduo','residuo','reciclagem','fauna','flora','saneamento','água','agua'],
+  'Educação': ['educação','educacao','escola','ensino','professor','estudant','universidade','creche','bolsa','enem','alfabetiz'],
+  'Trabalho': ['trabalho','trabalhador','emprego','salário','salario','aposentad','previdência','previdencia','CLT','sindicato','férias','ferias','jornada'],
+  'Tributário': ['tribut','impost','fiscal','ICMS','IPI','contribuição','contribuicao','isenção','isencao','alíquota','aliquota','receita','orçamento','orcamento'],
+  'Tecnologia': ['tecnologia','digital','internet','dados','inteligência artificial','cibern','telecom','5G','startup','inovaç','inovac','software'],
+  'Infraestrutura': ['infraestrutura','rodovia','ferrovia','porto','aeroporto','transporte','mobilidade','obra','construção','construcao','habitação','habitacao','moradia','saneamento'],
+  'Outros': []
+};
+
+var allData = [];
+var currentFilter = 'all';
+var dataSource = ''; // 'sheets' or 'api'
+
+// ═══ FETCH FROM GOOGLE SHEETS (GVIZ) ═══
+function fetchGviz() {
+  var url = GVIZ_URL + '&_cb=' + Date.now();
+  return fetch(url, { cache: 'no-store' }).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.text();
+  }).then(function(t) {
+    var match = t.match(/google\.visualization\.Query\.setResponse\((.+)\)/s);
+    if (!match) throw new Error('Invalid gviz response');
+    var json = JSON.parse(match[1]);
+    if (!json.table || !json.table.rows || json.table.rows.length === 0) {
+      throw new Error('Empty response from Sheets');
+    }
+    return json.table.rows.map(function(row) {
+      return row.c.map(function(cell) { return cell ? (cell.v || cell.f || '') : ''; });
+    });
+  });
+}
+
+// ═══ FETCH FROM CÂMARA API (FALLBACK) ═══
+function fetchCamaraAPI() {
+  return fetch(CAMARA_API_URL).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function(response) {
+    var dados = response.dados || [];
+    if (dados.length === 0) throw new Error('No data from Câmara API');
+    return dados.map(function(item) {
+      var dataFormatted = '';
+      if (item.dataApresentacao) {
+        var parts = item.dataApresentacao.split('-');
+        if (parts.length === 3) {
+          dataFormatted = parts[2] + '/' + parts[1] + '/' + parts[0];
+        } else {
+          dataFormatted = item.dataApresentacao;
+        }
+      }
+      var link = 'https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=' + item.id;
+      var proposicao = (item.siglaTipo || '') + ' ' + (item.numero || '') + '/' + (item.ano || '');
+      // Return in same column format as Sheets: Proposição, Tipo, Número, Ano, Ementa, Autor, Situação, Data, Link
+      return [
+        proposicao,
+        item.siglaTipo || '',
+        (item.numero || '').toString(),
+        (item.ano || '').toString(),
+        item.ementa || '',
+        '', // Autor not available in listing endpoint
+        '', // Situação not available in listing endpoint
+        dataFormatted,
+        link
+      ];
+    });
+  });
+}
+
+// ═══ DUAL FETCH ═══
+function fetchData() {
+  return fetchGviz().then(function(rows) {
+    dataSource = 'sheets';
+    return rows;
+  }).catch(function(err) {
+    console.warn('Sheets gviz failed, falling back to Câmara API:', err.message);
+    return fetchCamaraAPI().then(function(rows) {
+      dataSource = 'api';
+      return rows;
+    });
+  });
+}
+
+// ═══ UPDATE SOURCE INDICATOR ═══
+function updateSourceIndicator() {
+  var el = document.getElementById('sourceIndicator');
+  if (dataSource === 'sheets') {
+    el.className = 'source-indicator sheets';
+    el.innerHTML = '📊 Fonte: Google Sheets (atualizada a cada 6h)';
+  } else if (dataSource === 'api') {
+    el.className = 'source-indicator api';
+    el.innerHTML = '🔗 Fonte: API Câmara (tempo real)';
+  }
+}
+
+// ═══ CLASSIFY TEMA ═══
+function classifyTema(ementa) {
+  if (!ementa) return 'Outros';
+  var lower = ementa.toLowerCase();
+  for (var tema in TEMA_MAP) {
+    if (tema === 'Outros') continue;
+    var keywords = TEMA_MAP[tema];
+    for (var i = 0; i < keywords.length; i++) {
+      if (lower.indexOf(keywords[i]) >= 0) return tema;
+    }
+  }
+  return 'Outros';
+}
+
+// ═══ CHECK RELEVÂNCIA CAMPANHA ═══
+function isRelevante(ementa) {
+  if (!ementa) return false;
+  var lower = ementa.toLowerCase();
+  for (var i = 0; i < KEYWORDS_CAMPANHA.length; i++) {
+    if (lower.indexOf(KEYWORDS_CAMPANHA[i]) >= 0) return true;
+  }
+  return false;
+}
+
+// ═══ PARSE DATA ═══
+function parseRows(rows) {
+  return rows.map(function(row) {
+    var ementa = (row[4] || '').toString();
+    return {
+      proposicao: (row[0] || '').toString(),
+      tipo: (row[1] || '').toString().toUpperCase().trim(),
+      numero: (row[2] || '').toString(),
+      ano: (row[3] || '').toString(),
+      ementa: ementa,
+      autor: (row[5] || '').toString(),
+      situacao: (row[6] || '').toString(),
+      data: (row[7] || '').toString(),
+      link: (row[8] || '').toString(),
+      tema: classifyTema(ementa),
+      relevante: isRelevante(ementa)
+    };
+  }).filter(function(p){ return p.proposicao || p.ementa; });
+}
+
+// ═══ RENDER KPIs ═══
+function renderKPIs(data) {
+  var total = data.length;
+  var pecs = data.filter(function(d){return d.tipo === 'PEC';}).length;
+  var pls = data.filter(function(d){return d.tipo === 'PL';}).length;
+  var plps = data.filter(function(d){return d.tipo === 'PLP';}).length;
+  var relevantes = data.filter(function(d){return d.relevante;}).length;
+  
+  // Count themes
+  var temas = {};
+  data.forEach(function(d){
+    temas[d.tema] = (temas[d.tema] || 0) + 1;
+  });
+  var topTema = Object.keys(temas).sort(function(a,b){return temas[b]-temas[a];})[0] || '—';
+
+  var html = '';
+  html += '<div class="card"><div class="card-label">Total Proposições</div><div class="card-value" style="color:var(--blue)">' + total + '</div></div>';
+  html += '<div class="card"><div class="card-label">PLs</div><div class="card-value" style="color:var(--blue)">' + pls + '</div></div>';
+  html += '<div class="card"><div class="card-label">PECs</div><div class="card-value" style="color:var(--red)">' + pecs + '</div></div>';
+  html += '<div class="card"><div class="card-label">PLPs</div><div class="card-value" style="color:var(--gold)">' + plps + '</div></div>';
+  html += '<div class="card"><div class="card-label">Relevância Campanha</div><div class="card-value" style="color:var(--green)">' + relevantes + '</div><div class="card-sub">Temas alinhados</div></div>';
+  html += '<div class="card"><div class="card-label">Principal Tema</div><div class="card-value" style="font-size:1.1em;color:var(--cyan)">' + topTema + '</div><div class="card-sub">' + (temas[topTema]||0) + ' proposições</div></div>';
+  
+  document.getElementById('kpis').innerHTML = html;
+}
+
+// ═══ RENDER CHARTS ═══
+function renderCharts(data) {
+  // Temas bar chart
+  var temas = {};
+  data.forEach(function(d){ temas[d.tema] = (temas[d.tema] || 0) + 1; });
+  var temasSorted = Object.keys(temas).sort(function(a,b){return temas[b]-temas[a];});
+  var temaColors = {'Saúde':'#ef4444','Segurança':'#f59e0b','Meio Ambiente':'#10b981','Educação':'#818cf8','Trabalho':'#fb923c','Tributário':'#a78bfa','Tecnologia':'#22d3ee','Infraestrutura':'#64748b','Outros':'#475569'};
+  
+  Highcharts.chart('chartTemas', {
+    chart: { type:'bar', backgroundColor:'transparent' },
+    title: { text:'📊 Proposições por Tema', style:{color:'#f1f5f9',fontSize:'14px'} },
+    xAxis: { categories: temasSorted, labels:{style:{color:'#b0bec5',fontSize:'12px'}} },
+    yAxis: { title:{text:null}, labels:{style:{color:'#b0bec5'}}, gridLineColor:'#334155' },
+    legend: { enabled:false },
+    plotOptions: { bar:{ borderRadius:4, dataLabels:{enabled:true,style:{color:'#f1f5f9',fontSize:'11px',textOutline:'none'}} } },
+    series: [{ name:'Proposições', data: temasSorted.map(function(t){ return {y:temas[t], color:temaColors[t]||'#818cf8'}; }) }],
+    credits:{enabled:false}
+  });
+
+  // Partidos column chart - extract partido from autor
+  var partidos = {};
+  data.forEach(function(d){
+    var match = d.autor.match(/\b(PT|PL|PP|PSD|MDB|PSDB|PSB|PDT|PSOL|PCdoB|NOVO|PODE|AVANTE|REPUBLIC|UNIÃO|UNIAO|SD|PRD|REDE)\b/i);
+    var p = match ? match[1].toUpperCase() : 'Outros';
+    if (p === 'UNIAO') p = 'UNIÃO';
+    if (p === 'REPUBLIC') p = 'REPUBLICANOS';
+    partidos[p] = (partidos[p] || 0) + 1;
+  });
+  var partidosSorted = Object.keys(partidos).sort(function(a,b){return partidos[b]-partidos[a];}).slice(0,10);
+
+  Highcharts.chart('chartPartidos', {
+    chart: { type:'column', backgroundColor:'transparent' },
+    title: { text:'🏛️ Partidos mais Ativos', style:{color:'#f1f5f9',fontSize:'14px'} },
+    xAxis: { categories: partidosSorted, labels:{style:{color:'#b0bec5',fontSize:'11px'}} },
+    yAxis: { title:{text:null}, labels:{style:{color:'#b0bec5'}}, gridLineColor:'#334155' },
+    legend: { enabled:false },
+    plotOptions: { column:{ borderRadius:4, colorByPoint:true, dataLabels:{enabled:true,style:{color:'#f1f5f9',fontSize:'11px',textOutline:'none'}} } },
+    colors: ['#818cf8','#10b981','#f59e0b','#ef4444','#22d3ee','#a78bfa','#fb923c','#64748b','#475569','#334155'],
+    series: [{ name:'Proposições', data: partidosSorted.map(function(p){return partidos[p];}) }],
+    credits:{enabled:false}
+  });
+
+  // Timeline chart - by month
+  var timeline = {};
+  data.forEach(function(d){
+    if (!d.data) return;
+    var parts = d.data.toString().split(/[\/\-]/);
+    var key;
+    if (parts.length >= 2) {
+      // Try to detect format: DD/MM/YYYY or YYYY-MM-DD
+      if (parts[0].length === 4) {
+        key = parts[0] + '-' + parts[1].padStart(2,'0');
+      } else {
+        key = (parts[2]||'2026') + '-' + parts[1].padStart(2,'0');
+      }
+    } else {
+      key = '2026-01';
+    }
+    timeline[key] = (timeline[key] || 0) + 1;
+  });
+  var timeKeys = Object.keys(timeline).sort();
+  var monthNames = {'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
+
+  Highcharts.chart('chartTimeline', {
+    chart: { type:'area', backgroundColor:'transparent' },
+    title: { text:'📅 Timeline de Apresentação', style:{color:'#f1f5f9',fontSize:'14px'} },
+    xAxis: { categories: timeKeys.map(function(k){ var p=k.split('-'); return (monthNames[p[1]]||p[1])+'/'+p[0]; }), labels:{style:{color:'#b0bec5',fontSize:'11px'},rotation:-45} },
+    yAxis: { title:{text:null}, labels:{style:{color:'#b0bec5'}}, gridLineColor:'#334155' },
+    legend: { enabled:false },
+    plotOptions: { area:{ fillColor:{linearGradient:{x1:0,y1:0,x2:0,y2:1},stops:[[0,'rgba(129,140,248,.3)'],[1,'rgba(129,140,248,.02)']]}, lineColor:'#818cf8', lineWidth:2, marker:{fillColor:'#818cf8',radius:3}} },
+    series: [{ name:'Proposições', data: timeKeys.map(function(k){return timeline[k];}) }],
+    credits:{enabled:false}
+  });
+}
+
+// ═══ RENDER PROPOSIÇÕES ═══
+function renderProposicoes(data) {
+  var filtered = currentFilter === 'all' ? data : data.filter(function(d){return d.tipo === currentFilter;});
+  document.getElementById('totalCount').textContent = filtered.length;
+  
+  if (filtered.length === 0) {
+    document.getElementById('propList').innerHTML = '<div class="empty-state">Nenhuma proposição encontrada para este filtro.</div>';
+    return;
+  }
+
+  var html = filtered.map(function(p) {
+    var tipoClass = p.tipo === 'PEC' ? 'b-pec' : p.tipo === 'PLP' ? 'b-plp' : p.tipo === 'PL' ? 'b-pl' : 'b-outro';
+    var sitClass = (p.situacao||'').toLowerCase().indexOf('tramit') >= 0 ? 'sit-tramitando' : 
+                   (p.situacao||'').toLowerCase().indexOf('aprov') >= 0 ? 'sit-aprovado' : 'sit-arquivado';
+    var relevanteClass = p.relevante ? ' relevante' : '';
+    
+    var s = '<div class="prop-item' + relevanteClass + '">';
+    s += '<div class="prop-top"><div class="prop-badges">';
+    s += '<span class="badge ' + tipoClass + '">' + (p.tipo||'—') + '</span>';
+    s += '<span class="badge b-tema">' + p.tema + '</span>';
+    if (p.relevante) s += '<span class="badge b-relevancia">⭐ Relevância Campanha</span>';
+    s += '</div>';
+    if (p.situacao) s += '<span class="btn-situacao ' + sitClass + '">' + p.situacao + '</span>';
+    s += '</div>';
+    s += '<div class="prop-numero">' + (p.tipo||'') + ' ' + (p.numero||'') + '/' + (p.ano||'') + '</div>';
+    s += '<div class="prop-ementa">' + (p.ementa||'Sem ementa disponível') + '</div>';
+    s += '<div class="prop-meta">';
+    if (p.autor) s += '<span>👤 <span class="autor">' + p.autor + '</span></span>';
+    if (p.data) s += '<span>📅 ' + p.data + '</span>';
+    s += '</div>';
+    if (p.link) {
+      s += '<div class="prop-actions"><a href="' + p.link + '" target="_blank" class="btn-ver">📄 Ver Inteiro Teor</a></div>';
+    }
+    s += '</div>';
+    return s;
+  }).join('');
+
+  document.getElementById('propList').innerHTML = html;
+}
+
+// ═══ FILTER ═══
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.getAttribute('data-filter') === f);
+  });
+  renderProposicoes(allData);
+}
+
+// ═══ MAIN LOAD ═══
+function load() {
+  fetchData().then(function(rows) {
+    allData = parseRows(rows);
+    updateSourceIndicator();
+    renderKPIs(allData);
+    renderCharts(allData);
+    renderProposicoes(allData);
+    document.getElementById('ts').textContent = 'Atualizado: ' + new Date().toLocaleString('pt-BR');
+  }).catch(function(err) {
+    console.error('Erro ao carregar dados:', err);
+    document.getElementById('kpis').innerHTML = '<div id="loading" style="color:var(--red)">❌ Erro ao carregar dados. Verifique sua conexão.</div>';
+    document.getElementById('sourceIndicator').className = 'source-indicator';
+    document.getElementById('sourceIndicator').textContent = '⚠️ Falha ao carregar dados';
+  });
+}
+
+// ═══ INIT ═══
+load();
+setInterval(load, REFRESH_MS);
+</script>
+</body>
+</html>

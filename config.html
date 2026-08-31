@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚙️ System Config — Campanha 4090</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   SYSTEM CONFIGURATION & HEALTH CHECK
+   Campanha 4090 — Luciano da Luz
+   All endpoints • Token status • Deploy actions • Health
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --card-inner: #162032;
+  --border: #334155;
+  --border-light: #475569;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --green: #10b981;
+  --green-bg: rgba(16,185,129,.12);
+  --green-border: rgba(16,185,129,.25);
+  --gold: #f59e0b;
+  --gold-bg: rgba(245,158,11,.12);
+  --gold-border: rgba(245,158,11,.25);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,.12);
+  --red-border: rgba(239,68,68,.25);
+  --blue: #818cf8;
+  --blue-bg: rgba(129,140,248,.12);
+  --blue-border: rgba(129,140,248,.25);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,.12);
+  --purple-border: rgba(167,139,250,.25);
+  --cyan: #22d3ee;
+  --cyan-bg: rgba(34,211,238,.12);
+  --cyan-border: rgba(34,211,238,.25);
+  --orange: #fb923c;
+  --orange-bg: rgba(251,146,60,.12);
+  --orange-border: rgba(251,146,60,.25);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  padding: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ═══ HEADER ═══ */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 24px 16px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--gold), var(--green));
+}
+.header h1 { font-size: 1.6em; margin-bottom: 4px; letter-spacing: -0.02em; }
+.header .sub { color: var(--muted); font-size: 0.85em; margin-bottom: 12px; }
+
+.live-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.live-badge {
+  display: inline-flex; align-items: center;
+  background: var(--green-bg); border: 1px solid var(--green-border);
+  border-radius: 20px; padding: 5px 14px; font-size: 0.78em;
+  color: var(--green); font-weight: 600;
+}
+.live-badge.warn {
+  background: var(--gold-bg); border-color: var(--gold-border); color: var(--gold);
+}
+.live-badge .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor; margin-right: 8px;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.back-link {
+  position: absolute; top: 14px; left: 16px;
+  color: var(--muted); text-decoration: none; font-size: 0.85em;
+  display: flex; align-items: center; gap: 4px;
+  transition: color .2s;
+}
+.back-link:hover { color: var(--text); }
+
+/* ═══ SECTIONS ═══ */
+.section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: 1.1em; font-weight: 700; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title .icon { font-size: 1.3em; }
+.section-title .counter {
+  background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border);
+  padding: 2px 10px; border-radius: 12px; font-size: 0.7em; font-weight: 600;
+}
+
+/* ═══ STATUS CARDS ═══ */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.status-card {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  position: relative;
+  transition: border-color .2s;
+}
+.status-card:hover { border-color: var(--border-light); }
+.status-card .sc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.status-card .sc-name {
+  font-weight: 600; font-size: 0.95em;
+  display: flex; align-items: center; gap: 8px;
+}
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 12px; font-size: 0.72em; font-weight: 600;
+}
+.status-badge.online { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.status-badge.offline { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.status-badge.checking { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-border); }
+.status-badge.unknown { background: rgba(100,116,139,.15); color: #64748b; border: 1px solid rgba(100,116,139,.25); }
+
+.sc-details {
+  font-size: 0.8em; color: var(--muted);
+}
+.sc-details .detail-row {
+  display: flex; justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(51,65,85,.4);
+}
+.sc-details .detail-row:last-child { border-bottom: none; }
+.sc-details .label { color: var(--muted); }
+.sc-details .value { color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.92em; }
+.sc-warn {
+  margin-top: 8px; padding: 6px 10px;
+  background: var(--gold-bg); border: 1px solid var(--gold-border);
+  border-radius: 6px; font-size: 0.78em; color: var(--gold);
+}
+
+/* ═══ WEBHOOK / REFERENCE LIST ═══ */
+.ref-list { display: flex; flex-direction: column; gap: 8px; }
+.ref-item {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.ref-item .ref-label {
+  font-weight: 600; font-size: 0.88em; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+.ref-item .ref-url {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.78em; color: var(--cyan);
+  word-break: break-all; flex: 1; min-width: 200px;
+}
+.ref-item .ref-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ═══ TOKEN CARDS ═══ */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+}
+.token-card {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.token-card .tc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.token-card .tc-name { font-weight: 600; font-size: 0.92em; display: flex; align-items: center; gap: 8px; }
+.token-card .tc-value {
+  background: #0b1120;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.82em;
+  color: var(--muted);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+.token-card .tc-meta {
+  font-size: 0.78em; color: var(--muted);
+}
+.token-card .tc-meta span { color: var(--text); }
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px;
+  font-size: 0.8em; font-weight: 600;
+  border: 1px solid var(--border); background: var(--card-inner);
+  color: var(--text); cursor: pointer;
+  transition: all .2s; text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover { border-color: var(--border-light); background: var(--card); transform: translateY(-1px); }
+.btn.primary { background: var(--blue-bg); border-color: var(--blue-border); color: var(--blue); }
+.btn.primary:hover { background: rgba(129,140,248,.2); }
+.btn.success { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.btn.success:hover { background: rgba(16,185,129,.2); }
+.btn.warn { background: var(--gold-bg); border-color: var(--gold-border); color: var(--gold); }
+.btn.warn:hover { background: rgba(245,158,11,.2); }
+.btn.danger { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
+.btn.sm { padding: 4px 10px; font-size: 0.72em; border-radius: 6px; }
+.btn.icon-only { padding: 6px 8px; }
+
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ═══ DEPLOY ACTIONS ═══ */
+.deploy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+.deploy-card {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  text-align: center;
+  transition: border-color .2s, transform .2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.deploy-card:hover { border-color: var(--blue-border); transform: translateY(-2px); }
+.deploy-card .dc-icon { font-size: 2em; }
+.deploy-card .dc-title { font-weight: 600; font-size: 0.95em; }
+.deploy-card .dc-desc { font-size: 0.78em; color: var(--muted); }
+
+/* ═══ AZURE MIGRATION ═══ */
+.migration-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88em;
+}
+.migration-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(51,65,85,.4);
+}
+.migration-table td:first-child {
+  color: var(--muted); font-weight: 500; width: 140px; white-space: nowrap;
+}
+.migration-table td:last-child { color: var(--text); }
+.migration-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 600;
+}
+.migration-status.pending { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-border); }
+.migration-status.deployed { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+
+/* ═══ CREDENTIALS ACCORDION ═══ */
+.accordion { display: flex; flex-direction: column; gap: 8px; }
+.accordion-item {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.accordion-header {
+  padding: 14px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+  font-weight: 600; font-size: 0.9em;
+  transition: background .2s;
+}
+.accordion-header:hover { background: rgba(51,65,85,.3); }
+.accordion-header .chevron {
+  transition: transform .3s;
+  color: var(--muted); font-size: 0.85em;
+}
+.accordion-item.open .accordion-header .chevron { transform: rotate(180deg); }
+.accordion-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .3s ease;
+  padding: 0 16px;
+}
+.accordion-item.open .accordion-body {
+  max-height: 500px;
+  padding: 0 16px 14px;
+}
+.cred-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0; border-bottom: 1px solid rgba(51,65,85,.3);
+  gap: 10px; flex-wrap: wrap;
+}
+.cred-row:last-child { border-bottom: none; }
+.cred-label { font-size: 0.82em; color: var(--muted); min-width: 100px; }
+.cred-value {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.8em; color: var(--text);
+  flex: 1; word-break: break-all;
+}
+.cred-hidden { color: var(--muted); letter-spacing: 2px; }
+
+/* ═══ SHEETS LINKS ═══ */
+.sheets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+.sheet-card {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.sheet-card .sh-name { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.sheet-card .sh-id { font-family: monospace; font-size: 0.78em; color: var(--muted); margin-bottom: 6px; }
+.sheet-card .sh-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+
+/* ═══ TOAST ═══ */
+.toast-container {
+  position: fixed; bottom: 20px; right: 20px;
+  z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  background: var(--card); border: 1px solid var(--green-border);
+  color: var(--green); padding: 10px 18px; border-radius: 10px;
+  font-size: 0.82em; font-weight: 500;
+  animation: toast-in .3s ease, toast-out .3s ease 2.5s forwards;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toast-out { from { opacity: 1; } to { opacity: 0; transform: translateY(-8px); } }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 640px) {
+  body { padding: 8px; font-size: 14px; }
+  .section { padding: 14px; }
+  .status-grid { grid-template-columns: 1fr; }
+  .token-grid { grid-template-columns: 1fr; }
+  .deploy-grid { grid-template-columns: 1fr 1fr; }
+  .sheets-grid { grid-template-columns: 1fr; }
+  .ref-item { flex-direction: column; align-items: flex-start; }
+  .ref-item .ref-actions { width: 100%; justify-content: flex-end; }
+}
+@media (max-width: 400px) {
+  .deploy-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══ SPINNER ═══ */
+.spinner {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  text-align: center; padding: 20px;
+  color: var(--muted); font-size: 0.78em;
+}
+.footer a { color: var(--blue); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* Auto-refresh indicator */
+.refresh-indicator {
+  position: fixed; top: 12px; right: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 0.72em; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
+  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
+  <span style="color:#475569;">|</span>
+  <a href="redes.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📡 QG Redes</a>
+  <a href="congresso.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🏛️ Congresso</a>
+  <a href="votar.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🗳️ Votar</a>
+  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
+  <a href="leads.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">👥 Leads</a>
+  <a href="analytics.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📊 Analytics</a>
+  <a href="conteudo.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📝 Conteúdo</a>
+  <a href="config.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">⚙️ Config</a>
+</nav>
+
+<!-- REFRESH INDICATOR -->
+<div class="refresh-indicator" id="refreshIndicator">
+  <span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite"></span>
+  Auto-refresh: <span id="nextRefresh">5:00</span>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="index.html" class="back-link">← Voltar</a>
+  <h1>⚙️ SYSTEM CONFIG</h1>
+  <div class="sub">Campanha 4090 — Health Check • Endpoints • Tokens • Deploy</div>
+  <div class="live-row">
+    <div class="live-badge"><span class="dot"></span> HEALTH CHECK</div>
+    <div class="live-badge warn"><span class="dot"></span> Última: <span id="lastCheckTime">--:--</span></div>
+  </div>
+</div>
+
+<!-- Nav bar removed: using global-nav above -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1: SYSTEM STATUS DASHBOARD
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section" id="sectionStatus">
+  <div class="section-title">
+    <span class="icon">🩺</span>
+    System Status Dashboard
+    <span class="counter" id="statusCounter">0/6 online</span>
+    <div style="flex:1"></div>
+    <button class="btn sm primary" onclick="runAllChecks()">🔄 Re-check</button>
+  </div>
+  <div class="status-grid" id="statusGrid">
+
+    <!-- n8n Cloud -->
+    <div class="status-card" id="card-n8n">
+      <div class="sc-header">
+        <div class="sc-name">🔗 n8n Cloud</div>
+        <div class="status-badge checking" id="badge-n8n"><span class="spinner"></span> Checking...</div>
+      </div>
+      <div class="sc-details">
+        <div class="detail-row"><span class="label">URL</span><span class="value" style="font-size:.72em">campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io</span></div>
+        <div class="detail-row"><span class="label">Resposta</span><span class="value" id="time-n8n">—</span></div>
+        <div class="detail-row"><span class="label">Último check</span><span class="value" id="last-n8n">—</span></div>
+      </div>
+      <div class="sc-warn">⚠️ Trial expirando — migrar para Azure Container Apps</div>
+    </div>
+
+    <!-- Google Sheets Comentários -->
+    <div class="status-card" id="card-sheets-comments">
+      <div class="sc-header">
+        <div class="sc-name">📊 Sheets — Comentários</div>
+        <div class="status-badge checking" id="badge-sheets-comments"><span class="spinner"></span> Checking...</div>
+      </div>
+      <div class="sc-details">
+        <div class="detail-row"><span class="label">Sheet</span><span class="value">VOTOS (padrão)</span></div>
+        <div class="detail-row"><span class="label">Rows</span><span class="value" id="rows-sheets-comments">—</span></div>
+        <div class="detail-row"><span class="label">Resposta</span><span class="value" id="time-sheets-comments">—</span></div>
+        <div class="detail-row"><span class="label">Último check</span><span class="value" id="last-sheets-comments">—</span></div>
+      </div>
+    </div>
+
+    <!-- Google Sheets Proposições -->
+    <div class="status-card" id="card-sheets-props">
+      <div class="sc-header">
+        <div class="sc-name">📊 Sheets — Proposições</div>
+        <div class="status-badge checking" id="badge-sheets-props"><span class="spinner"></span> Checking...</div>
+      </div>
+      <div class="sc-details">
+        <div class="detail-row"><span class="label">Sheet</span><span class="value">Página1</span></div>
+        <div class="detail-row"><span class="label">Proposições</span><span class="value" id="rows-sheets-props">—</span></div>
+        <div class="detail-row"><span class="label">Resposta</span><span class="value" id="time-sheets-props">—</span></div>
+        <div class="detail-row"><span class="label">Último check</span><span class="value" id="last-sheets-props">—</span></div>
+      </div>
+    </div>
+
+    <!-- Google Sheets Votos -->
+    <div class="status-card" id="card-sheets-votos">
+      <div class="sc-header">
+        <div class="sc-name">📊 Sheets — Votos</div>
+        <div class="status-badge checking" id="badge-sheets-votos"><span class="spinner"></span> Checking...</div>
+      </div>
+      <div class="sc-details">
+        <div class="detail-row"><span class="label">Sheet</span><span class="value">Default (first tab)</span></div>
+        <div class="detail-row"><span class="label">Rows</span><span class="value" id="rows-sheets-votos">—</span></div>
+        <div class="detail-row"><span class="label">Resposta</span><span class="value" id="time-sheets-votos">—</span></div>
+        <div class="detail-row"><span class="label">Último check</span><span class="value" id="last-sheets-votos">—</span></div>
+      </div>
+    </div>
+
+    <!-- API Câmara -->
+    <div class="status-card" id="card-camara">
+      <div class="sc-header">
+        <div class="sc-name">🏛️ API Câmara</div>
+        <div class="status-badge checking" id="badge-camara"><span class="spinner"></span> Checking...</div>
+      </div>
+      <div class="sc-details">
+        <div class="detail-row"><span class="label">API</span><span class="value" style="font-size:.72em">dadosabertos.camara.leg.br</span></div>
+        <div class="detail-row"><span class="label">Resposta</span><span class="value" id="time-camara">—</span></div>
+        <div class="detail-row"><span class="label">Último check</span><span class="value" id="last-camara">—</span></div>
+      </div>
+    </div>
+
+    <!-- Netlify -->
+    <div class="status-card" id="card-netlify">
+      <div class="sc-header">
+        <div class="sc-name">🌐 Netlify Deploy</div>
+        <div class="status-badge checking" id="badge-netlify"><span class="spinner"></span> Checking...</div>
+      </div>
+      <div class="sc-details">
+        <div class="detail-row"><span class="label">Site</span><span class="value" style="font-size:.72em">campanhaluciano.netlify.app</span></div>
+        <div class="detail-row"><span class="label">Resposta</span><span class="value" id="time-netlify">—</span></div>
+        <div class="detail-row"><span class="label">Último check</span><span class="value" id="last-netlify">—</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2: WEBHOOK URLS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">🔗</span>
+    Webhook URLs
+    <span class="counter">3 endpoints</span>
+  </div>
+  <div class="ref-list">
+
+    <div class="ref-item">
+      <div class="ref-label">💬 Responder Comentário</div>
+      <div class="ref-url">https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/responder-comentario</div>
+      <div class="ref-actions">
+        <button class="btn sm" onclick="copyText('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/responder-comentario')">📋 Copy</button>
+        <button class="btn sm primary" onclick="testWebhook('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/responder-comentario', this)">🧪 Test</button>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">🏷️ Classificar Comentário</div>
+      <div class="ref-url">https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/classificar-comentario</div>
+      <div class="ref-actions">
+        <button class="btn sm" onclick="copyText('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/classificar-comentario')">📋 Copy</button>
+        <button class="btn sm primary" onclick="testWebhook('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/classificar-comentario', this)">🧪 Test</button>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">🤖 ManyChat Webhook</div>
+      <div class="ref-url">https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/manychat-webhook</div>
+      <div class="ref-actions">
+        <button class="btn sm" onclick="copyText('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/manychat-webhook')">📋 Copy</button>
+        <button class="btn sm primary" onclick="testWebhook('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/manychat-webhook', this)">🧪 Test</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3: TOKEN STATUS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">🔑</span>
+    Token Status
+    <span class="counter">4 tokens</span>
+  </div>
+  <div class="token-grid">
+
+    <!-- Meta Page Token -->
+    <div class="token-card">
+      <div class="tc-header">
+        <div class="tc-name">📘 Meta Page Token</div>
+        <button class="btn sm success" onclick="testMetaToken(this)" id="btn-test-meta">🧪 Test</button>
+      </div>
+      <div class="tc-value">
+        <span id="meta-token-display" class="cred-hidden">EAAT5J•••••••K0</span>
+        <div style="display:flex;gap:4px">
+          <button class="btn sm icon-only" onclick="toggleReveal('meta-token-display','EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfK0')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfK0')">📋</button>
+        </div>
+      </div>
+      <div class="tc-meta">Page ID: <span>656539144216536</span></div>
+      <div class="tc-meta" id="meta-test-result"></div>
+    </div>
+
+    <!-- Instagram Token -->
+    <div class="token-card">
+      <div class="tc-header">
+        <div class="tc-name">📸 Instagram Token</div>
+        <button class="btn sm success" onclick="testInstaToken(this)" id="btn-test-insta">🧪 Test</button>
+      </div>
+      <div class="tc-value">
+        <span id="insta-token-display" class="cred-hidden">EAAT5J•••••••ZD</span>
+        <div style="display:flex;gap:4px">
+          <button class="btn sm icon-only" onclick="toggleReveal('insta-token-display','EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfZD')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfZD')">📋</button>
+        </div>
+      </div>
+      <div class="tc-meta">IG Business ID: <span>17841400055952742</span></div>
+      <div class="tc-meta" id="insta-test-result"></div>
+    </div>
+
+    <!-- Groq API -->
+    <div class="token-card">
+      <div class="tc-header">
+        <div class="tc-name">🤖 Groq API Key</div>
+      </div>
+      <div class="tc-value">
+        <span id="groq-token-display" class="cred-hidden">gsk_3N•••••••WI</span>
+        <div style="display:flex;gap:4px">
+          <button class="btn sm icon-only" onclick="toggleReveal('groq-token-display','gsk_****DPWI')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('gsk_****DPWI')">📋</button>
+        </div>
+      </div>
+      <div class="tc-meta">Provider: <span>Groq Cloud</span></div>
+    </div>
+
+    <!-- Telegram Bot -->
+    <div class="token-card">
+      <div class="tc-header">
+        <div class="tc-name">📨 Telegram Bot</div>
+      </div>
+      <div class="tc-value">
+        <span id="tg-token-display" class="cred-hidden">876219••••••68U</span>
+        <div style="display:flex;gap:4px">
+          <button class="btn sm icon-only" onclick="toggleReveal('tg-token-display','8762191735:AAFPyh2VoUq8oN4clVJu-R2S4PmGzXP68U')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('8762191735:AAFPyh2VoUq8oN4clVJu-R2S4PmGzXP68U')">📋</button>
+        </div>
+      </div>
+      <div class="tc-meta">Chat ID: <span>-534****6902</span></div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4: GOOGLE SHEETS LINKS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">📋</span>
+    Google Sheets Links
+    <span class="counter">2 sheets</span>
+  </div>
+  <div class="sheets-grid">
+
+    <div class="sheet-card">
+      <div class="sh-name">📊 Comentários</div>
+      <div class="sh-id">Sheet ID: 1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME</div>
+      <div class="sh-links">
+        <a href="https://docs.google.com/spreadsheets/d/1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME/edit" target="_blank" class="btn sm primary">📝 Abrir Sheet</a>
+        <button class="btn sm" onclick="copyText('https://docs.google.com/spreadsheets/d/1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME/gviz/tq?tqx=out:json')">📋 gviz URL</button>
+        <button class="btn sm" onclick="copyText('1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME')">📋 ID</button>
+      </div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sh-name">📊 Proposições</div>
+      <div class="sh-id">Sheet ID: 1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI</div>
+      <div class="sh-links">
+        <a href="https://docs.google.com/spreadsheets/d/1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI/edit" target="_blank" class="btn sm primary">📝 Abrir Sheet</a>
+        <button class="btn sm" onclick="copyText('https://docs.google.com/spreadsheets/d/1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI/gviz/tq?tqx=out:json&sheet=Página1')">📋 gviz URL</button>
+        <button class="btn sm" onclick="copyText('1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI')">📋 ID</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5: DEPLOY ACTIONS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">🚀</span>
+    Deploy Actions
+  </div>
+  <div class="deploy-grid">
+
+    <a href="https://app.netlify.com/sites/campanhaluciano/deploys" target="_blank" class="deploy-card">
+      <div class="dc-icon">🚀</div>
+      <div class="dc-title">Deploy Netlify</div>
+      <div class="dc-desc">Abrir painel de deploys no Netlify</div>
+    </a>
+
+    <div class="deploy-card" onclick="downloadBackup()">
+      <div class="dc-icon">📦</div>
+      <div class="dc-title">Backup n8n</div>
+      <div class="dc-desc">Baixar backup JSON dos workflows</div>
+    </div>
+
+    <div class="deploy-card" onclick="runAllChecks()">
+      <div class="dc-icon">🔄</div>
+      <div class="dc-title">Refresh All</div>
+      <div class="dc-desc">Re-executar todos os health checks</div>
+    </div>
+
+    <a href="https://campanhaluciano.netlify.app" target="_blank" class="deploy-card">
+      <div class="dc-icon">🌐</div>
+      <div class="dc-title">Abrir Site</div>
+      <div class="dc-desc">campanhaluciano.netlify.app</div>
+    </a>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 6: AZURE MIGRATION STATUS
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">☁️</span>
+    Azure Migration Status
+  </div>
+  <table class="migration-table">
+    <tr><td>Status Atual</td><td>n8n Cloud (trial — expirando)</td></tr>
+    <tr><td>Destino</td><td>Azure Container Apps</td></tr>
+    <tr><td>Azure SWA URL</td><td><a href="https://black-river-0f4e3b40f.7.azurestaticapps.net" target="_blank" style="color:var(--cyan);text-decoration:none;font-family:monospace;font-size:.88em">https://black-river-0f4e3b40f.7.azurestaticapps.net</a> <button class="btn sm" onclick="copyText('https://black-river-0f4e3b40f.7.azurestaticapps.net')" style="margin-left:8px">📋</button></td></tr>
+    <tr><td>Script</td><td style="font-family:monospace;font-size:.88em">deploy_azure_n8n.ps1</td></tr>
+    <tr><td>Status</td><td><span class="migration-status pending" id="azureStatus">⏳ Pending</span></td></tr>
+    <tr>
+      <td>Ações</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn sm primary" onclick="copyAzureCommand()">📋 Copiar comando de deploy</button>
+          <button class="btn sm warn" onclick="toggleAzureStatus()">🔄 Toggle Status</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 7: CREDENCIAIS IMPORTANTES
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">🔐</span>
+    Credenciais Importantes
+    <span class="counter" style="background:var(--red-bg);color:var(--red);border-color:var(--red-border)">CONFIDENCIAL</span>
+  </div>
+
+  <div class="accordion">
+
+    <!-- Meta Tokens -->
+    <div class="accordion-item" id="acc-meta">
+      <div class="accordion-header" onclick="toggleAccordion('acc-meta')">
+        <span>📘 Meta (Facebook / Instagram) Tokens</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="cred-row">
+          <span class="cred-label">Page Token</span>
+          <span class="cred-value" id="cred-meta-page">•••••••••••••</span>
+          <button class="btn sm icon-only" onclick="toggleCredReveal('cred-meta-page','EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfK0')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfK0')">📋</button>
+        </div>
+        <div class="cred-row">
+          <span class="cred-label">Page ID</span>
+          <span class="cred-value">656539144216536</span>
+          <button class="btn sm icon-only" onclick="copyText('656539144216536')">📋</button>
+        </div>
+        <div class="cred-row">
+          <span class="cred-label">IG Business ID</span>
+          <span class="cred-value">17841400055952742</span>
+          <button class="btn sm icon-only" onclick="copyText('17841400055952742')">📋</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Sheets IDs -->
+    <div class="accordion-item" id="acc-sheets">
+      <div class="accordion-header" onclick="toggleAccordion('acc-sheets')">
+        <span>📊 Google Sheets IDs</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="cred-row">
+          <span class="cred-label">Comentários</span>
+          <span class="cred-value">1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME</span>
+          <button class="btn sm icon-only" onclick="copyText('1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME')">📋</button>
+        </div>
+        <div class="cred-row">
+          <span class="cred-label">Proposições</span>
+          <span class="cred-value">1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI</span>
+          <button class="btn sm icon-only" onclick="copyText('1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI')">📋</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Telegram -->
+    <div class="accordion-item" id="acc-telegram">
+      <div class="accordion-header" onclick="toggleAccordion('acc-telegram')">
+        <span>📨 Telegram Bot</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="cred-row">
+          <span class="cred-label">Bot Token</span>
+          <span class="cred-value" id="cred-tg-token">•••••••••••••</span>
+          <button class="btn sm icon-only" onclick="toggleCredReveal('cred-tg-token','8762191735:AAFPyh2VoUq8oN4clVJu-R2S4PmGzXP68U')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('8762191735:AAFPyh2VoUq8oN4clVJu-R2S4PmGzXP68U')">📋</button>
+        </div>
+        <div class="cred-row">
+          <span class="cred-label">Chat ID</span>
+          <span class="cred-value">-534****6902</span>
+          <button class="btn sm icon-only" onclick="copyText('-534****6902')">📋</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Groq API -->
+    <div class="accordion-item" id="acc-groq">
+      <div class="accordion-header" onclick="toggleAccordion('acc-groq')">
+        <span>🤖 Groq API</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="cred-row">
+          <span class="cred-label">API Key</span>
+          <span class="cred-value" id="cred-groq-key">•••••••••••••</span>
+          <button class="btn sm icon-only" onclick="toggleCredReveal('cred-groq-key','gsk_****DPWI')">👁</button>
+          <button class="btn sm icon-only" onclick="copyText('gsk_****DPWI')">📋</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- n8n Cloud Login -->
+    <div class="accordion-item" id="acc-n8n">
+      <div class="accordion-header" onclick="toggleAccordion('acc-n8n')">
+        <span>🔗 n8n Cloud Login</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="cred-row">
+          <span class="cred-label">URL</span>
+          <span class="cred-value">https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io</span>
+          <button class="btn sm icon-only" onclick="copyText('https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io')">📋</button>
+        </div>
+        <div class="cred-row">
+          <span class="cred-label">Nota</span>
+          <span class="cred-value" style="color:var(--gold);font-family:inherit">⚠️ Trial — migrar para Azure</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 8: DEPLOYMENT QUICK GUIDE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">
+    <span class="icon">📖</span>
+    Deployment — Instruções Rápidas
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">
+    
+    <div style="background:var(--card-inner);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+      <div style="font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px">🚀 Deploy Netlify (Atual)</div>
+      <div style="font-size:0.82em;color:var(--muted);line-height:1.7">
+        <code style="background:#0b1120;padding:2px 6px;border-radius:4px;color:var(--cyan);font-size:0.92em">git push origin main</code><br>
+        Netlify detecta automaticamente e faz build.<br>
+        Site: <a href="https://campanhaluciano.netlify.app" target="_blank" style="color:var(--cyan)">campanhaluciano.netlify.app</a>
+      </div>
+    </div>
+
+    <div style="background:var(--card-inner);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+      <div style="font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px">☁️ Deploy Azure SWA</div>
+      <div style="font-size:0.82em;color:var(--muted);line-height:1.7">
+        <code style="background:#0b1120;padding:2px 6px;border-radius:4px;color:var(--cyan);font-size:0.92em">swa deploy ./github-deploy</code><br>
+        URL: <a href="https://black-river-0f4e3b40f.7.azurestaticapps.net" target="_blank" style="color:var(--cyan)">black-river-0f4e3b40f.7.azurestaticapps.net</a>
+      </div>
+    </div>
+
+    <div style="background:var(--card-inner);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+      <div style="font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px">🔄 Backup n8n Workflows</div>
+      <div style="font-size:0.82em;color:var(--muted);line-height:1.7">
+        <code style="background:#0b1120;padding:2px 6px;border-radius:4px;color:var(--cyan);font-size:0.92em">n8n export:workflow --all > backup.json</code><br>
+        Ou: Acesse n8n Cloud → Settings → Export
+      </div>
+    </div>
+
+    <div style="background:var(--card-inner);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+      <div style="font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px">📋 Checklist Pré-Deploy</div>
+      <div style="font-size:0.82em;color:var(--muted);line-height:1.7">
+        ✅ Testar Google Sheets (gviz)<br>
+        ✅ Verificar tokens Meta/IG<br>
+        ✅ Confirmar webhooks n8n ativos<br>
+        ✅ Rodar Health Check acima
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<footer style="background:#0f172a;border-top:2px solid #6366f1;padding:16px;text-align:center;color:#64748b;font-size:0.85em;margin-top:40px;">
+  Campanha Luciano da Luz — 4090 PSB-SP | Sistema de Inteligência Eleitoral v3.0 | 
+  <a href="https://vozdapaulista.com" target="_blank" style="color:#6366f1;">vozdapaulista.com</a>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   SYSTEM CONFIGURATION — JavaScript
+   Health checks • Token tests • Utilities
+   ═══════════════════════════════════════════════════════════════ */
+
+// ———— CONFIG ————
+const CONFIG = {
+  n8n: 'https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io',
+  sheetsComments: 'https://docs.google.com/spreadsheets/d/1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME/gviz/tq?tqx=out:json',
+  sheetsProps: 'https://docs.google.com/spreadsheets/d/1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI/gviz/tq?tqx=out:json&sheet=P%C3%A1gina1',
+  sheetsVotos: 'https://docs.google.com/spreadsheets/d/1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME/gviz/tq?tqx=out:json',
+  camara: 'https://dadosabertos.camara.leg.br/api/v2/proposicoes?itens=1',
+  netlify: 'https://campanhaluciano.netlify.app',
+  metaPageToken: 'EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfK0',
+  metaPageId: '656539144216536',
+  instaToken: 'EAAT5JZBRBuigBO4STZAA9dBEWNDmGOBfzGEVZBVkPj1vmPUwFaZAd2x46bW5bX1i9Ss0R3iR9q3ZAuyHLSc4jnrUBnkLWq8NwZBRLNLVP4Gj1XjW6mxjWWpPULNaZBuB1BjthkUmLVjKfqk0EqRa6r5j27DXZAZAUM1mQJtMaVp2Ga3AXjhZBinlCAGOxYb3xyAMdfZD',
+  igBusinessId: '17841400055952742',
+  refreshInterval: 5 * 60 * 1000, // 5 minutes
+  fetchTimeout: 10000 // 10 seconds
+};
+
+let onlineCount = 0;
+let refreshTimer = null;
+let countdownTimer = null;
+let countdownSeconds = 300;
+
+// ———— UTILITIES ————
+function now() { return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
+
+function showToast(msg, type = 'success') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  if (type === 'error') t.style.borderColor = 'var(--red-border)';
+  if (type === 'error') t.style.color = 'var(--red)';
+  if (type === 'warn') t.style.borderColor = 'var(--gold-border)';
+  if (type === 'warn') t.style.color = 'var(--gold)';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✅ Copiado!');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ Copiado!');
+  });
+}
+
+function setBadge(id, status, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'status-badge ' + status;
+  el.innerHTML = text;
+}
+
+function fetchWithTimeout(url, opts = {}, timeout = CONFIG.fetchTimeout) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+  return fetch(url, { ...opts, signal: controller.signal, mode: 'no-cors' })
+    .finally(() => clearTimeout(timer));
+}
+
+// Helper: parse Google Sheets gviz response properly
+function parseGvizResponse(text) {
+  const match = text.match(/google\.visualization\.Query\.setResponse\((.+)\)/s);
+  if (!match) throw new Error('Invalid gviz response format');
+  return JSON.parse(match[1]);
+}
+
+// ———— HEALTH CHECKS ————
+async function checkN8n() {
+  const start = performance.now();
+  try {
+    const r = await fetchWithTimeout(CONFIG.n8n, {}, CONFIG.fetchTimeout);
+    const ms = Math.round(performance.now() - start);
+    setBadge('badge-n8n', 'online', '🟢 Online');
+    document.getElementById('time-n8n').textContent = ms + 'ms';
+    document.getElementById('last-n8n').textContent = now();
+    return true;
+  } catch(e) {
+    const ms = Math.round(performance.now() - start);
+    setBadge('badge-n8n', 'offline', '🔴 Offline');
+    document.getElementById('time-n8n').textContent = ms + 'ms (timeout)';
+    document.getElementById('last-n8n').textContent = now();
+    return false;
+  }
+}
+
+async function checkSheetsComments() {
+  const start = performance.now();
+  try {
+    const r = await fetch(CONFIG.sheetsComments);
+    const text = await r.text();
+    const ms = Math.round(performance.now() - start);
+    const json = parseGvizResponse(text);
+    const rows = json.table && json.table.rows ? json.table.rows.length : 0;
+    setBadge('badge-sheets-comments', 'online', '🟢 ' + rows + ' rows');
+    document.getElementById('rows-sheets-comments').textContent = rows.toLocaleString();
+    document.getElementById('time-sheets-comments').textContent = ms + 'ms';
+    document.getElementById('last-sheets-comments').textContent = now();
+    return true;
+  } catch(e) {
+    const ms = Math.round(performance.now() - start);
+    setBadge('badge-sheets-comments', 'offline', '🔴 Error');
+    document.getElementById('time-sheets-comments').textContent = ms + 'ms';
+    document.getElementById('last-sheets-comments').textContent = now();
+    return false;
+  }
+}
+
+async function checkSheetsProps() {
+  const start = performance.now();
+  try {
+    const r = await fetch(CONFIG.sheetsProps);
+    const text = await r.text();
+    const ms = Math.round(performance.now() - start);
+    const json = parseGvizResponse(text);
+    const rows = json.table && json.table.rows ? json.table.rows.length : 0;
+    setBadge('badge-sheets-props', 'online', '🟢 ' + rows + ' proposições');
+    document.getElementById('rows-sheets-props').textContent = rows.toLocaleString();
+    document.getElementById('time-sheets-props').textContent = ms + 'ms';
+    document.getElementById('last-sheets-props').textContent = now();
+    return true;
+  } catch(e) {
+    const ms = Math.round(performance.now() - start);
+    setBadge('badge-sheets-props', 'offline', '🔴 Error');
+    document.getElementById('time-sheets-props').textContent = ms + 'ms';
+    document.getElementById('last-sheets-props').textContent = now();
+    return false;
+  }
+}
+
+async function checkSheetsVotos() {
+  const start = performance.now();
+  try {
+    const r = await fetch(CONFIG.sheetsVotos + '&_cb=' + Date.now());
+    const text = await r.text();
+    const ms = Math.round(performance.now() - start);
+    const json = parseGvizResponse(text);
+    const rows = json.table && json.table.rows ? json.table.rows.length : 0;
+    setBadge('badge-sheets-votos', 'online', '🟢 ' + rows + ' rows');
+    document.getElementById('rows-sheets-votos').textContent = rows.toLocaleString();
+    document.getElementById('time-sheets-votos').textContent = ms + 'ms';
+    document.getElementById('last-sheets-votos').textContent = now();
+    return true;
+  } catch(e) {
+    const ms = Math.round(performance.now() - start);
+    setBadge('badge-sheets-votos', 'offline', '🔴 Error');
+    document.getElementById('time-sheets-votos').textContent = ms + 'ms';
+    document.getElementById('last-sheets-votos').textContent = now();
+    return false;
+  }
+}
+
+async function checkCamara() {
+  const start = performance.now();
+  try {
+    const r = await fetch(CONFIG.camara);
+    const ms = Math.round(performance.now() - start);
+    if (r.ok) {
+      setBadge('badge-camara', 'online', '🟢 Online');
+    } else {
+      setBadge('badge-camara', 'offline', '🔴 HTTP ' + r.status);
+    }
+    document.getElementById('time-camara').textContent = ms + 'ms';
+    document.getElementById('last-camara').textContent = now();
+    return r.ok;
+  } catch(e) {
+    const ms = Math.round(performance.now() - start);
+    setBadge('badge-camara', 'offline', '🔴 Offline');
+    document.getElementById('time-camara').textContent = ms + 'ms';
+    document.getElementById('last-camara').textContent = now();
+    return false;
+  }
+}
+
+async function checkNetlify() {
+  // If you're seeing this page, Netlify is working — always ✅
+  setBadge('badge-netlify', 'online', '🟢 Online');
+  document.getElementById('time-netlify').textContent = 'self-test ✅';
+  document.getElementById('last-netlify').textContent = now();
+  return true;
+}
+
+async function runAllChecks() {
+  onlineCount = 0;
+  ['badge-n8n','badge-sheets-comments','badge-sheets-props','badge-sheets-votos','badge-camara','badge-netlify'].forEach(id => {
+    setBadge(id, 'checking', '<span class="spinner"></span> Checking...');
+  });
+
+  const results = await Promise.allSettled([
+    checkN8n(),
+    checkSheetsComments(),
+    checkSheetsProps(),
+    checkSheetsVotos(),
+    checkCamara(),
+    checkNetlify()
+  ]);
+
+  onlineCount = results.filter(r => r.status === 'fulfilled' && r.value === true).length;
+  document.getElementById('statusCounter').textContent = onlineCount + '/6 online';
+  document.getElementById('lastCheckTime').textContent = now();
+
+  countdownSeconds = 300;
+  showToast('✅ Health check completo — ' + onlineCount + '/6 online');
+}
+
+// ———— TOKEN TESTS ————
+async function testMetaToken(btn) {
+  const resultEl = document.getElementById('meta-test-result');
+  btn.disabled = true;
+  btn.textContent = '⏳ Testing...';
+  resultEl.innerHTML = '';
+  try {
+    const r = await fetch('https://graph.facebook.com/v19.0/' + CONFIG.metaPageId + '?fields=name,fan_count&access_token=' + CONFIG.metaPageToken);
+    const data = await r.json();
+    if (data.name) {
+      resultEl.innerHTML = '<span style="color:var(--green)">✅ ' + data.name + ' • ' + (data.fan_count || 0).toLocaleString() + ' fans</span>';
+      showToast('✅ Meta token válido: ' + data.name);
+    } else {
+      resultEl.innerHTML = '<span style="color:var(--red)">❌ ' + (data.error ? data.error.message : 'Erro desconhecido') + '</span>';
+      showToast('❌ Meta token inválido', 'error');
+    }
+  } catch(e) {
+    resultEl.innerHTML = '<span style="color:var(--red)">❌ Network error</span>';
+    showToast('❌ Erro de rede', 'error');
+  }
+  btn.disabled = false;
+  btn.textContent = '🧪 Test';
+}
+
+async function testInstaToken(btn) {
+  const resultEl = document.getElementById('insta-test-result');
+  btn.disabled = true;
+  btn.textContent = '⏳ Testing...';
+  resultEl.innerHTML = '';
+  try {
+    const r = await fetch('https://graph.facebook.com/v19.0/' + CONFIG.igBusinessId + '?fields=name,username,followers_count&access_token=' + CONFIG.instaToken);
+    const data = await r.json();
+    if (data.username) {
+      resultEl.innerHTML = '<span style="color:var(--green)">✅ @' + data.username + ' • ' + (data.followers_count || 0).toLocaleString() + ' followers</span>';
+      showToast('✅ Instagram token válido: @' + data.username);
+    } else {
+      resultEl.innerHTML = '<span style="color:var(--red)">❌ ' + (data.error ? data.error.message : 'Erro desconhecido') + '</span>';
+      showToast('❌ Instagram token inválido', 'error');
+    }
+  } catch(e) {
+    resultEl.innerHTML = '<span style="color:var(--red)">❌ Network error</span>';
+    showToast('❌ Erro de rede', 'error');
+  }
+  btn.disabled = false;
+  btn.textContent = '🧪 Test';
+}
+
+async function testWebhook(url, btn) {
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳...';
+  try {
+    const start = performance.now();
+    const r = await fetchWithTimeout(url, { method: 'GET' }, 8000);
+    const ms = Math.round(performance.now() - start);
+    showToast('✅ Webhook respondeu em ' + ms + 'ms');
+  } catch(e) {
+    showToast('⚠️ Webhook timeout/CORS (pode estar OK, testar via n8n)', 'warn');
+  }
+  btn.disabled = false;
+  btn.textContent = origText;
+}
+
+// ———— ACCORDION ————
+function toggleAccordion(id) {
+  const item = document.getElementById(id);
+  item.classList.toggle('open');
+}
+
+// ———— TOGGLE REVEAL ————
+function toggleReveal(spanId, fullValue) {
+  const el = document.getElementById(spanId);
+  if (el.dataset.revealed === 'true') {
+    el.classList.add('cred-hidden');
+    el.textContent = fullValue.substring(0, 6) + '•••••••' + fullValue.slice(-2);
+    el.dataset.revealed = 'false';
+  } else {
+    el.classList.remove('cred-hidden');
+    el.textContent = fullValue;
+    el.dataset.revealed = 'true';
+  }
+}
+
+function toggleCredReveal(spanId, fullValue) {
+  const el = document.getElementById(spanId);
+  if (el.dataset.revealed === 'true') {
+    el.textContent = '•••••••••••••';
+    el.dataset.revealed = 'false';
+  } else {
+    el.textContent = fullValue;
+    el.dataset.revealed = 'true';
+  }
+}
+
+// ———— AZURE ————
+function copyAzureCommand() {
+  const cmd = '.\\deploy_azure_n8n.ps1 -ResourceGroup "rg-campanha4090" -Location "brazilsouth" -ContainerName "n8n-campanha"';
+  copyText(cmd);
+}
+
+function toggleAzureStatus() {
+  const el = document.getElementById('azureStatus');
+  if (el.classList.contains('pending')) {
+    el.classList.remove('pending');
+    el.classList.add('deployed');
+    el.innerHTML = '✅ Deployed';
+    showToast('Status atualizado: Deployed');
+  } else {
+    el.classList.remove('deployed');
+    el.classList.add('pending');
+    el.innerHTML = '⏳ Pending';
+    showToast('Status atualizado: Pending');
+  }
+}
+
+// ———— BACKUP ————
+function downloadBackup() {
+  showToast('📦 Procurando backup local...', 'warn');
+  setTimeout(() => {
+    showToast('💡 Execute: n8n export:workflow --all > backup.json', 'warn');
+  }, 1500);
+}
+
+// ———— AUTO-REFRESH ————
+function startAutoRefresh() {
+  runAllChecks();
+
+  refreshTimer = setInterval(() => {
+    runAllChecks();
+    countdownSeconds = 300;
+  }, CONFIG.refreshInterval);
+
+  countdownTimer = setInterval(() => {
+    countdownSeconds--;
+    if (countdownSeconds < 0) countdownSeconds = 300;
+    const m = Math.floor(countdownSeconds / 60);
+    const s = countdownSeconds % 60;
+    document.getElementById('nextRefresh').textContent = m + ':' + String(s).padStart(2, '0');
+  }, 1000);
+}
+
+// ———— INIT ————
+document.addEventListener('DOMContentLoaded', startAutoRefresh);
+</script>
+
+</body>
+</html>

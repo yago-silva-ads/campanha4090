@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📝 CONTEÚDO & CALENDÁRIO — Campanha 4090</title>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CONTEÚDO & CALENDÁRIO — Campanha 4090
+   Content Strategy • Social Media Calendar • Post Generator
+   Converter seguidores em ELEITORES.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --green: #10b981;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --blue: #818cf8;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --cyan: #22d3ee;
+  --pink: #f472b6;
+  --radius: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  padding: 12px;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ═══ HEADER ═══ */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 24px 16px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--gold), var(--green));
+}
+.header h1 { font-size: 1.6em; margin-bottom: 4px; letter-spacing: -0.02em; }
+.header .sub { color: var(--muted); font-size: 0.85em; margin-bottom: 12px; }
+
+.header-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.btn-back {
+  background: rgba(255,255,255,.06); color: var(--muted);
+  border: 1px solid var(--border); padding: 5px 14px;
+  border-radius: 20px; font-size: 0.78em; text-decoration: none;
+  font-weight: 600; transition: all .2s;
+}
+.btn-back:hover { background: rgba(255,255,255,.1); color: var(--text); }
+.badge-content {
+  display: inline-flex; align-items: center;
+  background: rgba(167,139,250,.12); border: 1px solid rgba(167,139,250,.25);
+  border-radius: 20px; padding: 5px 14px; font-size: 0.78em; color: var(--purple); font-weight: 600;
+}
+
+/* ═══ NAV TABS ═══ */
+.nav-tabs {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
+  padding: 12px; background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); justify-content: center;
+}
+.nav-tab {
+  padding: 8px 18px; border-radius: 20px; font-size: 0.82em;
+  font-weight: 600; cursor: pointer; transition: all .2s;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  white-space: nowrap;
+}
+.nav-tab:hover { background: rgba(255,255,255,.05); color: var(--text); }
+.nav-tab.active { background: rgba(99,102,241,.2); color: var(--blue); border-color: rgba(99,102,241,.4); }
+
+/* ═══ SECTIONS ═══ */
+.section { display: none; margin-bottom: 20px; }
+.section.active { display: block; }
+
+.section-panel {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+}
+.section-title {
+  font-size: 1.15em; font-weight: 700; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title .count {
+  background: rgba(99,102,241,.2); color: var(--blue);
+  padding: 2px 10px; border-radius: 10px; font-size: 0.7em;
+}
+
+/* ═══ CALENDAR GRID ═══ */
+.cal-week-nav {
+  display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 16px;
+}
+.cal-week-nav button {
+  background: rgba(99,102,241,.15); color: var(--blue); border: 1px solid rgba(99,102,241,.3);
+  padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85em;
+  transition: all .2s;
+}
+.cal-week-nav button:hover { background: rgba(99,102,241,.3); }
+.cal-week-label { font-weight: 700; font-size: 1em; color: var(--text); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+@media (max-width: 900px) {
+  .cal-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .cal-grid { grid-template-columns: 1fr; }
+}
+
+.cal-day {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; min-height: 160px;
+  transition: all .2s; position: relative;
+}
+.cal-day:hover { border-color: rgba(99,102,241,.4); background: rgba(99,102,241,.04); }
+.cal-day-name {
+  font-size: 0.72em; font-weight: 700; text-transform: uppercase;
+  color: var(--muted); letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.cal-day-date { font-size: 0.78em; color: var(--blue); font-weight: 600; margin-bottom: 8px; }
+.cal-topic { font-size: 0.82em; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+.cal-time {
+  display: inline-block; background: rgba(16,185,129,.12); color: var(--green);
+  padding: 2px 8px; border-radius: 4px; font-size: 0.68em; font-weight: 700; margin-bottom: 6px;
+}
+.cal-type-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 0.68em; font-weight: 700; margin: 2px 2px 0 0;
+}
+.badge-video { background: rgba(239,68,68,.12); color: var(--red); }
+.badge-foto { background: rgba(167,139,250,.12); color: var(--purple); }
+.badge-texto { background: rgba(34,211,238,.12); color: var(--cyan); }
+.badge-live { background: rgba(245,158,11,.12); color: var(--gold); }
+.badge-dados { background: rgba(16,185,129,.12); color: var(--green); }
+.badge-carrossel { background: rgba(244,114,182,.12); color: var(--pink); }
+
+.cal-day.today { border-color: var(--gold); background: rgba(245,158,11,.05); }
+.cal-day.today .cal-day-name { color: var(--gold); }
+
+/* ═══ PILAR CARDS ═══ */
+.pilar-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 500px) { .pilar-grid { grid-template-columns: 1fr; } }
+
+.pilar-card {
+  border-radius: 10px; padding: 20px;
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.pilar-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; border-radius: 3px 3px 0 0;
+}
+.pilar-card:hover { transform: translateY(-2px); }
+
+.pilar-1 { background: rgba(16,185,129,.06); border: 1px solid rgba(16,185,129,.2); }
+.pilar-1::before { background: var(--green); }
+.pilar-1 .pilar-icon { color: var(--green); }
+
+.pilar-2 { background: rgba(251,146,60,.06); border: 1px solid rgba(251,146,60,.2); }
+.pilar-2::before { background: var(--orange); }
+.pilar-2 .pilar-icon { color: var(--orange); }
+
+.pilar-3 { background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.2); }
+.pilar-3::before { background: var(--gold); }
+.pilar-3 .pilar-icon { color: var(--gold); }
+
+.pilar-4 { background: rgba(129,140,248,.06); border: 1px solid rgba(129,140,248,.2); }
+.pilar-4::before { background: var(--blue); }
+.pilar-4 .pilar-icon { color: var(--blue); }
+
+.pilar-5 { background: rgba(167,139,250,.06); border: 1px solid rgba(167,139,250,.2); }
+.pilar-5::before { background: var(--purple); }
+.pilar-5 .pilar-icon { color: var(--purple); }
+
+.pilar-name { font-size: 1.05em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.pilar-icon { font-size: 1.3em; }
+.pilar-desc { font-size: 0.85em; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+.pilar-label { font-size: 0.7em; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; margin-top: 10px; }
+.pilar-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+.pilar-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 0.72em; font-weight: 600;
+  background: rgba(99,102,241,.1); color: var(--blue);
+}
+.pilar-example {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px; padding: 10px; margin-top: 8px;
+  font-size: 0.82em; color: var(--text); line-height: 1.5;
+  font-style: italic;
+}
+
+/* ═══ POST GENERATOR ═══ */
+.gen-controls {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px; margin-bottom: 16px;
+}
+.gen-group label {
+  display: block; font-size: 0.72em; font-weight: 700;
+  text-transform: uppercase; color: var(--muted); letter-spacing: .06em; margin-bottom: 4px;
+}
+.gen-group select, .gen-group textarea {
+  width: 100%; background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  color: var(--text); border-radius: 8px; padding: 10px 12px;
+  font-size: 0.9em; font-family: inherit; transition: border-color .2s;
+}
+.gen-group select:focus, .gen-group textarea:focus {
+  outline: none; border-color: var(--blue);
+}
+.gen-group select option { background: var(--card); color: var(--text); }
+
+.gen-output {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; position: relative;
+}
+.gen-textarea {
+  width: 100%; min-height: 140px; background: transparent; border: none;
+  color: var(--text); font-size: 0.9em; font-family: inherit;
+  resize: vertical; line-height: 1.6;
+}
+.gen-textarea:focus { outline: none; }
+
+.gen-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px; margin-top: 12px;
+}
+.char-counter { font-size: 0.78em; color: var(--muted); font-family: 'SF Mono', Consolas, monospace; }
+.char-counter.warn { color: var(--gold); }
+.char-counter.over { color: var(--red); }
+
+.gen-hashtags {
+  background: rgba(99,102,241,.08); border: 1px solid rgba(99,102,241,.2);
+  border-radius: 8px; padding: 10px 12px; margin-top: 12px;
+  font-size: 0.82em; color: var(--blue); line-height: 1.6;
+  word-break: break-all;
+}
+
+.btn-primary {
+  background: rgba(99,102,241,.2); color: var(--blue);
+  border: 1px solid rgba(99,102,241,.35); padding: 8px 20px;
+  border-radius: 8px; font-size: 0.85em; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.btn-primary:hover { background: rgba(99,102,241,.35); }
+
+.btn-success {
+  background: rgba(16,185,129,.2); color: var(--green);
+  border: 1px solid rgba(16,185,129,.35); padding: 8px 20px;
+  border-radius: 8px; font-size: 0.85em; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.btn-success:hover { background: rgba(16,185,129,.35); }
+
+.btn-gold {
+  background: rgba(245,158,11,.15); color: var(--gold);
+  border: 1px solid rgba(245,158,11,.3); padding: 8px 20px;
+  border-radius: 8px; font-size: 0.85em; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.btn-gold:hover { background: rgba(245,158,11,.3); }
+
+/* ═══ HASHTAG STRATEGY ═══ */
+.hash-group {
+  margin-bottom: 16px; padding: 14px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.hash-group-title {
+  font-size: 0.82em; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.hash-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.hash-tag {
+  background: rgba(99,102,241,.12); color: var(--blue);
+  padding: 4px 12px; border-radius: 6px; font-size: 0.8em; font-weight: 600;
+  cursor: pointer; transition: all .2s; border: 1px solid rgba(99,102,241,.2);
+  user-select: all;
+}
+.hash-tag:hover { background: rgba(99,102,241,.25); }
+.hash-tag.green { background: rgba(16,185,129,.12); color: var(--green); border-color: rgba(16,185,129,.2); }
+.hash-tag.gold { background: rgba(245,158,11,.12); color: var(--gold); border-color: rgba(245,158,11,.2); }
+.hash-tag.purple { background: rgba(167,139,250,.12); color: var(--purple); border-color: rgba(167,139,250,.2); }
+.hash-tag.orange { background: rgba(251,146,60,.12); color: var(--orange); border-color: rgba(251,146,60,.2); }
+.hash-tag.cyan { background: rgba(34,211,238,.12); color: var(--cyan); border-color: rgba(34,211,238,.2); }
+.hash-tag.trending {
+  background: rgba(239,68,68,.1); color: var(--red); border-color: rgba(239,68,68,.2);
+  animation: trendPulse 3s infinite;
+}
+@keyframes trendPulse { 0%,100%{opacity:1} 50%{opacity:.7} }
+
+.copy-all-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: rgba(99,102,241,.06);
+  border: 1px solid rgba(99,102,241,.15); border-radius: 8px; margin-top: 12px;
+}
+.copy-all-bar span { font-size: 0.82em; color: var(--muted); }
+
+/* ═══ CTA LIBRARY ═══ */
+.cta-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+@media (max-width: 500px) { .cta-grid { grid-template-columns: 1fr; } }
+
+.cta-card {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 12px 14px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 8px; transition: all .2s;
+}
+.cta-card:hover { border-color: rgba(99,102,241,.3); background: rgba(99,102,241,.04); }
+.cta-text { font-size: 0.88em; flex: 1; }
+.cta-copy-btn {
+  background: rgba(99,102,241,.15); color: var(--blue); border: 1px solid rgba(99,102,241,.25);
+  padding: 4px 12px; border-radius: 6px; font-size: 0.72em; font-weight: 700;
+  cursor: pointer; white-space: nowrap; transition: all .2s;
+}
+.cta-copy-btn:hover { background: rgba(99,102,241,.3); }
+
+/* ═══ WHATSAPP TEMPLATES ═══ */
+.wpp-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 500px) { .wpp-grid { grid-template-columns: 1fr; } }
+
+.wpp-card {
+  background: rgba(16,185,129,.04); border: 1px solid rgba(16,185,129,.15);
+  border-radius: 10px; padding: 16px; position: relative;
+}
+.wpp-card-title {
+  font-size: 0.88em; font-weight: 700; color: var(--green); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.wpp-card-body {
+  background: rgba(255,255,255,.04); border-radius: 8px; padding: 12px;
+  font-size: 0.82em; line-height: 1.6; white-space: pre-line; margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,.06);
+  max-height: 220px; overflow-y: auto;
+}
+.wpp-card-footer { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* ═══ METRICS INFO ═══ */
+.metrics-info {
+  text-align: center; padding: 40px 20px;
+  color: var(--muted);
+}
+.metrics-info .icon { font-size: 3em; margin-bottom: 12px; opacity: .4; }
+.metrics-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px; margin-top: 20px;
+}
+.metric-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px;
+}
+.metric-card .m-label { font-size: 0.72em; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.metric-card .m-value { font-size: 1.6em; font-weight: 800; font-family: 'SF Mono', Consolas, monospace; }
+.metric-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,.06); margin-top: 8px; overflow: hidden; }
+.metric-bar-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+
+/* ═══ TOAST ═══ */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--green); color: #fff; padding: 10px 24px; border-radius: 10px;
+  font-size: 0.85em; font-weight: 700; z-index: 9999;
+  opacity: 0; transition: all .3s ease; pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══ UTILS ═══ */
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.text-center { text-align: center; }
+.flex-center { display: flex; align-items: center; justify-content: center; gap: 8px; }
+</style>
+</head>
+<body>
+<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
+  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
+  <span style="color:#475569;">|</span>
+  <a href="redes.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📡 QG Redes</a>
+  <a href="congresso.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🏛️ Congresso</a>
+  <a href="votar.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🗳️ Votar</a>
+  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
+  <a href="leads.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">👥 Leads</a>
+  <a href="analytics.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📊 Analytics</a>
+  <a href="conteudo.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">📝 Conteúdo</a>
+  <a href="config.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">⚙️ Config</a>
+</nav>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <h1>📝 CONTEÚDO & CALENDÁRIO</h1>
+  <p class="sub">Campanha 4090 • Estratégia de Conteúdo • Converter seguidores em ELEITORES</p>
+  <div class="header-actions">
+    <a href="index.html" class="btn-back">← Voltar</a>
+    <span class="badge-content">📅 Calendário Semanal</span>
+  </div>
+</div>
+
+<!-- ═══ NAV TABS ═══ -->
+<div class="nav-tabs" id="navTabs">
+  <button class="nav-tab active" data-tab="calendario">📅 Calendário</button>
+  <button class="nav-tab" data-tab="pilares">🎯 Pilares</button>
+  <button class="nav-tab" data-tab="gerador">✍️ Gerador de Posts</button>
+  <button class="nav-tab" data-tab="hashtags">🏷️ Hashtags</button>
+  <button class="nav-tab" data-tab="ctas">📣 CTAs</button>
+  <button class="nav-tab" data-tab="whatsapp">💬 WhatsApp</button>
+  <button class="nav-tab" data-tab="metricas">📊 Métricas</button>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 1: CALENDÁRIO DE CONTEÚDO
+     ════════════════════════════════════════════ -->
+<div class="section active" id="sec-calendario">
+  <div class="section-panel">
+    <div class="section-title">📅 Calendário de Conteúdo <span class="count">SEMANAL</span></div>
+    <div class="cal-week-nav">
+      <button onclick="changeWeek(-1)">← Anterior</button>
+      <span class="cal-week-label" id="weekLabel"></span>
+      <button onclick="changeWeek(1)">Próxima →</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <div class="section-panel">
+    <div class="section-title">⏰ Melhores Horários por Plataforma</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+      <div style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:8px;padding:14px;">
+        <div style="font-weight:700;font-size:.9em;margin-bottom:6px;">📷 Instagram</div>
+        <div style="font-size:.82em;color:var(--muted);">Feed: 11h–13h, 18h–20h</div>
+        <div style="font-size:.82em;color:var(--muted);">Reels: 9h, 12h, 19h</div>
+        <div style="font-size:.82em;color:var(--muted);">Stories: 7h–9h, 17h–19h</div>
+      </div>
+      <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:8px;padding:14px;">
+        <div style="font-weight:700;font-size:.9em;margin-bottom:6px;">📘 Facebook</div>
+        <div style="font-size:.82em;color:var(--muted);">Posts: 9h–11h, 13h–15h</div>
+        <div style="font-size:.82em;color:var(--muted);">Vídeos: 18h–21h</div>
+        <div style="font-size:.82em;color:var(--muted);">Lives: 19h–20h</div>
+      </div>
+      <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:8px;padding:14px;">
+        <div style="font-weight:700;font-size:.9em;margin-bottom:6px;">💬 WhatsApp</div>
+        <div style="font-size:.82em;color:var(--muted);">Status: 7h–8h, 12h, 18h</div>
+        <div style="font-size:.82em;color:var(--muted);">Broadcast: 10h, 17h</div>
+        <div style="font-size:.82em;color:var(--muted);">Grupos: 19h–21h</div>
+      </div>
+      <div style="background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);border-radius:8px;padding:14px;">
+        <div style="font-weight:700;font-size:.9em;margin-bottom:6px;">🐦 Twitter/X</div>
+        <div style="font-size:.82em;color:var(--muted);">Tweets: 8h–10h, 12h–13h</div>
+        <div style="font-size:.82em;color:var(--muted);">Threads: 10h, 19h</div>
+        <div style="font-size:.82em;color:var(--muted);">Engajamento: 17h–20h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 2: PILARES DA CAMPANHA
+     ════════════════════════════════════════════ -->
+<div class="section" id="sec-pilares">
+  <div class="section-panel">
+    <div class="section-title">🎯 Pilares da Campanha <span class="count">5 PROPOSTAS</span></div>
+    <p style="font-size:.85em;color:var(--muted);margin-bottom:16px;">Todo conteúdo deve se conectar a pelo menos um pilar. Use os talking points e hashtags sugeridas.</p>
+    <div class="pilar-grid" id="pilarGrid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 3: GERADOR DE POSTS
+     ════════════════════════════════════════════ -->
+<div class="section" id="sec-gerador">
+  <div class="section-panel">
+    <div class="section-title">✍️ Gerador de Posts <span class="count">INTERATIVO</span></div>
+    <p style="font-size:.85em;color:var(--muted);margin-bottom:16px;">Selecione o pilar, tipo de conteúdo e plataforma para gerar um template de post personalizado.</p>
+
+    <div class="gen-controls">
+      <div class="gen-group">
+        <label>🎯 Pilar</label>
+        <select id="genPilar">
+          <option value="0">🌳 Parques para a Vida</option>
+          <option value="1">🏗️ InfraPeriferia Brasil</option>
+          <option value="2">🌾 Agricultura Regenerativa</option>
+          <option value="3">📖 Mandato Aberto</option>
+          <option value="4">🏛️ Obras Abertas / Fiscalização</option>
+        </select>
+      </div>
+      <div class="gen-group">
+        <label>📱 Tipo de Conteúdo</label>
+        <select id="genType">
+          <option value="video">🎥 Vídeo</option>
+          <option value="foto">📸 Foto</option>
+          <option value="texto">📝 Texto</option>
+          <option value="carrossel">🎠 Carrossel</option>
+        </select>
+      </div>
+      <div class="gen-group">
+        <label>🌐 Plataforma</label>
+        <select id="genPlatform">
+          <option value="instagram">📷 Instagram</option>
+          <option value="facebook">📘 Facebook</option>
+          <option value="whatsapp">💬 WhatsApp</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary mb-12" onclick="generatePost()">⚡ Gerar Template</button>
+    <button class="btn-gold mb-12" onclick="generateRandom()" style="margin-left:8px;">🎲 Sortear Aleatório</button>
+
+    <div class="gen-output">
+      <textarea class="gen-textarea" id="genOutput" placeholder="Clique em 'Gerar Template' para criar seu post..."></textarea>
+      <div class="gen-footer">
+        <span class="char-counter" id="charCounter">0 caracteres</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-primary" onclick="copyGenerated()">📋 Copiar</button>
+          <button class="btn-success" onclick="clearGenerated()">🗑️ Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-hashtags" id="genHashtags" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 4: HASHTAGS STRATEGY
+     ════════════════════════════════════════════ -->
+<div class="section" id="sec-hashtags">
+  <div class="section-panel">
+    <div class="section-title">🏷️ Estratégia de Hashtags <span class="count">ORGANIZADO</span></div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">🔵 Hashtags Primárias (usar SEMPRE)</div>
+      <div class="hash-tags">
+        <span class="hash-tag" onclick="copyTag(this)">#Luciano4090</span>
+        <span class="hash-tag" onclick="copyTag(this)">#VozDaPaulista</span>
+        <span class="hash-tag" onclick="copyTag(this)">#PSB</span>
+        <span class="hash-tag" onclick="copyTag(this)">#DeputadoFederal</span>
+        <span class="hash-tag" onclick="copyTag(this)">#SP</span>
+        <span class="hash-tag" onclick="copyTag(this)">#Vote4090</span>
+        <span class="hash-tag" onclick="copyTag(this)">#LucianoDaLuz</span>
+      </div>
+    </div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">🌳 Pilar: Parques para a Vida</div>
+      <div class="hash-tags">
+        <span class="hash-tag green" onclick="copyTag(this)">#ParquesParaAVida</span>
+        <span class="hash-tag green" onclick="copyTag(this)">#EspaçosVerdes</span>
+        <span class="hash-tag green" onclick="copyTag(this)">#PeriferiaVerde</span>
+        <span class="hash-tag green" onclick="copyTag(this)">#ParquesUrbanos</span>
+        <span class="hash-tag green" onclick="copyTag(this)">#DireitoAoVerde</span>
+        <span class="hash-tag green" onclick="copyTag(this)">#CidadeSaudável</span>
+      </div>
+    </div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">🏗️ Pilar: InfraPeriferia Brasil</div>
+      <div class="hash-tags">
+        <span class="hash-tag orange" onclick="copyTag(this)">#InfraPeriferia</span>
+        <span class="hash-tag orange" onclick="copyTag(this)">#SaneamentoJá</span>
+        <span class="hash-tag orange" onclick="copyTag(this)">#TransportePúblico</span>
+        <span class="hash-tag orange" onclick="copyTag(this)">#InfraBásica</span>
+        <span class="hash-tag orange" onclick="copyTag(this)">#PeriferiaMerece</span>
+        <span class="hash-tag orange" onclick="copyTag(this)">#DireitoÀCidade</span>
+      </div>
+    </div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">🌾 Pilar: Agricultura Regenerativa</div>
+      <div class="hash-tags">
+        <span class="hash-tag gold" onclick="copyTag(this)">#AgriculturaRegenerativa</span>
+        <span class="hash-tag gold" onclick="copyTag(this)">#SegurançaAlimentar</span>
+        <span class="hash-tag gold" onclick="copyTag(this)">#ProduçãoSustentável</span>
+        <span class="hash-tag gold" onclick="copyTag(this)">#CampoSustentável</span>
+        <span class="hash-tag gold" onclick="copyTag(this)">#AlimentoSaudável</span>
+        <span class="hash-tag gold" onclick="copyTag(this)">#SoloVivo</span>
+      </div>
+    </div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">📖 Pilar: Mandato Aberto</div>
+      <div class="hash-tags">
+        <span class="hash-tag" onclick="copyTag(this)">#MandatoAberto</span>
+        <span class="hash-tag" onclick="copyTag(this)">#TransparênciaTotal</span>
+        <span class="hash-tag" onclick="copyTag(this)">#ParticipaçãoCidadã</span>
+        <span class="hash-tag" onclick="copyTag(this)">#PoliticaAberta</span>
+        <span class="hash-tag" onclick="copyTag(this)">#VozDoPovo</span>
+        <span class="hash-tag" onclick="copyTag(this)">#DemocraciaReal</span>
+      </div>
+    </div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">🏛️ Pilar: Obras Abertas / Fiscalização</div>
+      <div class="hash-tags">
+        <span class="hash-tag purple" onclick="copyTag(this)">#ObrasAbertas</span>
+        <span class="hash-tag purple" onclick="copyTag(this)">#FiscalizaçãoPopular</span>
+        <span class="hash-tag purple" onclick="copyTag(this)">#ObraTransparente</span>
+        <span class="hash-tag purple" onclick="copyTag(this)">#DinheiroPúblico</span>
+        <span class="hash-tag purple" onclick="copyTag(this)">#ControleSocial</span>
+        <span class="hash-tag purple" onclick="copyTag(this)">#FimDaCorrupção</span>
+      </div>
+    </div>
+
+    <div class="hash-group">
+      <div class="hash-group-title">🔥 Trending (Atualizar Manualmente)</div>
+      <div class="hash-tags" id="trendingTags">
+        <span class="hash-tag trending" onclick="copyTag(this)">#Eleições2026</span>
+        <span class="hash-tag trending" onclick="copyTag(this)">#VoteSP</span>
+        <span class="hash-tag trending" onclick="copyTag(this)">#BrasilMelhor</span>
+        <span class="hash-tag trending" onclick="copyTag(this)">#MudançaJá</span>
+        <span class="hash-tag trending" onclick="copyTag(this)">#PolíticaÉPraTodos</span>
+      </div>
+    </div>
+
+    <div class="copy-all-bar">
+      <span>📋 Copiar todas as hashtags de um grupo ou todas primárias</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-primary" onclick="copyAllPrimary()">Copiar Primárias</button>
+        <button class="btn-gold" onclick="copyAllHashtags()">Copiar TODAS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 5: CTA LIBRARY
+     ════════════════════════════════════════════ -->
+<div class="section" id="sec-ctas">
+  <div class="section-panel">
+    <div class="section-title">📣 Biblioteca de CTAs <span class="count">CALL TO ACTION</span></div>
+    <p style="font-size:.85em;color:var(--muted);margin-bottom:16px;">CTAs prontos para usar nos seus posts. Clique "Copiar" para usar.</p>
+
+    <div class="cta-grid" id="ctaGrid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 6: WHATSAPP STATUS TEMPLATES
+     ════════════════════════════════════════════ -->
+<div class="section" id="sec-whatsapp">
+  <div class="section-panel">
+    <div class="section-title">💬 Templates para WhatsApp <span class="count">BROADCAST</span></div>
+    <p style="font-size:.85em;color:var(--muted);margin-bottom:16px;">Mensagens pré-formatadas para Status e listas de transmissão. Copie e personalize.</p>
+    <div class="wpp-grid" id="wppGrid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 7: MÉTRICAS DE CONTEÚDO
+     ════════════════════════════════════════════ -->
+<div class="section" id="sec-metricas">
+  <div class="section-panel">
+    <div class="section-title">📊 Métricas de Conteúdo <span class="count">ANÁLISE</span></div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="m-label">Melhor Tipo de Post</div>
+        <div class="m-value" style="color:var(--red);">🎥 Vídeo</div>
+        <div style="font-size:.78em;color:var(--muted);margin-top:4px;">Engajamento médio: 8.2%</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:82%;background:var(--red);"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="m-label">2º Melhor Tipo</div>
+        <div class="m-value" style="color:var(--pink);">🎠 Carrossel</div>
+        <div style="font-size:.78em;color:var(--muted);margin-top:4px;">Engajamento médio: 6.5%</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:65%;background:var(--pink);"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="m-label">Pilar com Mais Alcance</div>
+        <div class="m-value" style="color:var(--green);">🌳 Parques</div>
+        <div style="font-size:.78em;color:var(--muted);margin-top:4px;">Alcance: 12.4K por post</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:78%;background:var(--green);"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="m-label">Pilar com Mais Engajamento</div>
+        <div class="m-value" style="color:var(--blue);">📖 Mandato</div>
+        <div style="font-size:.78em;color:var(--muted);margin-top:4px;">Comentários: 340 por post</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:71%;background:var(--blue);"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="m-label">Melhor Horário</div>
+        <div class="m-value" style="color:var(--gold);">19h</div>
+        <div style="font-size:.78em;color:var(--muted);margin-top:4px;">Pico de atividade dos seguidores</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:90%;background:var(--gold);"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="m-label">Taxa de Conversão (CTA)</div>
+        <div class="m-value" style="color:var(--cyan);">3.4%</div>
+        <div style="font-size:.78em;color:var(--muted);margin-top:4px;">Cliques em link / impressões</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:34%;background:var(--cyan);"></div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <div class="section-title">💡 Recomendações</div>
+      <div style="display:grid;gap:8px;">
+        <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:8px;padding:12px;font-size:.88em;">
+          ✅ <strong>Priorizar vídeos curtos</strong> — Reels e TikTok têm 3x mais alcance que fotos estáticas
+        </div>
+        <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:8px;padding:12px;font-size:.88em;">
+          ⚡ <strong>Postar entre 18h-20h</strong> — Horário de pico da audiência
+        </div>
+        <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:8px;padding:12px;font-size:.88em;">
+          📊 <strong>Aumentar carrosséis</strong> — Segundo melhor formato em engajamento, com alto save rate
+        </div>
+        <div style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:8px;padding:12px;font-size:.88em;">
+          📖 <strong>Explorar Mandato Aberto</strong> — Gera mais comentários e debates, ideal para crescer comunidade
+        </div>
+        <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:8px;padding:12px;font-size:.88em;">
+          🎤 <strong>Lives semanais</strong> — Criar série fixa (ex: "Quinta do Povo") para fidelizar audiência
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-info" style="margin-top:20px;">
+      <div class="icon">📈</div>
+      <p style="font-size:.9em;">Métricas detalhadas serão atualizadas semanalmente pela equipe de comunicação.</p>
+      <p style="font-size:.78em;margin-top:6px;">Última atualização: dados atualizados semanalmente</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Copiado! ✓</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   DATA & TEMPLATES
+   ═══════════════════════════════════════════════════ */
+
+const PILARES = [
+  {
+    name: 'Parques para a Vida',
+    icon: '🌳',
+    color: 'green',
+    cls: 'pilar-1',
+    desc: 'Espaços verdes acessíveis em periferias. Parques urbanos para saúde, lazer e qualidade de vida nas comunidades que mais precisam.',
+    talking: [
+      'Periferias têm 5x menos área verde que bairros nobres',
+      'Parques urbanos reduzem criminalidade em até 30%',
+      'Cada R$1 em parque gera R$4 em saúde pública',
+      'Criança que brinca ao ar livre aprende melhor'
+    ],
+    hashtags: ['#ParquesParaAVida', '#EspaçosVerdes', '#PeriferiaVerde', '#DireitoAoVerde'],
+    example: '"Na quebrada da Zona Leste, as crianças brincam no asfalto quente. Enquanto isso, os bairros nobres têm parques em cada esquina. Vou mudar isso. Cada periferia merece um parque. 🌳 #ParquesParaAVida #Luciano4090"'
+  },
+  {
+    name: 'InfraPeriferia Brasil',
+    icon: '🏗️',
+    color: 'orange',
+    cls: 'pilar-2',
+    desc: 'Saneamento básico, transporte público de qualidade e infraestrutura digna para as periferias de São Paulo e do Brasil.',
+    talking: [
+      '35 milhões de brasileiros sem água tratada',
+      'Periferia de SP gasta 3h por dia em transporte',
+      'Saneamento previne 65% das internações infantis',
+      'Infraestrutura básica é direito, não favor'
+    ],
+    hashtags: ['#InfraPeriferia', '#SaneamentoJá', '#TransportePúblico', '#PeriferiaMerece'],
+    example: '"Você sabia que milhões de brasileiros ainda não têm esgoto tratado? Em 2026, isso é inaceitável. InfraPeriferia Brasil é meu compromisso: levar dignidade básica para quem sempre foi esquecido. 🏗️ #InfraPeriferia #Luciano4090"'
+  },
+  {
+    name: 'Agricultura Regenerativa',
+    icon: '🌾',
+    color: 'gold',
+    cls: 'pilar-3',
+    desc: 'Produção sustentável que regenera o solo, garante segurança alimentar e valoriza o pequeno agricultor.',
+    talking: [
+      'Solo degradado = menos comida e mais pobreza',
+      'Agricultura regenerativa sequestra carbono',
+      'Pequeno agricultor alimenta 70% da mesa brasileira',
+      'Transição sustentável gera emprego no campo'
+    ],
+    hashtags: ['#AgriculturaRegenerativa', '#SegurançaAlimentar', '#ProduçãoSustentável', '#SoloVivo'],
+    example: '"O futuro do Brasil passa pelo solo. Agricultura regenerativa não é modismo — é a saída para alimentar o país sem destruir o planeta. Vamos valorizar quem planta e proteger quem come. 🌾 #AgriculturaRegenerativa #Luciano4090"'
+  },
+  {
+    name: 'Mandato Aberto',
+    icon: '📖',
+    color: 'blue',
+    cls: 'pilar-4',
+    desc: 'Transparência total e participação cidadã. Cada gasto publicado, cada voto explicado, cada decisão compartilhada.',
+    talking: [
+      'Todos os gastos do mandato publicados em tempo real',
+      'Lives semanais para prestar contas',
+      'Votações explicadas em linguagem simples',
+      'Consultas populares antes de votar projetos importantes'
+    ],
+    hashtags: ['#MandatoAberto', '#TransparênciaTotal', '#ParticipaçãoCidadã', '#DemocraciaReal'],
+    example: '"Político que esconde gasto tem medo de quê? Meu mandato vai ser uma casa de vidro: cada centavo publicado, cada voto explicado. Isso é #MandatoAberto. Você fiscaliza, eu trabalho. 📖 #Luciano4090"'
+  },
+  {
+    name: 'Obras Abertas / Fiscalização',
+    icon: '🏛️',
+    color: 'purple',
+    cls: 'pilar-5',
+    desc: 'Plataforma digital de fiscalização de obras públicas. Cidadão acompanha cada tijolo, cada real gasto.',
+    talking: [
+      'Brasil perde R$200 bi/ano com obras superfaturadas',
+      'Plataforma aberta para qualquer cidadão fiscalizar',
+      'Fotos, vídeos e documentos de cada obra pública',
+      'Denúncia fácil e protegida'
+    ],
+    hashtags: ['#ObrasAbertas', '#FiscalizaçãoPopular', '#DinheiroPúblico', '#ControleSocial'],
+    example: '"Obra parada, obra superfaturada, obra fantasma. Chega! Vou criar uma plataforma onde VOCÊ acompanha cada obra pública — cada tijolo, cada real. Se o dinheiro é seu, a fiscalização também é. 🏛️ #ObrasAbertas #Luciano4090"'
+  }
+];
+
+const CALENDAR_PLANS = [
+  { // Monday
+    day: 'Segunda', topics: ['Começar semana com motivação + pilar da semana', 'Bastidores da campanha'],
+    time: '9h / 18h', types: ['texto', 'foto'], pilar: 0
+  },
+  { // Tuesday
+    day: 'Terça', topics: ['Dados e estatísticas sobre problema social', 'Carrossel educativo'],
+    time: '11h / 19h', types: ['dados', 'carrossel'], pilar: 1
+  },
+  { // Wednesday
+    day: 'Quarta', topics: ['Depoimento de morador / apoiador', 'Antes e depois (proposta)'],
+    time: '12h / 18h', types: ['video', 'foto'], pilar: 2
+  },
+  { // Thursday
+    day: 'Quinta', topics: ['🎤 LIVE "Quinta do Povo"', 'Responder perguntas / debate'],
+    time: '19h (Live)', types: ['live', 'texto'], pilar: 3
+  },
+  { // Friday
+    day: 'Sexta', topics: ['Fiscalização da semana / denúncia', 'Resultado de ação na rua'],
+    time: '10h / 17h', types: ['video', 'dados'], pilar: 4
+  },
+  { // Saturday
+    day: 'Sábado', topics: ['Ação na comunidade (presencial)', 'Fotos do dia + stories'],
+    time: '10h / 16h', types: ['foto', 'video'], pilar: 0
+  },
+  { // Sunday
+    day: 'Domingo', topics: ['Resumo da semana', 'Mensagem pessoal / reflexão'],
+    time: '11h / 19h', types: ['carrossel', 'texto'], pilar: 3
+  }
+];
+
+const TYPE_MAP = {
+  video: { label: '🎥 Vídeo', cls: 'badge-video' },
+  foto: { label: '📸 Foto', cls: 'badge-foto' },
+  texto: { label: '📝 Texto', cls: 'badge-texto' },
+  live: { label: '🎤 Live', cls: 'badge-live' },
+  dados: { label: '📊 Dados', cls: 'badge-dados' },
+  carrossel: { label: '🎠 Carrossel', cls: 'badge-carrossel' }
+};
+
+// 30+ post templates: [pilar][platform][type]
+const TEMPLATES = {
+  0: { // Parques para a Vida
+    instagram: {
+      video: "🌳 Você sabia que a periferia de SP tem 5x MENOS área verde que os bairros nobres?\n\nNesse vídeo eu mostro como vamos mudar isso.\n\nParques para a Vida é minha proposta para levar espaços verdes acessíveis para TODAS as comunidades.\n\n🌿 Saúde\n🌿 Lazer\n🌿 Segurança\n🌿 Qualidade de vida\n\nCompartilhe com quem merece um parque perto de casa!\n\n#ParquesParaAVida #Luciano4090 #VozDaPaulista #EspaçosVerdes #DeputadoFederal",
+      foto: "📸 Olha essa imagem: de um lado, parques lindos nos bairros nobres. Do outro, asfalto quente nas periferias.\n\nIsso precisa mudar. E vai mudar.\n\n🌳 Parques para a Vida — espaços verdes acessíveis em cada periferia de SP.\n\nVocê merece verde perto de casa. ✊\n\n#ParquesParaAVida #Luciano4090 #PeriferiaVerde #DireitoAoVerde",
+      texto: "Criança que brinca ao ar livre aprende melhor, tem mais saúde e é mais feliz.\n\nMas na periferia, onde estão os espaços para brincar?\n\nMinha proposta: Parques para a Vida 🌳\n→ Parques urbanos em cada comunidade periférica\n→ Áreas de lazer, esporte e convivência\n→ Investimento em saúde e segurança\n\nCada R$1 investido em parque gera R$4 em economia na saúde pública.\n\nVamos juntos? Vote 4090!\n\n#ParquesParaAVida #Luciano4090 #VozDaPaulista",
+      carrossel: "🎠 SLIDE 1: \"A periferia merece verde\"\nSLIDE 2: Dados — 5x menos área verde nos bairros populares\nSLIDE 3: Benefícios — Saúde, segurança, bem-estar\nSLIDE 4: A proposta — Parques para a Vida\nSLIDE 5: Como funciona — Parques urbanos acessíveis\nSLIDE 6: CTA — Siga @lucianodalu e vote 4090\n\n#ParquesParaAVida #Luciano4090 #EspaçosVerdes #PeriferiaVerde"
+    },
+    facebook: {
+      video: "🌳 PARQUES PARA A VIDA\n\nAssista esse vídeo e entenda por que levar espaços verdes para as periferias pode transformar a vida de milhões de famílias.\n\nA periferia de São Paulo tem 5 vezes menos área verde que os bairros nobres. Isso é injustiça ambiental.\n\nMinha proposta como Deputado Federal:\n✅ Parques urbanos em cada comunidade periférica\n✅ Investimento federal em áreas de lazer\n✅ Parceria com prefeituras para manutenção\n\nCompartilhe esse vídeo! 🌿\n\n#ParquesParaAVida #Luciano4090 #DeputadoFederal",
+      foto: "A diferença entre um bairro nobre e a periferia? VERDE.\n\nEnquanto uns têm parques em cada esquina, outros só conhecem asfalto e concreto.\n\nIsso vai mudar. 🌳 Parques para a Vida é meu compromisso.\n\n#ParquesParaAVida #Luciano4090",
+      texto: "PARQUES PARA A VIDA 🌳\n\nSabia que cada R$1 investido em parques urbanos economiza R$4 em saúde pública?\n\nParques reduzem criminalidade em até 30%, melhoram a saúde mental e criam espaços de convivência.\n\nMas as periferias, que mais precisam, são as que menos têm.\n\nComo Deputado Federal, vou lutar para mudar essa realidade.\n\nApoie essa causa! Compartilhe e vote 4090.\n\n#ParquesParaAVida #Luciano4090 #VozDaPaulista",
+      carrossel: "🌳 POR QUE PERIFERIAS PRECISAM DE PARQUES?\n\n1️⃣ Saúde: menos doenças respiratórias e mentais\n2️⃣ Segurança: redução de até 30% na criminalidade\n3️⃣ Economia: R$1 em parque = R$4 em saúde\n4️⃣ Educação: crianças aprendem melhor com lazer\n5️⃣ Comunidade: espaço de encontro e união\n\nParques para a Vida — minha proposta para SP.\nVote 4090! 🌿\n\n#ParquesParaAVida #Luciano4090"
+    },
+    whatsapp: {
+      video: "🌳 *PARQUES PARA A VIDA*\n\nOlá! Gravei um vídeo curto mostrando por que precisamos de parques nas periferias.\n\n📊 A periferia de SP tem 5x menos verde\n💰 Cada R$1 em parque = R$4 em saúde\n👶 Crianças precisam de espaço para brincar\n\n*Assista e compartilhe com seus grupos!*\n\n✊ Vote 4090 — Luciano da Luz\n🌐 vozdapaulista.com",
+      foto: "🌳 *Olha essa diferença!*\n\nBairro nobre: parque lindo, gramado, playground.\nPeriferia: asfalto, calor, nenhuma árvore.\n\n*Parques para a Vida* é minha proposta para mudar isso.\n\n📌 Compartilhe nos seus grupos!\n✊ Vote 4090 — Luciano da Luz",
+      texto: "🌳 *PARQUES PARA A VIDA*\n\nVocê sabia que a periferia tem 5x menos área verde?\n\nMinha proposta como Deputado Federal:\n✅ Parques urbanos em cada comunidade\n✅ Áreas de lazer e esporte\n✅ Investimento em saúde e segurança\n\nJuntos vamos levar verde para a periferia! 🌿\n\n*Vote 4090 — Luciano da Luz*\n🌐 vozdapaulista.com\n\n_Encaminhe para 5 amigos!_ 📲",
+      carrossel: "🌳 *5 MOTIVOS PARA APOIAR PARQUES NA PERIFERIA:*\n\n1️⃣ Saúde — Menos doenças, mais bem-estar\n2️⃣ Segurança — Parques reduzem criminalidade\n3️⃣ Economia — R$1 investido = R$4 em retorno\n4️⃣ Educação — Crianças aprendem melhor\n5️⃣ Comunidade — Lugar de encontro\n\n*Parques para a Vida — Vote 4090!*\n🌐 vozdapaulista.com"
+    }
+  },
+  1: { // InfraPeriferia Brasil
+    instagram: {
+      video: "🏗️ 35 MILHÕES de brasileiros sem água tratada.\n\nIsso não é número — são pessoas, famílias, crianças.\n\nAssista o vídeo e conheça o InfraPeriferia Brasil: minha proposta para levar infraestrutura básica para quem sempre foi esquecido.\n\n💧 Saneamento\n🚌 Transporte\n🏠 Infraestrutura\n\nCompartilhe se você acredita que periferia merece dignidade!\n\n#InfraPeriferia #Luciano4090 #SaneamentoJá #VozDaPaulista",
+      foto: "📸 A realidade que a TV não mostra:\n\n→ Esgoto a céu aberto\n→ 3 horas no ônibus por dia\n→ Ruas sem asfalto, sem iluminação\n\nIsso é o dia a dia de milhões de brasileiros.\n\n🏗️ InfraPeriferia Brasil — dignidade básica para todos.\n\nVote 4090! ✊\n\n#InfraPeriferia #Luciano4090 #PeriferiaMerece",
+      texto: "Periferia de SP: 3 horas no ônibus. Todo dia. Ida e volta.\n\nEnquanto isso, político promete metrô e entrega nada.\n\n🏗️ InfraPeriferia Brasil:\n→ Saneamento básico universal\n→ Transporte público de qualidade\n→ Infraestrutura digna nas periferias\n\nNão é favor. É DIREITO.\n\nVote 4090 — Luciano da Luz\n\n#InfraPeriferia #Luciano4090 #TransportePúblico",
+      carrossel: "🏗️ INFRAPERIFERIA BRASIL\n\nSLIDE 1: \"Periferia merece infraestrutura\"\nSLIDE 2: 35 milhões sem água tratada\nSLIDE 3: 3h de transporte por dia\nSLIDE 4: Saneamento previne 65% das internações infantis\nSLIDE 5: A proposta completa\nSLIDE 6: Vote 4090\n\n#InfraPeriferia #Luciano4090 #SaneamentoJá"
+    },
+    facebook: {
+      video: "🏗️ INFRAPERIFERIA BRASIL\n\nNeste vídeo mostro a realidade que muitos políticos fingem não ver: periferias sem saneamento, sem transporte digno, sem infraestrutura básica.\n\n35 milhões de brasileiros sem água tratada. Em 2026.\n\nMinha proposta:\n✅ Saneamento universal\n✅ Transporte público acessível\n✅ Infraestrutura digna\n\nCompartilhe para que mais pessoas conheçam!\n\n#InfraPeriferia #Luciano4090",
+      foto: "A periferia pede socorro — e a resposta tem que ser INFRAESTRUTURA.\n\nSaneamento. Transporte. Iluminação. Asfalto.\n\nNão é luxo. É o mínimo.\n\n🏗️ InfraPeriferia Brasil — Vote 4090.\n\n#InfraPeriferia #Luciano4090",
+      texto: "🏗️ VOCÊ SABIA?\n\n• 35 milhões de brasileiros não têm água tratada\n• Saneamento previne 65% das internações infantis\n• Periferia de SP gasta 3h/dia em transporte\n\nInfraPeriferia Brasil é a minha resposta:\n→ Saneamento básico como prioridade\n→ Transporte público de qualidade\n→ Infraestrutura que muda vidas\n\nVote 4090 — Luciano da Luz 🏗️\n\n#InfraPeriferia #Luciano4090 #DeputadoFederal",
+      carrossel: "🏗️ A VERDADE SOBRE A PERIFERIA\n\n1️⃣ 35 milhões sem água tratada\n2️⃣ 100 milhões sem esgoto\n3️⃣ 3h de transporte por dia\n4️⃣ Ruas sem asfalto\n5️⃣ A solução: InfraPeriferia Brasil\n\nVote 4090 — Luciano da Luz\n\n#InfraPeriferia #Luciano4090"
+    },
+    whatsapp: {
+      video: "🏗️ *INFRAPERIFERIA BRASIL*\n\nAssista esse vídeo rápido sobre a realidade das periferias:\n\n💧 35 milhões sem água\n🚌 3h de transporte por dia\n🏠 Ruas sem asfalto\n\n*Minha proposta: infraestrutura digna para todos!*\n\n✊ Vote 4090 — Luciano da Luz\n🌐 vozdapaulista.com",
+      foto: "🏗️ *A periferia não pode mais esperar!*\n\nEssa foto mostra a realidade de milhões de brasileiros: sem saneamento, sem transporte, sem infraestrutura.\n\n*InfraPeriferia Brasil* vai mudar isso.\n\n📌 Encaminhe para seus contatos!\n✊ Vote 4090",
+      texto: "🏗️ *INFRAPERIFERIA BRASIL*\n\nSabia que:\n❌ 35 milhões sem água tratada\n❌ 3h de transporte por dia\n❌ Ruas sem asfalto nas periferias\n\n*Minha proposta:*\n✅ Saneamento universal\n✅ Transporte público digno\n✅ Infraestrutura básica\n\n*Vote 4090 — Luciano da Luz*\n🌐 vozdapaulista.com\n\n_Compartilhe!_ 📲",
+      carrossel: "🏗️ *POR QUE INFRAPERIFERIA?*\n\n1️⃣ Água tratada para todos\n2️⃣ Esgoto tratado = saúde\n3️⃣ Transporte que funciona\n4️⃣ Ruas com asfalto\n5️⃣ Iluminação pública\n\n*Periferia merece dignidade.*\n*Vote 4090!*"
+    }
+  },
+  2: { // Agricultura Regenerativa
+    instagram: {
+      video: "🌾 O solo do Brasil está morrendo. E com ele, nossa comida.\n\nAssista e entenda como a Agricultura Regenerativa pode ser a salvação da nossa segurança alimentar.\n\n🌱 Regenera o solo\n🌍 Sequestra carbono\n👨‍🌾 Valoriza o pequeno agricultor\n🍽️ Comida saudável na mesa\n\n#AgriculturaRegenerativa #Luciano4090 #SegurançaAlimentar #VozDaPaulista",
+      foto: "📸 De um lado: solo morto, monocultura, veneno.\nDo outro: solo vivo, diversidade, comida de verdade.\n\n🌾 Agricultura Regenerativa é o futuro. E o futuro começa agora.\n\nVote 4090!\n\n#AgriculturaRegenerativa #Luciano4090 #SoloVivo",
+      texto: "O pequeno agricultor alimenta 70% da mesa brasileira.\n\nMas quem cuida dele?\n\n🌾 Agricultura Regenerativa:\n→ Produção que regenera o solo\n→ Segurança alimentar garantida\n→ Valorização do agricultor familiar\n→ Menos veneno, mais saúde\n\nComo Deputado Federal, vou lutar por quem planta.\n\nVote 4090 — Luciano da Luz 🌱\n\n#AgriculturaRegenerativa #Luciano4090 #ProduçãoSustentável",
+      carrossel: "🌾 AGRICULTURA REGENERATIVA\n\nSLIDE 1: \"O futuro passa pelo solo\"\nSLIDE 2: Solo degradado = fome\nSLIDE 3: 70% da comida vem do pequeno agricultor\nSLIDE 4: Regenerar > Destruir\nSLIDE 5: A proposta completa\nSLIDE 6: Vote 4090\n\n#AgriculturaRegenerativa #Luciano4090 #SegurançaAlimentar"
+    },
+    facebook: {
+      video: "🌾 AGRICULTURA REGENERATIVA\n\nO futuro do Brasil passa pelo solo. Assista este vídeo e entenda por que precisamos mudar a forma como produzimos alimentos.\n\nFatos:\n• Solo degradado = menos comida\n• Pequeno agricultor alimenta 70% do país\n• Agricultura regenerativa sequestra carbono\n\nVote 4090 — Luciano da Luz\n\n#AgriculturaRegenerativa #Luciano4090",
+      foto: "Solo vivo = comida na mesa. Solo morto = fome.\n\nÉ simples assim. E a Agricultura Regenerativa é a resposta.\n\n🌾 Vote 4090!\n\n#AgriculturaRegenerativa #Luciano4090",
+      texto: "🌾 AGRICULTURA REGENERATIVA\n\n70% da comida brasileira vem do pequeno agricultor. Mas o solo está degradado, o apoio é mínimo e o veneno domina.\n\nMinha proposta:\n✅ Regeneração do solo\n✅ Apoio ao agricultor familiar\n✅ Segurança alimentar\n✅ Produção sustentável\n\nVote 4090 — Luciano da Luz 🌱\n\n#AgriculturaRegenerativa #Luciano4090 #DeputadoFederal",
+      carrossel: "🌾 POR QUE AGRICULTURA REGENERATIVA?\n\n1️⃣ Regenera o solo degradado\n2️⃣ Sequestra carbono da atmosfera\n3️⃣ Produz alimento saudável\n4️⃣ Valoriza o pequeno agricultor\n5️⃣ Garante segurança alimentar\n\nVote 4090!\n\n#AgriculturaRegenerativa #Luciano4090"
+    },
+    whatsapp: {
+      video: "🌾 *AGRICULTURA REGENERATIVA*\n\nAssista esse vídeo sobre o futuro da alimentação brasileira:\n\n🌱 Solo vivo = comida na mesa\n👨‍🌾 Pequeno agricultor alimenta 70% do Brasil\n🌍 Produção que regenera o planeta\n\n*Compartilhe com quem se importa com comida de verdade!*\n\n✊ Vote 4090\n🌐 vozdapaulista.com",
+      foto: "🌾 *Solo vivo vs Solo morto*\n\nEssa imagem diz tudo. Precisamos cuidar de quem cuida da nossa comida.\n\n*Agricultura Regenerativa* — minha proposta para o campo.\n\n📌 Encaminhe!\n✊ Vote 4090",
+      texto: "🌾 *AGRICULTURA REGENERATIVA*\n\nVocê sabia que:\n🌱 70% da comida vem do pequeno agricultor\n💀 Solo degradado = menos comida\n🌍 Regenerar o solo = futuro do Brasil\n\n*Minha proposta:*\n✅ Apoio ao agricultor familiar\n✅ Produção sustentável\n✅ Segurança alimentar\n\n*Vote 4090 — Luciano da Luz*\n🌐 vozdapaulista.com",
+      carrossel: "🌾 *5 FATOS SOBRE AGRICULTURA REGENERATIVA:*\n\n1️⃣ Regenera solo degradado\n2️⃣ Sequestra carbono\n3️⃣ Menos veneno na comida\n4️⃣ Valoriza o pequeno agricultor\n5️⃣ Garante comida para todos\n\n*O futuro é regenerativo!*\n*Vote 4090!*"
+    }
+  },
+  3: { // Mandato Aberto
+    instagram: {
+      video: "📖 Político que esconde gasto tem medo de quê?\n\nMeu mandato vai ser uma CASA DE VIDRO.\n\nAssista e entenda o Mandato Aberto:\n\n🔍 Cada centavo publicado\n📢 Cada voto explicado\n🗳️ Consultas populares\n📺 Lives semanais\n\nTransparência não é favor. É obrigação.\n\nVote 4090!\n\n#MandatoAberto #Luciano4090 #TransparênciaTotal #VozDaPaulista",
+      foto: "📸 Casa de vidro: é assim que vai ser meu mandato.\n\n🔍 Gastos publicados em tempo real\n📢 Cada voto explicado\n🗳️ Você participa das decisões\n\nTransparência TOTAL. Sem desculpas.\n\n#MandatoAberto #Luciano4090 #ParticipaçãoCidadã",
+      texto: "Você sabe o que seu deputado fez essa semana?\n\nProvavelmente não. Porque ele não te conta.\n\n📖 Mandato Aberto é diferente:\n→ Todos os gastos publicados em tempo real\n→ Lives semanais prestando contas\n→ Votações explicadas em linguagem simples\n→ Consultas populares antes de votar\n\nVocê fiscaliza. Eu trabalho.\n\nVote 4090 — Luciano da Luz\n\n#MandatoAberto #Luciano4090 #DemocraciaReal",
+      carrossel: "📖 MANDATO ABERTO\n\nSLIDE 1: \"Transparência é obrigação\"\nSLIDE 2: Gastos em tempo real\nSLIDE 3: Lives semanais de prestação de contas\nSLIDE 4: Votações explicadas\nSLIDE 5: Consultas populares\nSLIDE 6: Vote 4090\n\n#MandatoAberto #Luciano4090 #TransparênciaTotal"
+    },
+    facebook: {
+      video: "📖 MANDATO ABERTO\n\nAssista e entenda como vai funcionar meu mandato como Deputado Federal: transparência total, prestação de contas constante e participação cidadã.\n\nSem segredo. Sem esconderijo.\n\n✅ Gastos públicos em tempo real\n✅ Lives semanais\n✅ Votações explicadas\n✅ Consultas ao povo\n\nVote 4090!\n\n#MandatoAberto #Luciano4090",
+      foto: "Transparência é OBRIGAÇÃO de todo político.\n\nMeu mandato vai ser aberto: gastos publicados, votos explicados, decisões compartilhadas.\n\n📖 #MandatoAberto — Vote 4090!\n\n#Luciano4090 #TransparênciaTotal",
+      texto: "📖 MANDATO ABERTO\n\nO que eu prometo como Deputado Federal:\n\n1️⃣ Cada centavo publicado em tempo real\n2️⃣ Lives semanais prestando contas\n3️⃣ Votações explicadas em linguagem simples\n4️⃣ Consultas populares antes de decisões\n\nVocê merece saber o que seu representante faz.\n\nVote 4090 — Luciano da Luz 📖\n\n#MandatoAberto #Luciano4090 #DeputadoFederal",
+      carrossel: "📖 O QUE É MANDATO ABERTO?\n\n1️⃣ Gastos publicados em tempo real\n2️⃣ Lives semanais\n3️⃣ Votações explicadas\n4️⃣ Consultas populares\n5️⃣ Denúncia facilitada\n\nTransparência total!\nVote 4090!\n\n#MandatoAberto #Luciano4090"
+    },
+    whatsapp: {
+      video: "📖 *MANDATO ABERTO*\n\nAssista esse vídeo rápido sobre como vai funcionar meu mandato:\n\n🔍 Gastos publicados em tempo real\n📺 Lives semanais\n📢 Votações explicadas\n🗳️ Consultas ao povo\n\n*Transparência é obrigação!*\n\n✊ Vote 4090\n🌐 vozdapaulista.com",
+      foto: "📖 *Mandato de portas abertas!*\n\nMeu compromisso: transparência total. Cada real publicado, cada voto explicado.\n\n*Você fiscaliza, eu trabalho.*\n\n📌 Encaminhe!\n✊ Vote 4090",
+      texto: "📖 *MANDATO ABERTO*\n\nSeu deputado te conta o que faz?\n\nO meu mandato vai ser assim:\n✅ Gastos publicados em tempo real\n✅ Lives semanais de prestação de contas\n✅ Cada voto explicado\n✅ Consultas populares\n\n*Você merece saber!*\n\n*Vote 4090 — Luciano da Luz*\n🌐 vozdapaulista.com",
+      carrossel: "📖 *MANDATO ABERTO — O QUE MUDA:*\n\n1️⃣ Você sabe cada gasto\n2️⃣ Você entende cada voto\n3️⃣ Você participa das decisões\n4️⃣ Você cobra em tempo real\n5️⃣ Você é o FISCAL\n\n*Transparência de verdade.*\n*Vote 4090!*"
+    }
+  },
+  4: { // Obras Abertas
+    instagram: {
+      video: "🏛️ O Brasil perde R$200 BILHÕES por ano com obras superfaturadas.\n\nIsso é SEU dinheiro.\n\nAssista e conheça Obras Abertas: uma plataforma digital onde VOCÊ fiscaliza cada obra pública.\n\n📸 Fotos em tempo real\n📊 Custos abertos\n🚨 Denúncia fácil\n📱 No seu celular\n\n#ObrasAbertas #Luciano4090 #FiscalizaçãoPopular #VozDaPaulista",
+      foto: "📸 Obra parada. Obra superfaturada. Obra fantasma.\n\nChega.\n\n🏛️ Obras Abertas: plataforma onde você acompanha cada obra — cada tijolo, cada real.\n\nSe o dinheiro é SEU, a fiscalização também é.\n\n#ObrasAbertas #Luciano4090 #DinheiroPúblico",
+      texto: "R$200 bilhões por ano desperdiçados em obras públicas.\n\nSabe quem paga? VOCÊ.\n\n🏛️ Obras Abertas — minha proposta:\n→ Plataforma digital de fiscalização\n→ Fotos, vídeos e documentos de cada obra\n→ Custos abertos para qualquer cidadão\n→ Denúncia fácil e protegida\n\nSeu dinheiro. Sua fiscalização.\n\nVote 4090 — Luciano da Luz\n\n#ObrasAbertas #Luciano4090 #ControleSocial",
+      carrossel: "🏛️ OBRAS ABERTAS\n\nSLIDE 1: \"R$200 bi perdidos em obras\"\nSLIDE 2: O problema — superfaturamento, atraso, fantasma\nSLIDE 3: A solução — Plataforma digital aberta\nSLIDE 4: Como funciona — Fotos, custos, denúncia\nSLIDE 5: Impacto — Cada cidadão é fiscal\nSLIDE 6: Vote 4090\n\n#ObrasAbertas #Luciano4090 #FiscalizaçãoPopular"
+    },
+    facebook: {
+      video: "🏛️ OBRAS ABERTAS\n\nR$200 bilhões desperdiçados por ano em obras públicas. Isso tem que acabar.\n\nAssista e conheça a plataforma Obras Abertas: fiscalização popular de verdade.\n\n✅ Acompanhe cada obra em tempo real\n✅ Veja fotos, custos e cronograma\n✅ Denuncie irregularidades\n✅ Tudo no seu celular\n\nVote 4090!\n\n#ObrasAbertas #Luciano4090",
+      foto: "Obra parada há anos. Dinheiro sumiu. Ninguém explica.\n\nIsso vai acabar.\n\n🏛️ Obras Abertas — fiscalização popular de verdade.\n\n#ObrasAbertas #Luciano4090",
+      texto: "🏛️ OBRAS ABERTAS\n\nR$200 bilhões. É quanto o Brasil perde POR ANO com obras superfaturadas e fantasma.\n\nMinha proposta:\n→ Plataforma digital aberta\n→ Cada obra com foto, custo e cronograma\n→ Denúncia fácil e protegida\n→ Cidadão é o fiscal\n\nSeu dinheiro merece respeito.\n\nVote 4090 — Luciano da Luz 🏛️\n\n#ObrasAbertas #Luciano4090 #DeputadoFederal",
+      carrossel: "🏛️ POR QUE OBRAS ABERTAS?\n\n1️⃣ R$200 bi desperdiçados/ano\n2️⃣ Obras fantasma, superfaturadas, paradas\n3️⃣ Ninguém fiscaliza de verdade\n4️⃣ A solução: plataforma digital\n5️⃣ Você como fiscal\n\nChega de desperdício!\nVote 4090!\n\n#ObrasAbertas #Luciano4090"
+    },
+    whatsapp: {
+      video: "🏛️ *OBRAS ABERTAS*\n\nAssista esse vídeo sobre como vamos acabar com a roubalheira nas obras públicas:\n\n💰 R$200 bi desperdiçados por ano\n📸 Plataforma de fiscalização aberta\n🚨 Denúncia fácil\n📱 No seu celular\n\n*Seu dinheiro, sua fiscalização!*\n\n✊ Vote 4090\n🌐 vozdapaulista.com",
+      foto: "🏛️ *Chega de obra fantasma!*\n\nPlataforma Obras Abertas: você acompanha cada obra, cada real.\n\n📸 Fotos em tempo real\n📊 Custos abertos\n🚨 Denúncia protegida\n\n📌 Compartilhe!\n✊ Vote 4090",
+      texto: "🏛️ *OBRAS ABERTAS*\n\nR$200 bi por ano perdidos em obras públicas.\n\n*Minha proposta:*\n✅ Plataforma digital de fiscalização\n✅ Fotos e custos de cada obra\n✅ Denúncia fácil e protegida\n✅ Cidadão é o fiscal\n\n*Seu dinheiro merece respeito!*\n\n*Vote 4090 — Luciano da Luz*\n🌐 vozdapaulista.com",
+      carrossel: "🏛️ *OBRAS ABERTAS — COMO FUNCIONA:*\n\n1️⃣ Plataforma digital aberta\n2️⃣ Cada obra com fotos\n3️⃣ Custos publicados\n4️⃣ Cronograma atualizado\n5️⃣ Denúncia em 1 clique\n\n*O povo fiscaliza, o político trabalha.*\n*Vote 4090!*"
+    }
+  }
+};
+
+const CTAS = [
+  { text: '👉 Siga @lucianodalu para acompanhar a campanha!', category: 'Seguir' },
+  { text: '💬 Entre no grupo de WhatsApp da campanha: [link do grupo]', category: 'WhatsApp' },
+  { text: '🌐 Visite vozdapaulista.com e conheça as propostas completas', category: 'Site' },
+  { text: '🗳️ Vote 4090 para Deputado Federal — Luciano da Luz!', category: 'Voto' },
+  { text: '📲 Compartilhe com quem quer mudança de verdade!', category: 'Compartilhar' },
+  { text: '💬 Comente se você concorda! Sua voz importa.', category: 'Engajamento' },
+  { text: '🔔 Ative as notificações para não perder nada!', category: 'Seguir' },
+  { text: '📌 Salve esse post para consultar depois!', category: 'Engajamento' },
+  { text: '👥 Marque 3 amigos que precisam ver isso!', category: 'Compartilhar' },
+  { text: '📩 Encaminhe para 5 contatos no WhatsApp!', category: 'WhatsApp' },
+  { text: '🗓️ Quinta às 19h tem Live — "Quinta do Povo" — Esteja lá!', category: 'Evento' },
+  { text: '✊ 4090 é o número da mudança. Grave e compartilhe!', category: 'Voto' },
+  { text: '📋 Acesse vozdapaulista.com/propostas e conheça cada projeto', category: 'Site' },
+  { text: '🎥 Assista até o final e compartilhe com quem precisa ouvir isso!', category: 'Engajamento' },
+  { text: '🤝 Quer ser voluntário? Envie DM agora!', category: 'Voluntário' },
+  { text: '📊 Vote na enquete nos stories: qual proposta mais te representa?', category: 'Engajamento' }
+];
+
+const WPP_TEMPLATES = [
+  {
+    title: '📅 Atualização Semanal',
+    icon: '📅',
+    body: `🗳️ *CAMPANHA 4090 — SEMANA [DATA]*
+
+Olá! Aqui é o Luciano da Luz.
+
+📌 *Destaques da semana:*
+
+1️⃣ [Ação/evento realizado]
+2️⃣ [Proposta apresentada]
+3️⃣ [Resultado/conquista]
+
+📊 *Números:*
+• [X] novos apoiadores
+• [X] comunidades visitadas
+• [X] propostas discutidas
+
+🎯 *Próxima semana:*
+• [Evento planejado]
+• [Ação na comunidade]
+• Live quinta às 19h
+
+*Juntos somos mais fortes! ✊*
+Vote 4090 — Luciano da Luz
+🌐 vozdapaulista.com`
+  },
+  {
+    title: '🎤 Convite para Evento',
+    icon: '🎤',
+    body: `🎉 *CONVITE ESPECIAL*
+
+📅 *[NOME DO EVENTO]*
+🗓️ Data: [dia/mês], [dia da semana]
+⏰ Horário: [horário]
+📍 Local: [endereço completo]
+
+🎯 *O que vai rolar:*
+• [Atividade 1]
+• [Atividade 2]
+• [Atividade 3]
+
+🆓 *Entrada gratuita!*
+
+Traga sua família, seus amigos, seus vizinhos!
+
+📲 Confirme presença respondendo ✅
+
+*Luciano da Luz — 4090*
+🌐 vozdapaulista.com`
+  },
+  {
+    title: '🗳️ Pedido de Voto',
+    icon: '🗳️',
+    body: `🗳️ *VOTE 4090 — LUCIANO DA LUZ*
+
+Olá! Faltam poucos dias para a eleição e preciso do seu voto.
+
+🎯 *Por que 4090?*
+🌳 Parques para a Vida
+🏗️ InfraPeriferia Brasil
+🌾 Agricultura Regenerativa
+📖 Mandato Aberto
+🏛️ Obras Abertas
+
+*Como votar:*
+1️⃣ Digite *4090* na urna
+2️⃣ Confira o nome: LUCIANO DA LUZ
+3️⃣ Aperte CONFIRMA
+
+📲 *Compartilhe essa mensagem com 10 amigos!*
+
+Cada voto conta. O seu FAZ a diferença. ✊
+
+*4090 — Deputado Federal — SP — PSB*
+🌐 vozdapaulista.com`
+  },
+  {
+    title: '🙏 Agradecimento',
+    icon: '🙏',
+    body: `🙏 *OBRIGADO, DE CORAÇÃO!*
+
+Quero agradecer a cada pessoa que:
+✅ Compartilhou uma mensagem
+✅ Participou de um evento
+✅ Conversou com um vizinho
+✅ Acreditou nesse projeto
+
+*Vocês são a campanha 4090.*
+
+Essa luta é de todos nós. Periferia, campo, cidade — juntos vamos construir o Brasil que merecemos.
+
+🌳🏗️🌾📖🏛️
+
+*Gratidão eterna! ✊*
+
+Luciano da Luz
+🌐 vozdapaulista.com`
+  },
+  {
+    title: '📊 Resultado de Ação',
+    icon: '📊',
+    body: `📊 *RESULTADO DA AÇÃO — [LOCAL]*
+
+Olá! Quero compartilhar o resultado da ação de [dia]:
+
+📍 *Local:* [bairro/comunidade]
+👥 *Participantes:* [número]
+
+✅ *O que fizemos:*
+• [Resultado 1]
+• [Resultado 2]
+• [Resultado 3]
+
+📸 Fotos no nosso Instagram: @lucianodalu
+
+*A mudança começa na comunidade!* ✊
+
+Vote 4090 — Luciano da Luz
+🌐 vozdapaulista.com`
+  },
+  {
+    title: '🔔 Lembrete de Live',
+    icon: '🔔',
+    body: `🔴 *LIVE HOJE — QUINTA DO POVO!*
+
+⏰ Horário: 19h
+📺 Onde: Instagram @lucianodalu
+
+🎯 *Tema de hoje:*
+[Assunto da live]
+
+💬 Mande suas perguntas por aqui ou no chat da live!
+
+*Compartilhe com quem quer participar!* 📲
+
+#QuintaDoPovo #Luciano4090
+🌐 vozdapaulista.com`
+  }
+];
+
+
+/* ═══════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════ */
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('sec-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+
+/* ═══════════════════════════════════════════════════
+   CALENDAR
+   ═══════════════════════════════════════════════════ */
+
+let weekOffset = 0;
+
+function getWeekDates(offset) {
+  const now = new Date();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - now.getDay() + 1 + (offset * 7));
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+function formatDate(d) {
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+}
+
+function renderCalendar() {
+  const dates = getWeekDates(weekOffset);
+  const grid = document.getElementById('calGrid');
+  const label = document.getElementById('weekLabel');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  label.textContent = `${formatDate(dates[0])} — ${formatDate(dates[6])}`;
+
+  grid.innerHTML = dates.map((d, i) => {
+    const plan = CALENDAR_PLANS[i];
+    const isToday = d.getTime() === today.getTime();
+    const pilar = PILARES[plan.pilar];
+    return `
+      <div class="cal-day ${isToday ? 'today' : ''}">
+        <div class="cal-day-name">${plan.day}${isToday ? ' ★' : ''}</div>
+        <div class="cal-day-date">${formatDate(d)}</div>
+        <div class="cal-time">${plan.time}</div>
+        ${plan.topics.map(t => `<div class="cal-topic">• ${t}</div>`).join('')}
+        <div style="margin-top:6px;">
+          ${plan.types.map(t => {
+            const info = TYPE_MAP[t];
+            return `<span class="cal-type-badge ${info.cls}">${info.label}</span>`;
+          }).join('')}
+        </div>
+        <div style="margin-top:6px;font-size:.7em;color:var(--muted);">Pilar: ${pilar.icon} ${pilar.name}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function changeWeek(dir) {
+  weekOffset += dir;
+  renderCalendar();
+}
+
+
+/* ═══════════════════════════════════════════════════
+   PILARES
+   ═══════════════════════════════════════════════════ */
+
+function renderPilares() {
+  const grid = document.getElementById('pilarGrid');
+  grid.innerHTML = PILARES.map((p, i) => `
+    <div class="pilar-card ${p.cls}">
+      <div class="pilar-name"><span class="pilar-icon">${p.icon}</span> ${p.name}</div>
+      <div class="pilar-desc">${p.desc}</div>
+      <div class="pilar-label">💬 Talking Points</div>
+      ${p.talking.map(t => `<div style="font-size:.82em;margin-bottom:3px;">→ ${t}</div>`).join('')}
+      <div class="pilar-label">🏷️ Hashtags Sugeridas</div>
+      <div class="pilar-tags">
+        ${p.hashtags.map(h => `<span class="pilar-tag">${h}</span>`).join('')}
+      </div>
+      <div class="pilar-label">📝 Exemplo de Post</div>
+      <div class="pilar-example">${p.example}</div>
+    </div>
+  `).join('');
+}
+
+
+/* ═══════════════════════════════════════════════════
+   POST GENERATOR
+   ═══════════════════════════════════════════════════ */
+
+function generatePost() {
+  const pilarIdx = parseInt(document.getElementById('genPilar').value);
+  const type = document.getElementById('genType').value;
+  const platform = document.getElementById('genPlatform').value;
+
+  const pilarTemplates = TEMPLATES[pilarIdx];
+  if (!pilarTemplates || !pilarTemplates[platform] || !pilarTemplates[platform][type]) {
+    document.getElementById('genOutput').value = '⚠️ Template não encontrado. Tente outra combinação.';
+    return;
+  }
+
+  const template = pilarTemplates[platform][type];
+  document.getElementById('genOutput').value = template;
+  updateCharCounter();
+
+  // Show hashtags
+  const pilar = PILARES[pilarIdx];
+  const primaryTags = '#Luciano4090 #VozDaPaulista #PSB #DeputadoFederal #SP #Vote4090';
+  const pilarTags = pilar.hashtags.join(' ');
+  const hashEl = document.getElementById('genHashtags');
+  hashEl.style.display = 'block';
+  hashEl.innerHTML = `<strong>Hashtags sugeridas:</strong><br>${primaryTags}<br>${pilarTags}`;
+}
+
+function generateRandom() {
+  const pilarIdx = Math.floor(Math.random() * 5);
+  const types = ['video', 'foto', 'texto', 'carrossel'];
+  const platforms = ['instagram', 'facebook', 'whatsapp'];
+  const type = types[Math.floor(Math.random() * types.length)];
+  const platform = platforms[Math.floor(Math.random() * platforms.length)];
+
+  document.getElementById('genPilar').value = pilarIdx;
+  document.getElementById('genType').value = type;
+  document.getElementById('genPlatform').value = platform;
+  generatePost();
+}
+
+function updateCharCounter() {
+  const text = document.getElementById('genOutput').value;
+  const len = text.length;
+  const counter = document.getElementById('charCounter');
+  counter.textContent = `${len} caracteres`;
+  counter.className = 'char-counter';
+  if (len > 2000) counter.classList.add('over');
+  else if (len > 1500) counter.classList.add('warn');
+}
+
+document.getElementById('genOutput').addEventListener('input', updateCharCounter);
+
+function copyGenerated() {
+  const text = document.getElementById('genOutput').value;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Post copiado! ✓'));
+}
+
+function clearGenerated() {
+  document.getElementById('genOutput').value = '';
+  document.getElementById('genHashtags').style.display = 'none';
+  updateCharCounter();
+}
+
+
+/* ═══════════════════════════════════════════════════
+   HASHTAGS
+   ═══════════════════════════════════════════════════ */
+
+function copyTag(el) {
+  navigator.clipboard.writeText(el.textContent).then(() => showToast(`${el.textContent} copiada!`));
+}
+
+function copyAllPrimary() {
+  const tags = '#Luciano4090 #VozDaPaulista #PSB #DeputadoFederal #SP #Vote4090 #LucianoDaLuz';
+  navigator.clipboard.writeText(tags).then(() => showToast('Hashtags primárias copiadas!'));
+}
+
+function copyAllHashtags() {
+  const allTags = document.querySelectorAll('.hash-tag');
+  const tags = Array.from(allTags).map(t => t.textContent).join(' ');
+  navigator.clipboard.writeText(tags).then(() => showToast('Todas hashtags copiadas!'));
+}
+
+
+/* ═══════════════════════════════════════════════════
+   CTA LIBRARY
+   ═══════════════════════════════════════════════════ */
+
+function renderCTAs() {
+  const grid = document.getElementById('ctaGrid');
+  grid.innerHTML = CTAS.map(cta => `
+    <div class="cta-card">
+      <div class="cta-text">${cta.text}</div>
+      <button class="cta-copy-btn" onclick="copyCTA(this, '${cta.text.replace(/'/g, "\\'")}')">📋 Copiar</button>
+    </div>
+  `).join('');
+}
+
+function copyCTA(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copiado';
+    btn.style.background = 'rgba(16,185,129,.2)';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'rgba(16,185,129,.3)';
+    setTimeout(() => {
+      btn.textContent = '📋 Copiar';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+
+
+/* ═══════════════════════════════════════════════════
+   WHATSAPP TEMPLATES
+   ═══════════════════════════════════════════════════ */
+
+function renderWhatsApp() {
+  const grid = document.getElementById('wppGrid');
+  grid.innerHTML = WPP_TEMPLATES.map((tpl, i) => `
+    <div class="wpp-card">
+      <div class="wpp-card-title">${tpl.icon} ${tpl.title}</div>
+      <div class="wpp-card-body">${escapeHtml(tpl.body)}</div>
+      <div class="wpp-card-footer">
+        <button class="btn-primary" onclick="copyWpp(${i})">📋 Copiar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function copyWpp(index) {
+  const text = WPP_TEMPLATES[index].body;
+  navigator.clipboard.writeText(text).then(() => showToast('Template WhatsApp copiado!'));
+}
+
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════ */
+
+renderCalendar();
+renderPilares();
+renderCTAs();
+renderWhatsApp();
+
+</script>
+
+<footer style="background:#0f172a;border-top:2px solid #6366f1;padding:16px;text-align:center;color:#64748b;font-size:0.85em;margin-top:40px;">
+  Campanha Luciano da Luz — 4090 PSB-SP | Sistema de Inteligência Eleitoral v3.0 | 
+  <a href="https://vozdapaulista.com" target="_blank" style="color:#6366f1;">vozdapaulista.com</a>
+</footer>
+</body>
+</html>

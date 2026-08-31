@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 QG ESTRATÉGICO — Campanha 4090</title>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════
+   QG ESTRATÉGICO — Campanha 4090
+   Inteligência de Campanha • Revisão Humana • Radar
+   ZERO classificação automática. Tudo manual.
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --green: #10b981;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --blue: #818cf8;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --cyan: #22d3ee;
+  --gold-dark: #b45309;
+  --gold-glow: rgba(245, 158, 11, 0.15);
+  --radius: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  padding: 12px;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ═══ HEADER ═══ */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 24px 16px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--gold), var(--green));
+}
+.header h1 { font-size: 1.6em; margin-bottom: 4px; letter-spacing: -0.02em; }
+.header .sub { color: var(--muted); font-size: 0.85em; margin-bottom: 12px; }
+
+.live-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.live {
+  display: inline-flex; align-items: center;
+  background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.25);
+  border-radius: 20px; padding: 5px 14px; font-size: 0.78em; color: var(--green); font-weight: 600;
+}
+.live .dot {
+  width: 7px; height: 7px; background: var(--green);
+  border-radius: 50%; margin-right: 6px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.btn-refresh {
+  background: rgba(99,102,241,.15); color: var(--blue);
+  border: 1px solid rgba(99,102,241,.3); padding: 5px 14px;
+  border-radius: 20px; font-size: 0.78em; cursor: pointer;
+  font-weight: 600; transition: all .2s;
+}
+.btn-refresh:hover { background: rgba(99,102,241,.3); }
+
+.btn-back {
+  background: rgba(255,255,255,.06); color: var(--muted);
+  border: 1px solid var(--border); padding: 5px 14px;
+  border-radius: 20px; font-size: 0.78em; text-decoration: none;
+  font-weight: 600; transition: all .2s;
+}
+.btn-back:hover { background: rgba(255,255,255,.1); color: var(--text); }
+
+/* ═══ STATS ROW ═══ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px; margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; text-align: center;
+}
+.stat-card .label {
+  font-size: 0.72em; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.stat-card .value {
+  font-size: 2em; font-weight: 800;
+  font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace;
+}
+.stat-card .sub { font-size: 0.72em; color: var(--muted); margin-top: 2px; }
+
+/* ═══ SECTION TITLES ═══ */
+.section-title {
+  font-size: 1.1em; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title .count {
+  background: rgba(99,102,241,.2); color: var(--blue);
+  padding: 2px 10px; border-radius: 10px; font-size: 0.7em;
+}
+
+/* ═══ RADAR DE INFLUENCIADORES (premium gold) ═══ */
+.radar-section {
+  margin-bottom: 20px; padding: 20px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(30,41,59,1) 100%);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: var(--radius);
+  position: relative;
+}
+.radar-section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.radar-section .section-title { color: var(--gold); }
+.radar-section .section-title .count { background: rgba(245,158,11,.2); color: var(--gold); }
+
+.radar-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+.radar-card {
+  background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.15);
+  border-radius: 10px; padding: 16px;
+  transition: all .2s;
+  position: relative;
+}
+.radar-card:hover { border-color: rgba(245,158,11,.35); background: rgba(245,158,11,0.08); }
+.radar-card .fire { position: absolute; top: 10px; right: 12px; font-size: 1.4em; animation: fireGlow 1.5s ease-in-out infinite alternate; }
+@keyframes fireGlow { from{opacity:.6;transform:scale(1)} to{opacity:1;transform:scale(1.15)} }
+
+.radar-name { font-weight: 700; font-size: 1em; color: var(--gold); margin-bottom: 2px; }
+.radar-followers {
+  display: inline-block; background: rgba(245,158,11,.15);
+  color: var(--gold); padding: 2px 8px; border-radius: 4px;
+  font-size: 0.7em; font-weight: 700; margin-bottom: 6px;
+}
+.radar-comment { font-size: 0.9em; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+.radar-meta { display: flex; align-items: center; gap: 8px; font-size: 0.75em; color: var(--muted); }
+
+/* ═══ MENÇÕES ESTRATÉGICAS ═══ */
+.mencoes-section {
+  margin-bottom: 20px; padding: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.mencoes-section .section-title { color: var(--cyan); }
+.mencoes-section .section-title .count { background: rgba(34,211,238,.15); color: var(--cyan); }
+
+.mencao-card {
+  background: rgba(34,211,238,0.04); border: 1px solid rgba(34,211,238,0.12);
+  border-radius: 10px; padding: 14px; margin-bottom: 8px;
+  border-left: 3px solid var(--cyan);
+  transition: all .2s;
+}
+.mencao-card:hover { background: rgba(34,211,238,0.08); }
+.mencao-keyword {
+  display: inline-block; background: rgba(34,211,238,.15);
+  color: var(--cyan); padding: 2px 8px; border-radius: 4px;
+  font-size: 0.7em; font-weight: 700; margin-right: 6px;
+}
+.mencao-text { font-size: 0.9em; margin: 6px 0; }
+.mencao-text mark {
+  background: rgba(34,211,238,0.2); color: var(--cyan);
+  padding: 0 3px; border-radius: 2px;
+}
+
+/* ═══ REVISÃO HUMANA ═══ */
+.revisao-section {
+  margin-bottom: 20px; padding: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.filter-tabs {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.filter-tab {
+  padding: 7px 16px; border-radius: 20px; font-size: 0.82em;
+  font-weight: 600; cursor: pointer; transition: all .2s;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+}
+.filter-tab:hover { background: rgba(255,255,255,.05); }
+.filter-tab.active { background: rgba(99,102,241,.2); color: var(--blue); border-color: rgba(99,102,241,.4); }
+.filter-tab.active.f-pendente { background: rgba(245,158,11,.15); color: var(--gold); border-color: rgba(245,158,11,.35); }
+.filter-tab.active.f-apoiador { background: rgba(16,185,129,.15); color: var(--green); border-color: rgba(16,185,129,.35); }
+.filter-tab.active.f-oposicao { background: rgba(239,68,68,.15); color: var(--red); border-color: rgba(239,68,68,.35); }
+.filter-tab.active.f-troll { background: rgba(107,114,128,.15); color: var(--muted); border-color: rgba(107,114,128,.35); }
+
+.sort-row {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; align-items: center;
+}
+.sort-label { font-size: 0.75em; color: var(--muted); font-weight: 600; margin-right: 4px; }
+.sort-btn {
+  padding: 4px 12px; border-radius: 16px; font-size: 0.75em;
+  font-weight: 600; cursor: pointer; transition: all .2s;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+}
+.sort-btn.active { background: rgba(99,102,241,.15); color: var(--blue); border-color: rgba(99,102,241,.3); }
+
+.comment-list { display: flex; flex-direction: column; gap: 8px; }
+
+.comment-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px;
+  border-left: 4px solid var(--gold);
+  transition: all .25s; position: relative;
+}
+.comment-card:hover { border-color: rgba(99,102,241,.3); }
+.comment-card.selected { box-shadow: 0 0 0 2px var(--blue); }
+.comment-card.status-apoiador { border-left-color: var(--green); background: rgba(16,185,129,0.03); }
+.comment-card.status-oposicao { border-left-color: var(--red); background: rgba(239,68,68,0.02); opacity: 0.7; }
+.comment-card.status-troll { border-left-color: #6b7280; background: rgba(107,114,128,0.02); opacity: 0.6; }
+.comment-card.status-pendente { border-left-color: var(--gold); }
+
+.comment-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px; flex-wrap: wrap; gap: 4px;
+}
+.comment-user { font-weight: 700; color: var(--blue); font-size: 0.95em; }
+.comment-meta { display: flex; align-items: center; gap: 6px; font-size: 0.75em; color: var(--muted); flex-wrap: wrap; }
+.comment-text { font-size: 0.92em; line-height: 1.55; margin-bottom: 10px; }
+.comment-text mark { background: rgba(34,211,238,0.2); color: var(--cyan); padding: 0 2px; border-radius: 2px; }
+
+.comment-actions {
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+}
+
+/* Classification buttons */
+.btn-classify {
+  padding: 7px 16px; border-radius: 8px; font-size: 0.82em;
+  font-weight: 700; cursor: pointer; transition: all .2s;
+  border: 1px solid transparent; display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-classify:hover { transform: translateY(-1px); }
+.btn-classify:active { transform: translateY(0); }
+
+.btn-apoiador {
+  background: rgba(16,185,129,.15); color: var(--green);
+  border-color: rgba(16,185,129,.3);
+}
+.btn-apoiador:hover { background: rgba(16,185,129,.3); }
+
+.btn-oposicao {
+  background: rgba(239,68,68,.12); color: var(--red);
+  border-color: rgba(239,68,68,.25);
+}
+.btn-oposicao:hover { background: rgba(239,68,68,.25); }
+
+.btn-troll {
+  background: rgba(107,114,128,.12); color: #9ca3af;
+  border-color: rgba(107,114,128,.25);
+}
+.btn-troll:hover { background: rgba(107,114,128,.25); }
+
+.btn-link {
+  background: rgba(99,102,241,.1); color: var(--blue);
+  border: 1px solid rgba(99,102,241,.25); padding: 7px 14px;
+  border-radius: 8px; font-size: 0.82em; text-decoration: none;
+  font-weight: 600; transition: all .2s; display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-link:hover { background: rgba(99,102,241,.2); }
+
+/* Status badges */
+.badge {
+  padding: 3px 10px; border-radius: 10px; font-size: 0.72em;
+  font-weight: 700; display: inline-flex; align-items: center; gap: 3px;
+}
+.b-pendente { background: rgba(245,158,11,.12); color: var(--gold); }
+.b-apoiador { background: rgba(16,185,129,.15); color: var(--green); }
+.b-oposicao { background: rgba(239,68,68,.15); color: var(--red); }
+.b-troll { background: rgba(107,114,128,.15); color: #9ca3af; }
+
+.plat-fb { background: rgba(24,119,242,.12); color: #60a5fa; padding: 3px 8px; border-radius: 4px; font-size: 0.72em; font-weight: 700; }
+.plat-ig { background: rgba(228,64,95,.12); color: #fb7185; padding: 3px 8px; border-radius: 4px; font-size: 0.72em; font-weight: 700; }
+
+/* ═══ PAINEL DE VOTOS REAIS ═══ */
+.votos-section {
+  margin-bottom: 20px; padding: 20px;
+  background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, var(--card) 100%);
+  border: 1px solid rgba(16,185,129,.2);
+  border-radius: var(--radius);
+}
+.votos-section .section-title { color: var(--green); }
+.votos-counter {
+  text-align: center; padding: 20px 0 16px;
+}
+.votos-counter .big-number {
+  font-size: 3.5em; font-weight: 900; color: var(--green);
+  font-family: 'SF Mono', Consolas, monospace;
+  text-shadow: 0 0 40px rgba(16,185,129,0.3);
+}
+.votos-counter .big-label {
+  font-size: 0.85em; color: var(--muted); margin-top: 4px;
+}
+.votos-chart { margin-top: 16px; }
+
+/* ═══ BUSCA MANUAL ═══ */
+.busca-section {
+  margin-bottom: 20px; padding: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.busca-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.busca-input {
+  flex: 1; min-width: 200px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 16px; color: var(--text);
+  font-size: 0.9em; font-family: inherit;
+}
+.busca-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,102,241,.1); }
+.busca-input::placeholder { color: rgba(148,163,184,.5); }
+
+.busca-select {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px; color: var(--text);
+  font-size: 0.85em; font-family: inherit; cursor: pointer;
+  min-width: 140px;
+}
+.busca-select:focus { outline: none; border-color: var(--blue); }
+
+.busca-btn {
+  background: var(--blue); color: #fff; border: none;
+  border-radius: 10px; padding: 10px 20px; font-weight: 700;
+  font-size: 0.85em; cursor: pointer; transition: all .2s;
+}
+.busca-btn:hover { background: #6366f1; }
+
+.busca-results { display: none; }
+.busca-results.active { display: block; }
+
+/* ═══ KEYBOARD SHORTCUTS BAR ═══ */
+.shortcuts-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(30,41,59,0.95); backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+  padding: 8px 16px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px; z-index: 100; font-size: 0.75em;
+}
+.shortcut-item { display: flex; align-items: center; gap: 4px; color: var(--muted); }
+.shortcut-key {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; font-weight: 700;
+  font-family: 'SF Mono', Consolas, monospace;
+  color: var(--text); font-size: 0.95em;
+}
+
+/* ═══ TOAST ═══ */
+.toast {
+  position: fixed; bottom: 60px; right: 20px;
+  padding: 14px 22px; border-radius: 10px;
+  font-size: 0.82em; font-weight: 600; z-index: 9999;
+  display: none; animation: slideIn .3s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.toast.success { background: var(--green); color: #fff; }
+.toast.error { background: var(--red); color: #fff; }
+.toast.info { background: var(--blue); color: #fff; }
+@keyframes slideIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ═══ EMPTY STATE ═══ */
+.empty-state {
+  text-align: center; padding: 40px 20px; color: var(--muted);
+}
+.empty-state .icon { font-size: 2.5em; margin-bottom: 8px; opacity: .5; }
+.empty-state p { font-size: 0.85em; }
+
+/* ═══ LOADING ═══ */
+.loading-spinner {
+  text-align: center; padding: 40px; color: var(--muted);
+}
+.loading-spinner::after {
+  content: ''; display: inline-block; width: 24px; height: 24px;
+  border: 3px solid var(--border); border-top-color: var(--blue);
+  border-radius: 50%; animation: spin .8s linear infinite;
+  margin-right: 8px; vertical-align: middle;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  text-align: center; color: var(--muted); font-size: 0.7em;
+  margin-top: 14px; padding-bottom: 50px;
+}
+.footer a { color: var(--blue); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+
+/* ═══ REPLY BUTTON ═══ */
+.btn-responder {
+  background: rgba(167,139,250,.12); color: var(--purple);
+  border-color: rgba(167,139,250,.25);
+}
+.btn-responder:hover { background: rgba(167,139,250,.25); }
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  body { padding: 8px; }
+  .header h1 { font-size: 1.2em; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .stat-card .value { font-size: 1.5em; }
+  .radar-grid { grid-template-columns: 1fr; }
+  .comment-actions { flex-direction: column; }
+  .btn-classify { width: 100%; justify-content: center; }
+  .shortcuts-bar { display: none; }
+  .busca-row { flex-direction: column; }
+  .votos-counter .big-number { font-size: 2.5em; }
+}
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .stat-card { padding: 10px; }
+  .stat-card .value { font-size: 1.3em; }
+  .filter-tabs { gap: 4px; }
+  .filter-tab { padding: 5px 10px; font-size: 0.75em; }
+}
+</style>
+</head>
+<body>
+<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
+  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
+  <span style="color:#475569;">|</span>
+  <a href="redes.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">📡 QG Redes</a>
+  <a href="congresso.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🏛️ Congresso</a>
+  <a href="votar.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🗳️ Votar</a>
+  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
+  <a href="leads.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">👥 Leads</a>
+  <a href="analytics.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📊 Analytics</a>
+  <a href="conteudo.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📝 Conteúdo</a>
+  <a href="config.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">⚙️ Config</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     1. HEADER
+     ═══════════════════════════════════════════════════════ -->
+<div class="header">
+  <h1>🎯 QG ESTRATÉGICO — Campanha 4090</h1>
+  <div class="sub">Inteligência de Campanha • Revisão Humana • Radar de Influenciadores</div>
+  <div class="live-row">
+    <div class="live"><span class="dot"></span>AO VIVO — Atualiza a cada 5 min</div>
+    <button class="btn-refresh" onclick="loadData()">⟳ Atualizar</button>
+    <a href="index.html" class="btn-back">← Painel Principal</a>
+    <span id="tsUpdate" style="font-size:0.72em;color:var(--muted)"></span>
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-card">
+    <div class="label">Total Interações</div>
+    <div class="value" id="statTotal" style="color:var(--blue)">—</div>
+    <div class="sub">comentários capturados</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">✅ Apoiadores</div>
+    <div class="value" id="statApoiadores" style="color:var(--green)">—</div>
+    <div class="sub">classificados</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">🔥 Influenciadores</div>
+    <div class="value" id="statInfluenciadores" style="color:var(--gold)">—</div>
+    <div class="sub">contas de destaque</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">⚔️ Ataques</div>
+    <div class="value" id="statAtaques" style="color:var(--red)">—</div>
+    <div class="sub">monitorados</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:16px 0;">
+  <button class="filter-btn active" onclick="filterTable('TODOS')">Todos</button>
+  <button class="filter-btn" onclick="filterTable('APOIADOR')">✅ Apoiador</button>
+  <button class="filter-btn" onclick="filterTable('POTENCIAL')">🔵 Potencial</button>
+  <button class="filter-btn" onclick="filterTable('NEUTRO')">⚪ Neutro</button>
+  <button class="filter-btn" onclick="filterTable('CONTRA')">🔴 Contra</button>
+  <button class="filter-btn" onclick="filterTable('PENDENTE')">⏳ Pendente</button>
+</div>
+
+<style>
+.filter-btn { background:var(--card);color:var(--muted);border:1px solid var(--border);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:0.85em; }
+.filter-btn:hover,.filter-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
+#commentTable { width:100%;border-collapse:collapse;margin-top:12px; }
+#commentTable th { text-align:left;color:var(--muted);font-size:0.75em;padding:8px 12px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.05em; }
+#commentTable td { padding:10px 12px;border-bottom:1px solid rgba(51,65,85,0.5);font-size:0.88em;color:var(--text);vertical-align:top; }
+#commentTable tr:hover td { background:rgba(99,102,241,0.08); }
+.badge { display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.75em;font-weight:600; }
+.badge-apoiador { background:rgba(16,185,129,0.15);color:#10b981; }
+.badge-potencial { background:rgba(129,140,248,0.15);color:#818cf8; }
+.badge-neutro { background:rgba(148,163,184,0.15);color:#94a3b8; }
+.badge-contra { background:rgba(239,68,68,0.15);color:#ef4444; }
+.badge-pendente { background:rgba(251,146,60,0.15);color:#fb923c; }
+.comment-text { max-width:500px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.comment-text:hover { white-space:normal; }
+.platform-icon { font-size:0.9em; }
+</style>
+
+<!-- Comments Table -->
+<div style="overflow-x:auto;background:var(--card);border-radius:var(--radius);padding:4px;">
+<table id="commentTable">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Autor</th>
+      <th>Comentário</th>
+      <th>Classificação</th>
+      <th>Plataforma</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody id="commentBody">
+    <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:40px;">⏳ Carregando dados...</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div id="loadStatus" style="text-align:center;color:var(--muted);font-size:0.8em;margin:12px 0;"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// GOOGLE SHEETS DATA LOADER
+// ═══════════════════════════════════════════
+const SHEET_ID = '1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
+const SHEET_NAME = 'COMENTARIOS';
+const N8N_WEBHOOK = 'https://campanha4090-n8n.graybush-a0b3f9ef.eastus.azurecontainerapps.io/webhook/classificar-comentario';
+
+let allRows = [];
+let currentFilter = 'TODOS';
+
+function loadSheetData() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+  document.getElementById('loadStatus').textContent = '⏳ Carregando dados da planilha...';
+  
+  fetch(url)
+    .then(r => r.text())
+    .then(text => {
+      const json = JSON.parse(text.substring(47).slice(0, -2));
+      const table = json.table;
+      const cols = table.cols.map(c => c.label.split(' ')[0]);
+      
+      allRows = table.rows.map(row => {
+        const cells = row.c || [];
+        return {
+          data: cells[0] ? (cells[0].v || '').substring(0, 16).replace('T', ' ') : '',
+          nome: cells[1] ? cells[1].v || 'Anônimo' : 'Anônimo',
+          comentario: cells[3] ? cells[3].v || '' : '',
+          sentimento: cells[4] ? cells[4].v || 'PENDENTE' : 'PENDENTE',
+          score: cells[5] ? (cells[5].v || 0) : 0,
+          classificacao: cells[6] ? cells[6].v || 'PENDENTE' : 'PENDENTE',
+          plataforma: cells[7] ? cells[7].v || '' : '',
+          link: cells[8] ? cells[8].v || '' : '',
+        };
+      });
+      
+      updateStats();
+      renderTable();
+      document.getElementById('tsUpdate').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+      document.getElementById('loadStatus').textContent = `✅ ${allRows.length} comentários carregados`;
+    })
+    .catch(err => {
+      document.getElementById('loadStatus').textContent = '❌ Erro ao carregar: ' + err.message;
+    });
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = allRows.length;
+  document.getElementById('statApoiadores').textContent = allRows.filter(r => r.classificacao === 'APOIADOR').length;
+  document.getElementById('statInfluenciadores').textContent = allRows.filter(r => r.classificacao === 'INFLUENCIADOR').length;
+  document.getElementById('statAtaques').textContent = allRows.filter(r => r.classificacao === 'CONTRA' || r.classificacao === 'ATAQUE').length;
+}
+
+function getBadgeClass(cls) {
+  cls = (cls || '').toUpperCase();
+  if (cls.includes('APOIADOR') || cls.includes('APOIO')) return 'badge-apoiador';
+  if (cls.includes('POTENCIAL')) return 'badge-potencial';
+  if (cls.includes('NEUTRO')) return 'badge-neutro';
+  if (cls.includes('CONTRA') || cls.includes('ATAQUE')) return 'badge-contra';
+  return 'badge-pendente';
+}
+
+function renderTable() {
+  const filtered = currentFilter === 'TODOS' ? allRows : allRows.filter(r => (r.classificacao || '').toUpperCase().includes(currentFilter));
+  const tbody = document.getElementById('commentBody');
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px;">Nenhum comentário encontrado</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = filtered.map(r => `
+    <tr>
+      <td style="white-space:nowrap;font-size:0.8em;color:var(--muted);">${r.data}</td>
+      <td style="font-weight:600;">${r.nome}</td>
+      <td class="comment-text" title="${(r.comentario || '').replace(/"/g, '&quot;')}">${r.comentario}</td>
+      <td><span class="badge ${getBadgeClass(r.classificacao)}">${r.classificacao}</span></td>
+      <td class="platform-icon">${r.plataforma === 'Facebook' ? '📘 FB' : r.plataforma === 'Instagram' ? '📸 IG' : r.plataforma}</td>
+      <td style="text-align:center;font-family:monospace;">${r.score}</td>
+    </tr>
+  `).join('');
+}
+
+function filterTable(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderTable();
+}
+
+// Alias for the onclick button
+function loadData() { loadSheetData(); }
+
+// Auto-load on page open
+loadSheetData();
+
+// Auto-refresh every 5 minutes
+setInterval(loadSheetData, 300000);
+</script>
+</body>
+</html>

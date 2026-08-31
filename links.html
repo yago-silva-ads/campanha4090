@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Luciano da Luz | Deputado Federal 4090 — PSB-SP</title>
+<meta name="description" content="Links oficiais de Luciano da Luz — Candidato a Deputado Federal 4090, PSB-SP. Voz da Paulista.">
+<meta property="og:title" content="Luciano da Luz — Deputado Federal 4090">
+<meta property="og:description" content="Links oficiais — Voz da Paulista | PSB-SP">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://campanhaluciano.netlify.app/links">
+<meta name="theme-color" content="#0a1628">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bg-primary:#0a1628;
+    --bg-secondary:#0f1f3a;
+    --bg-card:#132444;
+    --accent-gold:#d4a012;
+    --accent-gold-light:#f0c040;
+    --accent-blue:#1e3a6e;
+    --text-primary:#f0f2f5;
+    --text-secondary:#9ca8be;
+    --text-muted:#5a6a82;
+    --radius:14px;
+    --shadow:0 4px 24px rgba(0,0,0,.35);
+  }
+
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg-primary);
+    color:var(--text-primary);
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0;
+    overflow-x:hidden;
+  }
+
+  /* ── animated background ── */
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse 600px 400px at 50% 0%,rgba(30,58,110,.5),transparent),
+      radial-gradient(ellipse 400px 350px at 80% 80%,rgba(212,160,18,.08),transparent);
+    z-index:0;pointer-events:none;
+  }
+
+  .container{
+    position:relative;z-index:1;
+    width:100%;max-width:440px;
+    padding:32px 20px 48px;
+    display:flex;flex-direction:column;align-items:center;
+    gap:8px;
+  }
+
+  /* ── PSB badge ── */
+  .party-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(212,160,18,.12);
+    border:1px solid rgba(212,160,18,.25);
+    border-radius:20px;
+    padding:5px 14px;
+    font-size:.7rem;font-weight:600;
+    color:var(--accent-gold-light);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    animation:fadeDown .6s ease-out both;
+  }
+  .party-badge svg{width:14px;height:14px}
+
+  /* ── Avatar ── */
+  .avatar-ring{
+    width:112px;height:112px;
+    border-radius:50%;
+    padding:3px;
+    background:linear-gradient(135deg,var(--accent-gold),var(--accent-blue),var(--accent-gold-light));
+    animation:fadeDown .6s .1s ease-out both;
+    box-shadow:0 0 32px rgba(212,160,18,.2);
+  }
+  .avatar{
+    width:100%;height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    background:var(--bg-secondary);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    border:3px solid var(--bg-primary);
+  }
+  .avatar-placeholder{
+    width:100%;height:100%;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent-blue),#1a3060);
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.4rem;font-weight:800;
+    color:var(--accent-gold-light);
+    letter-spacing:1px;
+  }
+
+  /* ── Name / subtitle ── */
+  .name{
+    font-size:1.55rem;font-weight:800;
+    margin-top:14px;
+    background:linear-gradient(135deg,#fff,var(--accent-gold-light));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    animation:fadeDown .6s .2s ease-out both;
+  }
+  .number-tag{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:1.9rem;font-weight:800;
+    color:var(--accent-gold);
+    margin-top:2px;
+    animation:fadeDown .6s .25s ease-out both;
+    letter-spacing:2px;
+  }
+  .number-tag span{
+    font-size:.65rem;font-weight:600;
+    color:var(--text-secondary);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    align-self:flex-end;
+    padding-bottom:4px;
+  }
+  .subtitle{
+    font-size:.82rem;font-weight:500;
+    color:var(--text-secondary);
+    text-align:center;
+    margin-top:2px;
+    line-height:1.5;
+    animation:fadeDown .6s .3s ease-out both;
+  }
+  .subtitle strong{color:var(--accent-gold-light);font-weight:600}
+
+  /* ── Divider ── */
+  .divider{
+    width:48px;height:2px;
+    background:linear-gradient(90deg,transparent,var(--accent-gold),transparent);
+    margin:16px 0 8px;
+    border-radius:2px;
+    animation:fadeDown .6s .35s ease-out both;
+  }
+
+  /* ── Links section ── */
+  .links{
+    display:flex;flex-direction:column;gap:12px;
+    width:100%;
+    margin-top:8px;
+  }
+
+  .link-btn{
+    display:flex;align-items:center;gap:14px;
+    width:100%;
+    padding:16px 20px;
+    border-radius:var(--radius);
+    text-decoration:none;
+    font-size:.92rem;font-weight:600;
+    color:var(--text-primary);
+    background:var(--bg-card);
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:var(--shadow);
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .link-btn::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(212,160,18,.06),transparent);
+    opacity:0;transition:opacity .25s;
+  }
+  .link-btn:hover::before,
+  .link-btn:active::before{opacity:1}
+  .link-btn:hover{
+    transform:translateY(-2px);
+    border-color:rgba(212,160,18,.3);
+    box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 0 1px rgba(212,160,18,.15);
+  }
+  .link-btn:active{
+    transform:scale(.98);
+    transition-duration:.1s;
+  }
+
+  .link-icon{
+    width:40px;height:40px;min-width:40px;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.15rem;
+  }
+  .link-icon svg{width:22px;height:22px;fill:currentColor}
+
+  .link-content{flex:1;display:flex;flex-direction:column;gap:1px}
+  .link-label{font-size:.92rem;font-weight:600;line-height:1.3}
+  .link-desc{font-size:.72rem;font-weight:400;color:var(--text-muted);line-height:1.3}
+
+  .link-arrow{
+    color:var(--text-muted);
+    transition:transform .25s,color .25s;
+    font-size:.85rem;
+  }
+  .link-btn:hover .link-arrow{
+    transform:translateX(3px);
+    color:var(--accent-gold);
+  }
+
+  /* Icon color variants */
+  .icon-site{background:linear-gradient(135deg,#1e3a6e,#2a5298);color:#f0c040}
+  .icon-insta{background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:#fff}
+  .icon-whatsapp{background:linear-gradient(135deg,#128c7e,#25d366);color:#fff}
+  .icon-tiktok{background:linear-gradient(135deg,#010101,#333);color:#fff;
+    box-shadow:inset 1px 1px 0 #69c9d0,inset -1px -1px 0 #ee1d52;
+  }
+  .icon-qg{background:linear-gradient(135deg,#2a2a3e,#3a3a5e);color:#9ca8be}
+
+  /* ── Stagger animation ── */
+  .link-btn{animation:fadeUp .5s ease-out both}
+  .link-btn:nth-child(1){animation-delay:.4s}
+  .link-btn:nth-child(2){animation-delay:.5s}
+  .link-btn:nth-child(3){animation-delay:.6s}
+  .link-btn:nth-child(4){animation-delay:.7s}
+  .link-btn:nth-child(5){animation-delay:.8s}
+
+  /* ── Restricted badge ── */
+  .badge-restricted{
+    display:inline-block;
+    font-size:.6rem;font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#f59e0b;
+    background:rgba(245,158,11,.12);
+    border:1px solid rgba(245,158,11,.2);
+    border-radius:4px;
+    padding:1px 6px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+
+  /* ── Click counter toast ── */
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:var(--bg-card);
+    border:1px solid rgba(212,160,18,.3);
+    border-radius:12px;
+    padding:10px 20px;
+    font-size:.8rem;font-weight:500;
+    color:var(--text-secondary);
+    box-shadow:0 8px 32px rgba(0,0,0,.5);
+    z-index:100;
+    opacity:0;
+    transition:all .35s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+    white-space:nowrap;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  /* ── Footer ── */
+  .footer{
+    margin-top:32px;
+    text-align:center;
+    animation:fadeUp .5s .9s ease-out both;
+  }
+  .footer-text{
+    font-size:.68rem;
+    color:var(--text-muted);
+    line-height:1.6;
+  }
+  .footer-text a{
+    color:var(--accent-gold);
+    text-decoration:none;
+    font-weight:500;
+  }
+  .footer-hashtag{
+    font-size:.72rem;
+    color:var(--accent-gold);
+    font-weight:600;
+    opacity:.6;
+    margin-top:4px;
+  }
+
+  /* ── Pulse ring on avatar ── */
+  .avatar-ring{position:relative}
+  .avatar-ring::after{
+    content:'';position:absolute;inset:-6px;
+    border-radius:50%;
+    border:2px solid rgba(212,160,18,.15);
+    animation:pulse 3s ease-in-out infinite;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes fadeDown{
+    from{opacity:0;transform:translateY(-12px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(16px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @keyframes pulse{
+    0%,100%{opacity:.3;transform:scale(1)}
+    50%{opacity:.8;transform:scale(1.04)}
+  }
+
+  /* ── Responsive tweaks ── */
+  @media(max-width:360px){
+    .container{padding:24px 16px 40px}
+    .name{font-size:1.35rem}
+    .number-tag{font-size:1.6rem}
+    .link-btn{padding:14px 16px;gap:12px}
+    .link-icon{width:36px;height:36px;min-width:36px;border-radius:8px}
+  }
+  @media(min-width:441px){
+    .container{padding:40px 24px 56px}
+  }
+
+  /* ── Prefers reduced motion ── */
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      animation-duration:0s!important;
+      transition-duration:0s!important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Party Badge -->
+  <div class="party-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    </svg>
+    PSB — Partido Socialista Brasileiro
+  </div>
+
+  <!-- Avatar -->
+  <div class="avatar-ring">
+    <div class="avatar">
+      <!-- Substituir pelo <img src="foto-luciano.jpg" alt="Luciano da Luz"> -->
+      <div class="avatar-placeholder">LL</div>
+    </div>
+  </div>
+
+  <!-- Name & Number -->
+  <h1 class="name">Luciano da Luz</h1>
+  <div class="number-tag">
+    4090
+    <span>Vote</span>
+  </div>
+  <p class="subtitle">Candidato a <strong>Deputado Federal</strong> · PSB-SP<br>🎤 Voz da Paulista</p>
+
+  <div class="divider"></div>
+
+  <!-- Links -->
+  <nav class="links" id="links">
+
+    <!-- 1. Site Oficial -->
+    <a href="https://vozdapaulista.com" target="_blank" rel="noopener" class="link-btn" data-link="site-oficial" onclick="trackClick('site-oficial')">
+      <div class="link-icon icon-site">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      </div>
+      <div class="link-content">
+        <span class="link-label">🌐 Site Oficial — Voz da Paulista</span>
+        <span class="link-desc">Propostas, agenda e conteúdo completo</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <!-- 2. Instagram -->
+    <a href="https://www.instagram.com/lucianodaluz4090/" target="_blank" rel="noopener" class="link-btn" data-link="instagram" onclick="trackClick('instagram')">
+      <div class="link-icon icon-insta">
+        <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="#fff"/></svg>
+      </div>
+      <div class="link-content">
+        <span class="link-label">📸 Instagram Oficial</span>
+        <span class="link-desc">@lucianodaluz4090 — Acompanhe o dia a dia</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <!-- 3. WhatsApp -->
+    <a href="INSERIR_LINK_DO_GRUPO_AQUI" target="_blank" rel="noopener" class="link-btn" data-link="whatsapp" onclick="trackClick('whatsapp')">
+      <div class="link-icon icon-whatsapp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      </div>
+      <div class="link-content">
+        <span class="link-label">💬 Grupo do WhatsApp</span>
+        <span class="link-desc">Entre na comunidade — novidades em primeira mão</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <!-- 4. TikTok -->
+    <a href="https://www.tiktok.com/@lucianodaluz4090" target="_blank" rel="noopener" class="link-btn" data-link="tiktok" onclick="trackClick('tiktok')">
+      <div class="link-icon icon-tiktok">
+        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.89a8.28 8.28 0 0 0 4.84 1.56V7.01a4.84 4.84 0 0 1-1.08-.32z" fill="#fff"/></svg>
+      </div>
+      <div class="link-content">
+        <span class="link-label">🎵 TikTok — Siga e Compartilhe!</span>
+        <span class="link-desc">Vídeos, cortes e bastidores da campanha</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <!-- 5. QG (Restrito) -->
+    <a href="https://campanhaluciano.netlify.app" target="_blank" rel="noopener" class="link-btn" data-link="qg" onclick="trackClick('qg')" style="opacity:.65">
+      <div class="link-icon icon-qg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+      </div>
+      <div class="link-content">
+        <span class="link-label">🔒 QG da Campanha <span class="badge-restricted">Acesso Restrito</span></span>
+        <span class="link-desc">Área interna — voluntários e equipe</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+  </nav>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-hashtag">#VozDaPaulista #LucianoDaLuz #4090</p>
+    <p class="footer-text">
+      Candidato a Deputado Federal — PSB-SP<br>
+      Eleições 2026 · CNPJ da campanha na 
+      <a href="https://vozdapaulista.com" target="_blank">página oficial</a>
+    </p>
+  </footer>
+
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Click Tracker (localStorage) ──
+function getClicks(){
+  try{
+    return JSON.parse(localStorage.getItem('ll_clicks')||'{}');
+  }catch(e){return{}}
+}
+function saveClicks(data){
+  try{localStorage.setItem('ll_clicks',JSON.stringify(data))}catch(e){}
+}
+
+function trackClick(linkId){
+  const clicks=getClicks();
+  clicks[linkId]=(clicks[linkId]||0)+1;
+  clicks._total=(clicks._total||0)+1;
+  clicks._last=new Date().toISOString();
+  saveClicks(clicks);
+  showToast(linkId,clicks[linkId]);
+}
+
+function showToast(linkId,count){
+  const toast=document.getElementById('toast');
+  const names={
+    'site-oficial':'Site Oficial',
+    'instagram':'Instagram',
+    'whatsapp':'WhatsApp',
+    'tiktok':'TikTok',
+    'qg':'QG'
+  };
+  toast.textContent=`${names[linkId]||linkId} · ${count} clique${count>1?'s':''}`;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer=setTimeout(()=>toast.classList.remove('show'),2000);
+}
+
+// ── Viewport height fix for mobile browsers ──
+function setVH(){
+  document.documentElement.style.setProperty('--vh',window.innerHeight*.01+'px');
+}
+setVH();
+window.addEventListener('resize',setVH);
+
+// ── Log summary to console (for campaign team) ──
+console.log('%c📊 Link in Bio — Cliques acumulados:','font-weight:bold;color:#d4a012');
+console.table(getClicks());
+</script>
+
+</body>
+</html>

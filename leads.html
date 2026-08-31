@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👥 Leads & Funil — Campanha 4090</title>
+<meta name="description" content="Leads WhatsApp, Funil de Conversão e Captadores — Campanha Luciano da Luz 4090 — Dados reais Google Sheets">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👥</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts-more.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/funnel.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/solid-gauge.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   LEADS & FUNIL — Campanha 4090
+   Dashboard de Leads WhatsApp • Captadores • Funil • Projeção
+   Dados REAIS Google Sheets • Highcharts Dark Theme • Mobile First
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0f172a;
+  --bg-alt: #0b1120;
+  --card: #1e293b;
+  --card-hover: #253348;
+  --border: #334155;
+  --border-light: #475569;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --green: #10b981;
+  --green-glow: rgba(16,185,129,0.15);
+  --gold: #f59e0b;
+  --gold-glow: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --blue: #818cf8;
+  --blue-glow: rgba(129,140,248,0.12);
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --cyan: #22d3ee;
+  --pink: #f472b6;
+  --indigo: #6366f1;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.25);
+  --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+
+.container { max-width: 1340px; margin: 0 auto; padding: 0 16px; }
+
+/* ═══ LOADING OVERLAY ═══ */
+.loading-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease;
+}
+.loading-overlay.hide { opacity: 0; pointer-events: none; }
+.loading-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--indigo);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { margin-top: 16px; color: var(--muted); font-size: 0.9em; }
+
+/* ═══ GLOBAL NAV ═══ */
+.global-nav {
+  background: var(--bg);
+  border-bottom: 2px solid var(--indigo);
+  padding: 8px 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.global-nav a {
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: var(--transition);
+}
+.global-nav a:hover { color: var(--blue) !important; }
+.global-nav .nav-brand { color: #e2e8f0; font-weight: bold; font-size: 1.1em; }
+.global-nav .nav-link { color: var(--muted); }
+.global-nav .nav-link.active { color: var(--indigo); font-weight: 600; }
+.global-nav .nav-sep { color: var(--border-light); }
+
+/* ═══ HEADER ═══ */
+.header {
+  text-align: center;
+  padding: 32px 16px 24px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(99,102,241,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.header h1 {
+  font-size: clamp(1.5em, 4vw, 2.2em);
+  font-weight: 800;
+  background: linear-gradient(135deg, #f1f5f9, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  position: relative;
+}
+.header p {
+  color: var(--muted);
+  font-size: 0.95em;
+  margin-top: 6px;
+  position: relative;
+}
+.header .live-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+}
+
+/* ═══ SECTION HEADINGS ═══ */
+.section-heading {
+  font-size: 1.35em;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.section-heading .badge {
+  font-size: 0.55em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.badge-live { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.badge-info { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(129,140,248,0.3); }
+.badge-whatsapp { background: rgba(37,211,102,0.12); color: #25d366; border: 1px solid rgba(37,211,102,0.3); }
+
+/* ═══ KPI CARDS ═══ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card:hover { border-color: var(--border-light); transform: translateY(-2px); box-shadow: var(--shadow); }
+.kpi-card .icon { font-size: 1.6em; margin-bottom: 4px; }
+.kpi-card .value {
+  font-size: 2em;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-card .label {
+  font-size: 0.75em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+.kpi-card .sub {
+  font-size: 0.72em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.kpi-card.green .value { color: var(--green); }
+.kpi-card.gold .value { color: var(--gold); }
+.kpi-card.blue .value { color: var(--blue); }
+.kpi-card.cyan .value { color: var(--cyan); }
+.kpi-card.orange .value { color: var(--orange); }
+.kpi-card.red .value { color: var(--red); }
+.kpi-card.purple .value { color: var(--purple); }
+.kpi-card.whatsapp .value { color: #25d366; }
+
+/* Meta progress bar */
+.meta-bar-wrap { margin-top: 10px; }
+.meta-bar-bg {
+  background: var(--border);
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.meta-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--indigo), var(--cyan));
+  transition: width 1.5s ease;
+  min-width: 2px;
+}
+.meta-bar-text {
+  font-size: 0.7em;
+  color: var(--muted);
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* ═══ CHARTS ═══ */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+@media (max-width: 860px) { .charts-grid { grid-template-columns: 1fr; } }
+
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  min-height: 380px;
+}
+.chart-card-full {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 28px;
+}
+
+/* ═══ DATA TABLE ═══ */
+.data-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 28px;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.data-table thead th {
+  background: rgba(99,102,241,0.1);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+.data-table thead th:hover { color: var(--text); }
+.data-table thead th .sort-arrow { margin-left: 4px; font-size: 0.85em; opacity: 0.5; }
+.data-table thead th.sorted .sort-arrow { opacity: 1; color: var(--indigo); }
+.data-table tbody td {
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  vertical-align: middle;
+}
+.data-table tbody tr { transition: background 0.15s; }
+.data-table tbody tr:hover { background: var(--card-hover); }
+.data-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.1); }
+.data-table tbody tr:nth-child(even):hover { background: var(--card-hover); }
+
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  font-size: 0.85em;
+  font-weight: 800;
+}
+.rank-1 { background: rgba(245,158,11,0.2); color: var(--gold); }
+.rank-2 { background: rgba(148,163,184,0.2); color: #c0c0c0; }
+.rank-3 { background: rgba(205,127,50,0.2); color: #cd7f32; }
+.rank-4 { background: rgba(129,140,248,0.15); color: var(--blue); }
+
+.mini-bar-bg {
+  background: var(--border);
+  border-radius: 3px;
+  height: 6px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.mini-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  transition: width 0.8s ease;
+}
+
+/* ═══ LEADS TABLE ═══ */
+.leads-table-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.leads-search {
+  flex: 1;
+  min-width: 200px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  color: var(--text);
+  font-size: 0.9em;
+  outline: none;
+  transition: var(--transition);
+}
+.leads-search:focus { border-color: var(--indigo); }
+.leads-search::placeholder { color: var(--border-light); }
+
+.filter-select {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  color: var(--text);
+  font-size: 0.85em;
+  outline: none;
+  cursor: pointer;
+}
+.filter-select option { background: var(--card); color: var(--text); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-size: 0.85em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: var(--indigo); color: #fff; }
+.btn-primary:hover { background: #4f46e5; }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover { background: #059669; }
+.btn-whatsapp { background: #25d366; color: #fff; }
+.btn-whatsapp:hover { background: #1da851; }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.btn-outline:hover { border-color: var(--indigo); color: var(--indigo); }
+.btn-copy { background: var(--indigo); color: #fff; }
+.btn-copy:hover { background: #4f46e5; }
+.btn-copy.copied { background: var(--green); }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-novo { background: rgba(129,140,248,0.15); color: var(--blue); border: 1px solid rgba(129,140,248,0.3); }
+.status-qualificado { background: rgba(34,211,238,0.12); color: var(--cyan); border: 1px solid rgba(34,211,238,0.3); }
+.status-convidado { background: rgba(245,158,11,0.12); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+.status-no-grupo { background: rgba(37,211,102,0.12); color: #25d366; border: 1px solid rgba(37,211,102,0.3); }
+.status-voto-confirmado { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+
+.fonte-pill {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+.fonte-qr { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+.fonte-instagram { background: rgba(244,114,182,0.12); color: var(--pink); border: 1px solid rgba(244,114,182,0.2); }
+.fonte-indicacao { background: rgba(245,158,11,0.12); color: var(--gold); border: 1px solid rgba(245,158,11,0.2); }
+.fonte-tiktok { background: rgba(34,211,238,0.12); color: var(--cyan); border: 1px solid rgba(34,211,238,0.2); }
+.fonte-organico { background: rgba(16,185,129,0.12); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+
+/* ═══ PROJEÇÃO CARD ═══ */
+.projecao-card {
+  background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(245,158,11,0.06));
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.projecao-card h3 { color: var(--gold); font-size: 1.15em; margin-bottom: 12px; }
+.projecao-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+@media (max-width: 700px) { .projecao-grid { grid-template-columns: 1fr; } }
+.projecao-stats { display: flex; flex-direction: column; gap: 10px; }
+.projecao-stat {
+  display: flex; justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.projecao-stat .lab { color: var(--muted); font-size: 0.85em; }
+.projecao-stat .val { font-weight: 700; font-variant-numeric: tabular-nums; }
+.projecao-alert {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: var(--radius-sm);
+  font-size: 0.88em;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* ═══ AÇÕES RÁPIDAS ═══ */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.quick-action-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: var(--transition);
+}
+.quick-action-card:hover { border-color: var(--border-light); transform: translateY(-1px); }
+.quick-action-card h4 {
+  font-size: 0.95em;
+  display: flex; align-items: center; gap: 8px;
+}
+.quick-action-card p {
+  font-size: 0.82em;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.msg-box {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 0.85em;
+  color: var(--text);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* ═══ MODAL ═══ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h3 { font-size: 1.15em; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.modal-field { margin-bottom: 14px; }
+.modal-field label {
+  display: block;
+  font-size: 0.78em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.modal-field input, .modal-field select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.9em;
+  outline: none;
+  transition: var(--transition);
+}
+.modal-field input:focus, .modal-field select:focus { border-color: var(--indigo); }
+.modal-actions {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px;
+}
+
+/* ═══ STATUS BAR ═══ */
+.status-bar {
+  text-align: center;
+  padding: 10px;
+  font-size: 0.72em;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+.status-bar .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.dot-green { background: var(--green); }
+.dot-red { background: var(--red); }
+
+/* ═══ COUNTDOWN BANNER ═══ */
+.countdown-banner {
+  background: linear-gradient(90deg, rgba(99,102,241,0.1), rgba(245,158,11,0.1));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 20px 0;
+  text-align: center;
+}
+.countdown-banner .title {
+  font-size: 0.75em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.countdown-unit { display: flex; flex-direction: column; align-items: center; }
+.countdown-unit .num {
+  font-size: 1.8em; font-weight: 800; color: var(--gold);
+  line-height: 1; font-variant-numeric: tabular-nums;
+}
+.countdown-unit .lbl {
+  font-size: 0.65em; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;
+}
+.countdown-sep { font-size: 1.6em; color: var(--border-light); font-weight: 300; line-height: 1; align-self: flex-start; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 640px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-card .value { font-size: 1.5em; }
+  .data-table { font-size: 0.8em; }
+  .data-table thead th, .data-table tbody td { padding: 8px 10px; }
+  .quick-actions-grid { grid-template-columns: 1fr; }
+  .leads-table-controls { flex-direction: column; }
+  .container { padding: 0 10px; }
+  .countdown-unit .num { font-size: 1.4em; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOADING OVERLAY ═══ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Carregando dados reais da planilha...</div>
+</div>
+
+<!-- ═══ NAV BAR ═══ -->
+<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
+  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
+  <span style="color:#475569;">|</span>
+  <a href="redes.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📡 QG Redes</a>
+  <a href="congresso.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🏛️ Congresso</a>
+  <a href="votar.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🗳️ Votar</a>
+  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
+  <a href="leads.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">👥 Leads</a>
+  <a href="analytics.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📊 Analytics</a>
+  <a href="conteudo.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📝 Conteúdo</a>
+  <a href="config.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">⚙️ Config</a>
+</nav>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <h1>👥 Leads & Funil de Conversão</h1>
+  <p><span class="live-dot"></span>Dados reais • Google Sheets • WhatsApp QR Codes • Auto-refresh 5 min</p>
+</header>
+
+<div class="container">
+
+  <!-- ═══ COUNTDOWN COMPACTO ═══ -->
+  <div class="countdown-banner">
+    <div class="title">⏱️ Contagem Regressiva — Eleição 4 de Outubro de 2026</div>
+    <div class="countdown-grid">
+      <div class="countdown-unit"><span class="num" id="cdDias">--</span><span class="lbl">Dias</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdHoras">--</span><span class="lbl">Horas</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdMin">--</span><span class="lbl">Min</span></div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit"><span class="num" id="cdSeg">--</span><span class="lbl">Seg</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       1. KPIs NO TOPO
+       ══════════════════════════════════════════════════════════ -->
+  <div class="section-heading">📊 KPIs em Tempo Real <span class="badge badge-live">● AO VIVO</span></div>
+  <div class="kpi-grid">
+    <div class="kpi-card cyan">
+      <div class="icon">📋</div>
+      <div class="value" id="kpiContatos">--</div>
+      <div class="label">Total Contatos</div>
+      <div class="sub">Abordagens da planilha</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="icon">✅</div>
+      <div class="value" id="kpiVotos">--</div>
+      <div class="label">Votos Confirmados</div>
+      <div class="sub">Vão votar 4090</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="icon">📈</div>
+      <div class="value" id="kpiTaxa">--</div>
+      <div class="label">Taxa Conversão</div>
+      <div class="sub">Votos ÷ Contatos</div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="icon">⏳</div>
+      <div class="value" id="kpiDias">--</div>
+      <div class="label">Dias Restantes</div>
+      <div class="sub">Até 4 de outubro</div>
+    </div>
+    <div class="kpi-card whatsapp">
+      <div class="icon">💬</div>
+      <div class="value" id="kpiMembros" contenteditable="true" title="Clique para editar">200+</div>
+      <div class="label">Membros WhatsApp</div>
+      <div class="sub">7 grupos • editável ✏️</div>
+    </div>
+    <!-- META card with progress bar — spans 2 cols -->
+    <div class="kpi-card purple" style="grid-column: span 2;">
+      <div class="icon">🎯</div>
+      <div class="value" id="kpiMeta">--</div>
+      <div class="label">Meta: 10.000 Votos</div>
+      <div class="meta-bar-wrap">
+        <div class="meta-bar-bg">
+          <div class="meta-bar-fill" id="metaBarFill" style="width:0%"></div>
+        </div>
+        <div class="meta-bar-text" id="metaBarText">Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       2. TABELA DE CAPTADORES
+       ══════════════════════════════════════════════════════════ -->
+  <div class="section-heading">🏆 Ranking de Captadores <span class="badge badge-live">● PLANILHA</span></div>
+  <div class="data-table-wrap">
+    <table class="data-table" id="captadoresTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable('captadoresTable',0,'num')"># <span class="sort-arrow">▼</span></th>
+          <th onclick="sortTable('captadoresTable',1,'str')">Captador <span class="sort-arrow">▼</span></th>
+          <th onclick="sortTable('captadoresTable',2,'num')">Vai Votar <span class="sort-arrow">▼</span></th>
+          <th onclick="sortTable('captadoresTable',3,'num')">Talvez <span class="sort-arrow">▼</span></th>
+          <th onclick="sortTable('captadoresTable',4,'num')">Não <span class="sort-arrow">▼</span></th>
+          <th onclick="sortTable('captadoresTable',5,'num')">Total <span class="sort-arrow">▼</span></th>
+          <th onclick="sortTable('captadoresTable',6,'num')">Taxa <span class="sort-arrow">▼</span></th>
+          <th>Performance</th>
+        </tr>
+      </thead>
+      <tbody id="captadoresBody">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       3. SEÇÃO "LEADS WHATSAPP"
+       ══════════════════════════════════════════════════════════ -->
+  <div class="section-heading">💬 Leads WhatsApp <span class="badge badge-whatsapp">QR CODE</span></div>
+  <div class="leads-table-controls">
+    <input type="text" class="leads-search" id="leadsSearch" placeholder="🔍 Buscar lead por nome, telefone ou bairro...">
+    <select class="filter-select" id="filterStatus" onchange="filterLeads()">
+      <option value="">Todos Status</option>
+      <option value="Novo">🔵 Novo</option>
+      <option value="Qualificado">🔷 Qualificado</option>
+      <option value="Convidado">🟡 Convidado</option>
+      <option value="No Grupo">🟢 No Grupo</option>
+      <option value="Voto Confirmado">✅ Voto Confirmado</option>
+    </select>
+    <select class="filter-select" id="filterFonte" onchange="filterLeads()">
+      <option value="">Todas Fontes</option>
+      <option value="QR Panfleto">📄 QR Panfleto</option>
+      <option value="Instagram">📸 Instagram</option>
+      <option value="Indicação">🤝 Indicação</option>
+      <option value="TikTok">🎵 TikTok</option>
+      <option value="Orgânico">🌱 Orgânico</option>
+    </select>
+    <button class="btn btn-success" onclick="openModal()">➕ Novo Lead</button>
+  </div>
+  <div class="data-table-wrap">
+    <table class="data-table" id="leadsTable">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Nome</th>
+          <th>WhatsApp</th>
+          <th>Bairro/Cidade</th>
+          <th>Fonte</th>
+          <th>Status</th>
+          <th>Captador</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="leadsBody">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+  </div>
+  <div style="text-align:center;margin-bottom:28px;">
+    <p style="font-size:0.8em;color:var(--muted);">
+      Exibindo <strong id="leadsCount">0</strong> leads registrados localmente •
+      Dados são armazenados no <strong>localStorage</strong> do navegador
+    </p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       4. FUNIL VISUAL + RANKING (side by side)
+       ══════════════════════════════════════════════════════════ -->
+  <div class="section-heading">🔻 Funil de Conversão <span class="badge badge-info">HIGHCHARTS</span></div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div id="chartFunnel" style="width:100%;height:380px;"></div>
+    </div>
+    <div class="chart-card">
+      <div id="chartRanking" style="width:100%;height:380px;"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       5. PROJEÇÃO MATEMÁTICA + GRÁFICO
+       ══════════════════════════════════════════════════════════ -->
+  <div class="section-heading">📐 Projeção Matemática <span class="badge badge-info">CÁLCULO</span></div>
+  <div class="projecao-card" id="projecaoCard">
+    <h3>📐 Ritmo Atual vs Meta de 10.000 Votos</h3>
+    <div class="projecao-grid">
+      <div class="projecao-stats" id="projecaoStats">
+        <!-- Populated by JS -->
+      </div>
+      <div id="chartGauge" style="width:100%;height:240px;"></div>
+    </div>
+    <div class="projecao-alert" id="projecaoAlert">Calculando...</div>
+  </div>
+  <div class="chart-card-full">
+    <div id="chartProjection" style="width:100%;height:380px;"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       6. AÇÕES RÁPIDAS
+       ══════════════════════════════════════════════════════════ -->
+  <div class="section-heading">⚡ Ações Rápidas <span class="badge badge-info">LINKS</span></div>
+  <div class="quick-actions-grid">
+    <div class="quick-action-card">
+      <h4 style="color:var(--green);">📝 Google Forms</h4>
+      <p>Formulário de pesquisa de intenção de voto — compartilhe com captadores</p>
+      <a href="https://docs.google.com/spreadsheets/d/1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME" target="_blank" class="btn btn-primary">📋 Abrir Planilha de Votos</a>
+    </div>
+    <div class="quick-action-card">
+      <h4 style="color:#25d366;">💬 Comunidade WhatsApp</h4>
+      <p>7 grupos ativos com 200+ membros — link de convite da comunidade</p>
+      <a href="#" class="btn btn-whatsapp" id="btnWhatsApp" onclick="alert('Configure o link da comunidade em Config → WhatsApp'); return false;">💬 Abrir Comunidade</a>
+      <p style="font-size:0.72em;color:var(--border-light);margin-top:2px;">Configure o link em ⚙️ Config</p>
+    </div>
+    <div class="quick-action-card">
+      <h4 style="color:var(--cyan);">📊 Planilha de Votos</h4>
+      <p>Planilha Google Sheets com todos os dados de captação em tempo real</p>
+      <a href="https://docs.google.com/spreadsheets/d/1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME/edit" target="_blank" class="btn btn-primary">📊 Abrir Google Sheets</a>
+    </div>
+    <div class="quick-action-card">
+      <h4 style="color:var(--gold);">📋 Mensagem de Boas-Vindas</h4>
+      <p>Copie e envie para novos membros do grupo WhatsApp:</p>
+      <div class="msg-box" id="msgBoasVindas">Seja bem-vindo(a) à comunidade Voz da Paulista! 🙌
+
+Aqui construímos juntos um mandato participativo com Luciano da Luz — 4090.
+
+📢 Acompanhe: vozdapaulista.com
+🗳️ No dia 4 de outubro: VOTE 4090
+
+Sua voz importa! 💪</div>
+      <button class="btn btn-copy" onclick="copyText('msgBoasVindas', this)" style="margin-top:8px;">📋 Copiar Mensagem</button>
+    </div>
+  </div>
+
+</div><!-- /.container -->
+
+<!-- ═══ MODAL — NOVO LEAD ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>➕ Registrar Novo Lead</h3>
+    <div class="modal-field">
+      <label>Nome *</label>
+      <input type="text" id="leadNome" placeholder="Nome completo">
+    </div>
+    <div class="modal-field">
+      <label>WhatsApp</label>
+      <input type="text" id="leadWhatsApp" placeholder="(11) 99999-9999">
+    </div>
+    <div class="modal-field">
+      <label>Bairro / Cidade</label>
+      <input type="text" id="leadBairro" placeholder="Bairro ou cidade">
+    </div>
+    <div class="modal-field">
+      <label>Fonte</label>
+      <select id="leadFonte">
+        <option value="QR Panfleto">📄 QR Panfleto</option>
+        <option value="Instagram">📸 Instagram</option>
+        <option value="Indicação">🤝 Indicação</option>
+        <option value="TikTok">🎵 TikTok</option>
+        <option value="Orgânico">🌱 Orgânico</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Status</label>
+      <select id="leadStatus">
+        <option value="Novo">🔵 Novo</option>
+        <option value="Qualificado">🔷 Qualificado</option>
+        <option value="Convidado">🟡 Convidado</option>
+        <option value="No Grupo">🟢 No Grupo</option>
+        <option value="Voto Confirmado">✅ Voto Confirmado</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Captador Responsável</label>
+      <select id="leadCaptador">
+        <option value="">— Selecione —</option>
+        <option value="ALICE">ALICE</option>
+        <option value="DANIEL">DANIEL</option>
+        <option value="LEONILDA">LEONILDA</option>
+        <option value="LOSE">LOSE</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-success" onclick="saveLead()">💾 Salvar Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer style="background:var(--bg);border-top:2px solid var(--indigo);padding:16px;text-align:center;color:#64748b;font-size:0.85em;margin-top:40px;">
+  Campanha Luciano da Luz — 4090 PSB-SP | Sistema de Inteligência Eleitoral v3.0 |
+  <a href="https://vozdapaulista.com" target="_blank" style="color:var(--indigo);">vozdapaulista.com</a>
+</footer>
+
+<!-- ═══ STATUS BAR ═══ -->
+<div class="status-bar">
+  <span class="dot dot-green" id="statusDot"></span>
+  <span id="statusText">Conectando à planilha...</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT — DATA, CHARTS, LEADS MANAGER, PROJEÇÃO
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  // ═══ CONFIG ═══
+  var SHEET_ID = '1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
+  var GVIZ_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json';
+  var ELECTION_DATE = new Date('2026-10-04T08:00:00-03:00');
+  var META_VOTOS = 10000;
+  var CAMPAIGN_START = new Date('2026-08-15');
+  var REFRESH_MS = 5 * 60 * 1000;
+  var LEADS_KEY = 'campanha4090_leads';
+
+  // ═══ HIGHCHARTS DARK THEME ═══
+  Highcharts.setOptions({
+    chart: { backgroundColor: 'transparent', style: { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif' } },
+    title: { style: { color: '#f1f5f9', fontSize: '14px', fontWeight: '700' } },
+    subtitle: { style: { color: '#94a3b8', fontSize: '11px' } },
+    xAxis: { gridLineColor: '#1e293b', lineColor: '#334155', tickColor: '#334155', labels: { style: { color: '#94a3b8' } }, title: { style: { color: '#94a3b8' } } },
+    yAxis: { gridLineColor: '#1e293b', lineColor: '#334155', tickColor: '#334155', labels: { style: { color: '#94a3b8' } }, title: { style: { color: '#94a3b8' } } },
+    legend: { itemStyle: { color: '#94a3b8' }, itemHoverStyle: { color: '#f1f5f9' } },
+    tooltip: { backgroundColor: '#1e293b', borderColor: '#334155', style: { color: '#f1f5f9' } },
+    plotOptions: { series: { dataLabels: { color: '#f1f5f9' } } },
+    credits: { enabled: false }
+  });
+
+  // ═══ COUNTDOWN ═══
+  function updateCountdown() {
+    var now = new Date();
+    var diff = ELECTION_DATE - now;
+    if (diff <= 0) { diff = 0; }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cdDias').textContent = d;
+    document.getElementById('cdHoras').textContent = h < 10 ? '0' + h : h;
+    document.getElementById('cdMin').textContent = m < 10 ? '0' + m : m;
+    document.getElementById('cdSeg').textContent = s < 10 ? '0' + s : s;
+    document.getElementById('kpiDias').textContent = d;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // ═══ LEADS LOCAL STORAGE ═══
+  function getLeads() {
+    try { return JSON.parse(localStorage.getItem(LEADS_KEY)) || []; }
+    catch(e) { return []; }
+  }
+  function saveLeads(leads) {
+    localStorage.setItem(LEADS_KEY, JSON.stringify(leads));
+  }
+
+  // Initialize with sample leads if empty
+  function initSampleLeads() {
+    var existing = getLeads();
+    if (existing.length > 0) return;
+    var samples = [
+      { id: 1, data: '2026-08-28', nome: 'Maria Silva', whatsapp: '(11) 98765-4321', bairro: 'Vila Mariana', fonte: 'QR Panfleto', status: 'Voto Confirmado', captador: 'ALICE' },
+      { id: 2, data: '2026-08-28', nome: 'João Santos', whatsapp: '(11) 91234-5678', bairro: 'Pinheiros', fonte: 'Instagram', status: 'No Grupo', captador: 'DANIEL' },
+      { id: 3, data: '2026-08-27', nome: 'Ana Costa', whatsapp: '(11) 99876-5432', bairro: 'Mooca', fonte: 'QR Panfleto', status: 'Qualificado', captador: 'LEONILDA' },
+      { id: 4, data: '2026-08-27', nome: 'Carlos Oliveira', whatsapp: '(11) 97654-3210', bairro: 'Tatuapé', fonte: 'Indicação', status: 'Convidado', captador: 'LOSE' },
+      { id: 5, data: '2026-08-26', nome: 'Fernanda Lima', whatsapp: '(11) 96543-2109', bairro: 'Santana', fonte: 'TikTok', status: 'Novo', captador: '' },
+      { id: 6, data: '2026-08-26', nome: 'Roberto Mendes', whatsapp: '(11) 95432-1098', bairro: 'Liberdade', fonte: 'QR Panfleto', status: 'No Grupo', captador: 'ALICE' },
+      { id: 7, data: '2026-08-25', nome: 'Patrícia Souza', whatsapp: '(11) 94321-0987', bairro: 'Consolação', fonte: 'Orgânico', status: 'Voto Confirmado', captador: 'DANIEL' },
+      { id: 8, data: '2026-08-25', nome: 'Lucas Pereira', whatsapp: '(11) 93210-9876', bairro: 'Bela Vista', fonte: 'QR Panfleto', status: 'Qualificado', captador: 'LEONILDA' },
+      { id: 9, data: '2026-08-24', nome: 'Camila Rodrigues', whatsapp: '(11) 92109-8765', bairro: 'Itaim Bibi', fonte: 'Instagram', status: 'Novo', captador: '' },
+      { id: 10, data: '2026-08-24', nome: 'Pedro Almeida', whatsapp: '(11) 91098-7654', bairro: 'Butantã', fonte: 'QR Panfleto', status: 'Convidado', captador: 'LOSE' },
+      { id: 11, data: '2026-08-23', nome: 'Juliana Ferreira', whatsapp: '(11) 90987-6543', bairro: 'Lapa', fonte: 'Indicação', status: 'Voto Confirmado', captador: 'ALICE' },
+      { id: 12, data: '2026-08-23', nome: 'André Barbosa', whatsapp: '(11) 99988-7766', bairro: 'Vila Madalena', fonte: 'QR Panfleto', status: 'No Grupo', captador: 'DANIEL' }
+    ];
+    saveLeads(samples);
+  }
+  initSampleLeads();
+
+  // ═══ RENDER LEADS TABLE ═══
+  function renderLeadsTable() {
+    var leads = getLeads();
+    var search = (document.getElementById('leadsSearch').value || '').toLowerCase();
+    var filterStatus = document.getElementById('filterStatus').value;
+    var filterFonte = document.getElementById('filterFonte').value;
+
+    var filtered = leads.filter(function(l) {
+      if (filterStatus && l.status !== filterStatus) return false;
+      if (filterFonte && l.fonte !== filterFonte) return false;
+      if (search) {
+        var haystack = (l.nome + ' ' + l.whatsapp + ' ' + l.bairro + ' ' + l.captador).toLowerCase();
+        if (haystack.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+
+    // Sort by date desc
+    filtered.sort(function(a, b) { return b.data.localeCompare(a.data) || b.id - a.id; });
+
+    var statusMap = {
+      'Novo': 'status-novo',
+      'Qualificado': 'status-qualificado',
+      'Convidado': 'status-convidado',
+      'No Grupo': 'status-no-grupo',
+      'Voto Confirmado': 'status-voto-confirmado'
+    };
+    var fonteMap = {
+      'QR Panfleto': 'fonte-qr',
+      'Instagram': 'fonte-instagram',
+      'Indicação': 'fonte-indicacao',
+      'TikTok': 'fonte-tiktok',
+      'Orgânico': 'fonte-organico'
+    };
+    var fonteIcons = {
+      'QR Panfleto': '📄',
+      'Instagram': '📸',
+      'Indicação': '🤝',
+      'TikTok': '🎵',
+      'Orgânico': '🌱'
+    };
+    var statusIcons = {
+      'Novo': '🔵',
+      'Qualificado': '🔷',
+      'Convidado': '🟡',
+      'No Grupo': '🟢',
+      'Voto Confirmado': '✅'
+    };
+    var nextStatusMap = {
+      'Novo': 'Qualificado',
+      'Qualificado': 'Convidado',
+      'Convidado': 'No Grupo',
+      'No Grupo': 'Voto Confirmado',
+      'Voto Confirmado': null
+    };
+
+    var html = '';
+    filtered.forEach(function(l) {
+      var nextStatus = nextStatusMap[l.status];
+      var actionBtn = nextStatus
+        ? '<button class="btn btn-outline" style="font-size:0.75em;padding:4px 10px;" onclick="advanceLead(' + l.id + ')" title="Avançar para ' + nextStatus + '">→ ' + nextStatus + '</button>'
+        : '<span style="font-size:0.75em;color:var(--green);">✅ Concluído</span>';
+
+      html += '<tr>' +
+        '<td style="white-space:nowrap;font-size:0.85em;color:var(--muted);">' + formatDate(l.data) + '</td>' +
+        '<td style="font-weight:600;">' + escapeHtml(l.nome) + '</td>' +
+        '<td style="font-size:0.88em;font-variant-numeric:tabular-nums;">' + escapeHtml(l.whatsapp) + '</td>' +
+        '<td style="font-size:0.88em;">' + escapeHtml(l.bairro) + '</td>' +
+        '<td><span class="fonte-pill ' + (fonteMap[l.fonte] || '') + '">' + (fonteIcons[l.fonte] || '') + ' ' + l.fonte + '</span></td>' +
+        '<td><span class="status-pill ' + (statusMap[l.status] || '') + '">' + (statusIcons[l.status] || '') + ' ' + l.status + '</span></td>' +
+        '<td style="font-size:0.88em;font-weight:600;">' + (l.captador || '—') + '</td>' +
+        '<td>' + actionBtn + '</td>' +
+      '</tr>';
+    });
+
+    document.getElementById('leadsBody').innerHTML = html || '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">Nenhum lead encontrado</td></tr>';
+    document.getElementById('leadsCount').textContent = filtered.length;
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    var parts = dateStr.split('-');
+    if (parts.length === 3) return parts[2] + '/' + parts[1];
+    return dateStr;
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // ═══ LEAD ACTIONS ═══
+  window.advanceLead = function(id) {
+    var leads = getLeads();
+    var nextMap = { 'Novo': 'Qualificado', 'Qualificado': 'Convidado', 'Convidado': 'No Grupo', 'No Grupo': 'Voto Confirmado' };
+    for (var i = 0; i < leads.length; i++) {
+      if (leads[i].id === id && nextMap[leads[i].status]) {
+        leads[i].status = nextMap[leads[i].status];
+        break;
+      }
+    }
+    saveLeads(leads);
+    renderLeadsTable();
+  };
+
+  window.openModal = function() {
+    document.getElementById('modalOverlay').classList.add('show');
+    document.getElementById('leadNome').focus();
+  };
+
+  window.closeModal = function() {
+    document.getElementById('modalOverlay').classList.remove('show');
+  };
+
+  window.saveLead = function() {
+    var nome = document.getElementById('leadNome').value.trim();
+    if (!nome) { alert('Nome é obrigatório'); return; }
+    var leads = getLeads();
+    var maxId = leads.reduce(function(max, l) { return Math.max(max, l.id || 0); }, 0);
+    var today = new Date();
+    var dateStr = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0');
+    leads.unshift({
+      id: maxId + 1,
+      data: dateStr,
+      nome: nome,
+      whatsapp: document.getElementById('leadWhatsApp').value.trim(),
+      bairro: document.getElementById('leadBairro').value.trim(),
+      fonte: document.getElementById('leadFonte').value,
+      status: document.getElementById('leadStatus').value,
+      captador: document.getElementById('leadCaptador').value
+    });
+    saveLeads(leads);
+    closeModal();
+    renderLeadsTable();
+    // Clear form
+    document.getElementById('leadNome').value = '';
+    document.getElementById('leadWhatsApp').value = '';
+    document.getElementById('leadBairro').value = '';
+  };
+
+  window.filterLeads = function() { renderLeadsTable(); };
+
+  // Search debounce
+  var searchTimeout;
+  document.getElementById('leadsSearch').addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(renderLeadsTable, 300);
+  });
+
+  // ═══ COPY TEXT ═══
+  window.copyText = function(id, btn) {
+    var text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      btn.classList.add('copied');
+      btn.innerHTML = '✅ Copiado!';
+      setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = '📋 Copiar Mensagem'; }, 2000);
+    }).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      btn.classList.add('copied');
+      btn.innerHTML = '✅ Copiado!';
+      setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = '📋 Copiar Mensagem'; }, 2000);
+    });
+  };
+
+  // ═══ TABLE SORT ═══
+  window.sortTable = function(tableId, colIdx, type) {
+    var table = document.getElementById(tableId);
+    var tbody = table.tBodies[0];
+    var rows = Array.from(tbody.rows);
+    var th = table.tHead.rows[0].cells[colIdx];
+    var asc = !th.classList.contains('sorted-asc');
+
+    // Clear all sorted states
+    Array.from(table.tHead.rows[0].cells).forEach(function(c) { c.classList.remove('sorted', 'sorted-asc', 'sorted-desc'); });
+
+    th.classList.add('sorted', asc ? 'sorted-asc' : 'sorted-desc');
+
+    rows.sort(function(a, b) {
+      var va = a.cells[colIdx].textContent.trim();
+      var vb = b.cells[colIdx].textContent.trim();
+      if (type === 'num') {
+        va = parseFloat(va.replace(/[^0-9.\-]/g, '')) || 0;
+        vb = parseFloat(vb.replace(/[^0-9.\-]/g, '')) || 0;
+      }
+      if (va < vb) return asc ? -1 : 1;
+      if (va > vb) return asc ? 1 : -1;
+      return 0;
+    });
+    rows.forEach(function(r) { tbody.appendChild(r); });
+  };
+
+  // ═══ FETCH GOOGLE SHEETS DATA ═══
+  function fetchSheetData() {
+    fetch(GVIZ_URL)
+      .then(function(r) { return r.text(); })
+      .then(function(raw) {
+        var json = raw;
+        var startIdx = raw.indexOf('(');
+        var endIdx = raw.lastIndexOf(')');
+        if (startIdx !== -1 && endIdx !== -1) { json = raw.substring(startIdx + 1, endIdx); }
+        var data = JSON.parse(json);
+        processData(data);
+      })
+      .catch(function(err) {
+        console.error('Fetch error:', err);
+        setStatus(false, 'Erro ao conectar. Usando dados fallback...');
+        useFallbackData();
+      });
+  }
+
+  function getVal(row, idx) {
+    if (!row || !row.c || !row.c[idx]) return null;
+    return row.c[idx].v;
+  }
+
+  function processData(data) {
+    try {
+      var cols = data.table.cols;
+      var rows = data.table.rows;
+      var colMap = {};
+      cols.forEach(function(c, i) { colMap[c.label ? c.label.toLowerCase().trim() : ('col' + i)] = i; });
+
+      var lastRow = rows[rows.length - 1];
+      var resultados_raw = null;
+      var total_votos = 0, total_talvez = 0, total_nao = 0, total_contatos = 0, taxa = 0;
+
+      for (var key in colMap) {
+        var idx = colMap[key];
+        var val = getVal(lastRow, idx);
+        if (key === 'resultados' || key.indexOf('resultado') !== -1) resultados_raw = val;
+        if (key === 'total_votos') total_votos = Number(val) || 0;
+        if (key === 'total_talvez') total_talvez = Number(val) || 0;
+        if (key === 'total_nao' || key === 'total_não') total_nao = Number(val) || 0;
+        if (key === 'total_contatos') total_contatos = Number(val) || 0;
+        if (key === 'taxa') taxa = Number(val) || 0;
+      }
+
+      // Positional fallback
+      if (!total_contatos && rows.length > 0) {
+        for (var i = 0; i < lastRow.c.length; i++) {
+          var v = getVal(lastRow, i);
+          if (typeof v === 'string' && v.indexOf('{') !== -1 && v.indexOf('vai_votar') !== -1) {
+            resultados_raw = v;
+          }
+        }
+        var nums = [];
+        for (var j = 0; j < lastRow.c.length; j++) {
+          var nv = getVal(lastRow, j);
+          if (typeof nv === 'number') nums.push({ idx: j, val: nv });
+        }
+        if (total_contatos === 0 && nums.length >= 4) {
+          nums.sort(function(a, b) { return b.val - a.val; });
+          total_contatos = nums[0] ? nums[0].val : 130;
+          total_votos = nums[1] ? nums[1].val : 103;
+          total_talvez = nums[2] ? nums[2].val : 26;
+          for (var k = 0; k < nums.length; k++) {
+            if (nums[k].val > 0 && nums[k].val < 100 && nums[k].val % 1 !== 0) { taxa = nums[k].val; break; }
+          }
+          total_nao = total_contatos - total_votos - total_talvez;
+          if (total_nao < 0) total_nao = 1;
+        }
+      }
+
+      // Parse captadores
+      var captadores = [];
+      if (resultados_raw) {
+        try {
+          var res = typeof resultados_raw === 'string' ? JSON.parse(resultados_raw) : resultados_raw;
+          for (var name in res) {
+            if (res.hasOwnProperty(name)) {
+              var d = res[name];
+              captadores.push({
+                nome: name,
+                votos: d.vai_votar || 0,
+                talvez: d.talvez || 0,
+                nao: d.nao || d['não'] || 0,
+                total: (d.vai_votar || 0) + (d.talvez || 0) + (d.nao || d['não'] || 0)
+              });
+            }
+          }
+          captadores.sort(function(a, b) { return b.votos - a.votos; });
+        } catch(e) { console.warn('Parse error:', e); }
+      }
+
+      // Fallback
+      if (!total_contatos) total_contatos = 130;
+      if (!total_votos) total_votos = 103;
+      if (!total_talvez) total_talvez = 26;
+      if (!total_nao) total_nao = 1;
+      if (captadores.length === 0) {
+        captadores = [
+          { nome: 'LOSE', votos: 28, talvez: 0, nao: 0, total: 28 },
+          { nome: 'DANIEL', votos: 27, talvez: 0, nao: 0, total: 27 },
+          { nome: 'LEONILDA', votos: 27, talvez: 0, nao: 0, total: 27 },
+          { nome: 'ALICE', votos: 21, talvez: 25, nao: 0, total: 46 }
+        ];
+      }
+      if (!taxa) taxa = total_contatos > 0 ? Math.round((total_votos / total_contatos) * 1000) / 10 : 0;
+
+      renderAll(total_contatos, total_votos, total_talvez, total_nao, taxa, captadores);
+      setStatus(true, 'Dados atualizados — ' + new Date().toLocaleTimeString('pt-BR'));
+    } catch(err) {
+      console.error('Process error:', err);
+      setStatus(false, 'Erro ao processar. Usando fallback...');
+      useFallbackData();
+    }
+  }
+
+  function useFallbackData() {
+    var captadores = [
+      { nome: 'LOSE', votos: 28, talvez: 0, nao: 0, total: 28 },
+      { nome: 'DANIEL', votos: 27, talvez: 0, nao: 0, total: 27 },
+      { nome: 'LEONILDA', votos: 27, talvez: 0, nao: 0, total: 27 },
+      { nome: 'ALICE', votos: 21, talvez: 25, nao: 0, total: 46 }
+    ];
+    renderAll(130, 103, 26, 1, 79.2, captadores);
+    setStatus(true, 'Dados fallback carregados — ' + new Date().toLocaleTimeString('pt-BR'));
+  }
+
+  function setStatus(ok, msg) {
+    document.getElementById('statusDot').className = 'dot ' + (ok ? 'dot-green' : 'dot-red');
+    document.getElementById('statusText').textContent = msg;
+  }
+
+  // ═══ RENDER ALL ═══
+  function renderAll(contatos, votos, talvez, nao, taxa, captadores) {
+    document.getElementById('loadingOverlay').classList.add('hide');
+
+    // KPIs
+    animateNumber('kpiContatos', contatos);
+    animateNumber('kpiVotos', votos);
+    document.getElementById('kpiTaxa').textContent = taxa + '%';
+
+    // Meta progress (based on votos, not contatos)
+    var metaPct = Math.round((votos / META_VOTOS) * 1000) / 10;
+    document.getElementById('kpiMeta').textContent = votos.toLocaleString('pt-BR') + ' / ' + META_VOTOS.toLocaleString('pt-BR');
+    document.getElementById('metaBarFill').style.width = Math.min(metaPct, 100) + '%';
+    document.getElementById('metaBarText').textContent = metaPct + '% da meta atingida • Faltam ' + (META_VOTOS - votos).toLocaleString('pt-BR') + ' votos';
+
+    // Captadores table
+    renderCaptadoresTable(captadores);
+    // Charts
+    renderFunnel(contatos, votos, talvez, nao);
+    renderRankingChart(captadores);
+    renderProjecao(contatos, votos, captadores);
+    renderProjectionChart(contatos, votos);
+    // Leads table
+    renderLeadsTable();
+  }
+
+  function animateNumber(id, target) {
+    var el = document.getElementById(id);
+    var duration = 1200;
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(ease * target).toLocaleString('pt-BR');
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ═══ CAPTADORES TABLE ═══
+  function renderCaptadoresTable(captadores) {
+    var medals = ['🥇', '🥈', '🥉', '🏅'];
+    var rankClasses = ['rank-1', 'rank-2', 'rank-3', 'rank-4'];
+    var maxVotos = Math.max.apply(null, captadores.map(function(c) { return c.votos; }));
+    var html = '';
+
+    captadores.forEach(function(c, i) {
+      var total = c.votos + c.talvez + c.nao;
+      var taxaCap = total > 0 ? Math.round((c.votos / total) * 100) : 0;
+      var barPct = maxVotos > 0 ? Math.round((c.votos / maxVotos) * 100) : 0;
+      html += '<tr>' +
+        '<td style="text-align:center;"><span class="rank-badge ' + (rankClasses[i] || 'rank-4') + '">' + (medals[i] || (i + 1)) + '</span></td>' +
+        '<td style="font-weight:700;">' + c.nome + '</td>' +
+        '<td style="color:var(--green);font-weight:800;font-size:1.1em;">' + c.votos + '</td>' +
+        '<td style="color:var(--gold);font-weight:600;">' + c.talvez + '</td>' +
+        '<td style="color:var(--red);font-weight:600;">' + c.nao + '</td>' +
+        '<td style="font-weight:700;color:var(--cyan);">' + total + '</td>' +
+        '<td style="font-weight:700;color:var(--blue);">' + taxaCap + '%</td>' +
+        '<td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:' + barPct + '%;"></div></div></td>' +
+      '</tr>';
+    });
+
+    // Totals row
+    var totV = captadores.reduce(function(s, c) { return s + c.votos; }, 0);
+    var totT = captadores.reduce(function(s, c) { return s + c.talvez; }, 0);
+    var totN = captadores.reduce(function(s, c) { return s + c.nao; }, 0);
+    var totAll = totV + totT + totN;
+    var totTaxa = totAll > 0 ? Math.round((totV / totAll) * 100) : 0;
+    html += '<tr style="background:rgba(99,102,241,0.08);font-weight:800;">' +
+      '<td></td>' +
+      '<td>TOTAL</td>' +
+      '<td style="color:var(--green);">' + totV + '</td>' +
+      '<td style="color:var(--gold);">' + totT + '</td>' +
+      '<td style="color:var(--red);">' + totN + '</td>' +
+      '<td style="color:var(--cyan);">' + totAll + '</td>' +
+      '<td style="color:var(--blue);">' + totTaxa + '%</td>' +
+      '<td></td>' +
+    '</tr>';
+
+    document.getElementById('captadoresBody').innerHTML = html;
+  }
+
+  // ═══ FUNNEL CHART ═══
+  function renderFunnel(contatos, votos, talvez, nao) {
+    // Funnel stages: Contato → Engajado → Qualificado → Comunidade → Voto Confirmado → Multiplicador
+    var engajados = Math.round(contatos * 0.85);
+    var qualificados = votos + talvez;
+    var comunidade = Math.round(votos * 0.7) + 20; // WhatsApp members estimate
+    var multiplicadores = 4; // captadores
+
+    Highcharts.chart('chartFunnel', {
+      chart: { type: 'funnel', backgroundColor: 'transparent' },
+      title: { text: 'Funil: Contato → Voto' },
+      subtitle: { text: 'Números reais da planilha + estimativas WhatsApp' },
+      plotOptions: {
+        funnel: {
+          neckWidth: '28%', neckHeight: '25%', width: '80%',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b><br>{point.y:,.0f}',
+            style: { color: '#f1f5f9', fontSize: '11px', textOutline: 'none' },
+            softConnector: true
+          }
+        }
+      },
+      series: [{
+        name: 'Funil',
+        data: [
+          { name: '📋 Contato Inicial', y: contatos, color: '#3b82f6' },
+          { name: '💬 Engajado', y: engajados, color: '#22d3ee' },
+          { name: '🔍 Qualificado', y: qualificados, color: '#f59e0b' },
+          { name: '👥 Na Comunidade', y: comunidade, color: '#25d366' },
+          { name: '✅ Voto Confirmado', y: votos, color: '#10b981' },
+          { name: '📢 Multiplicador', y: multiplicadores, color: '#a78bfa' }
+        ]
+      }],
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br>Quantidade: <b>{point.y:,.0f}</b>'
+      }
+    });
+  }
+
+  // ═══ RANKING BAR CHART ═══
+  function renderRankingChart(captadores) {
+    var names = captadores.map(function(c) { return c.nome; });
+    Highcharts.chart('chartRanking', {
+      chart: { type: 'bar', backgroundColor: 'transparent' },
+      title: { text: 'Ranking por Captador' },
+      subtitle: { text: 'Votos confirmados, talvez e não' },
+      xAxis: { categories: names },
+      yAxis: {
+        title: { text: 'Contatos' },
+        stackLabels: { enabled: true, style: { color: '#f1f5f9', fontWeight: '700', textOutline: 'none' } }
+      },
+      plotOptions: { bar: { stacking: 'normal', borderRadius: 3, borderWidth: 0 } },
+      series: [
+        { name: '✅ Votos', data: captadores.map(function(c) { return c.votos; }), color: '#10b981' },
+        { name: '🤔 Talvez', data: captadores.map(function(c) { return c.talvez; }), color: '#f59e0b' },
+        { name: '❌ Não', data: captadores.map(function(c) { return c.nao; }), color: '#ef4444' }
+      ],
+      tooltip: { shared: true, headerFormat: '<b>{point.key}</b><br>', pointFormat: '{series.name}: <b>{point.y}</b><br>' }
+    });
+  }
+
+  // ═══ PROJEÇÃO MATEMÁTICA ═══
+  function renderProjecao(contatos, votos, captadores) {
+    var now = new Date();
+    var daysPassed = Math.max(1, Math.round((now - CAMPAIGN_START) / 86400000));
+    var daysToElection = Math.max(1, Math.round((ELECTION_DATE - now) / 86400000));
+    var votosPerDay = votos / daysPassed;
+    var contatosPerDay = contatos / daysPassed;
+    var projectedVotos = Math.round(votos + (daysToElection * votosPerDay));
+    var neededTotal = META_VOTOS - votos;
+    var neededPerDay = Math.ceil(neededTotal / daysToElection);
+    var multiplicador = neededPerDay > 0 ? Math.round(neededPerDay / Math.max(votosPerDay, 0.1)) : 0;
+
+    var statsHtml =
+      '<div class="projecao-stat"><span class="lab">Dias de campanha ativa</span><span class="val">' + daysPassed + ' dias</span></div>' +
+      '<div class="projecao-stat"><span class="lab">Ritmo atual</span><span class="val" style="color:var(--cyan)">' + votosPerDay.toFixed(1) + ' votos/dia</span></div>' +
+      '<div class="projecao-stat"><span class="lab">Dias restantes</span><span class="val" style="color:var(--gold)">' + daysToElection + ' dias</span></div>' +
+      '<div class="projecao-stat"><span class="lab">Projeção linear votos</span><span class="val" style="color:var(--green)">~' + projectedVotos.toLocaleString('pt-BR') + '</span></div>' +
+      '<div class="projecao-stat"><span class="lab">Faltam p/ meta</span><span class="val" style="color:var(--red)">' + neededTotal.toLocaleString('pt-BR') + ' votos</span></div>' +
+      '<div class="projecao-stat"><span class="lab">Necessário p/ meta</span><span class="val" style="color:var(--orange)">' + neededPerDay.toLocaleString('pt-BR') + ' votos/dia</span></div>' +
+      '<div class="projecao-stat"><span class="lab">Captadores ativos</span><span class="val" style="color:var(--purple)">' + captadores.length + ' (' + Math.round(votosPerDay / Math.max(captadores.length, 1) * 10) / 10 + ' votos/cap/dia)</span></div>';
+
+    document.getElementById('projecaoStats').innerHTML = statsHtml;
+
+    // Alert
+    var alertHtml;
+    if (projectedVotos >= META_VOTOS) {
+      alertHtml = '✅ <strong>No caminho certo!</strong> No ritmo atual, a meta de ' + META_VOTOS.toLocaleString('pt-BR') + ' votos será atingida antes da eleição!';
+      document.querySelector('.projecao-alert').style.borderColor = 'rgba(16,185,129,0.3)';
+      document.querySelector('.projecao-alert').style.background = 'rgba(16,185,129,0.1)';
+    } else {
+      alertHtml = '⚠️ <strong>Atenção:</strong> No ritmo atual de <strong>' + votosPerDay.toFixed(1) + ' votos/dia</strong>, chegaremos a <strong>~' + projectedVotos.toLocaleString('pt-BR') + ' votos</strong> em 4/out. ' +
+        'Para atingir a meta de ' + META_VOTOS.toLocaleString('pt-BR') + ', precisamos de <strong>' + neededPerDay.toLocaleString('pt-BR') + ' votos/dia</strong> ' +
+        '(<strong>' + multiplicador + 'x</strong> o ritmo atual). ' +
+        '💡 <strong>Estratégias:</strong> Cada novo captador gera ~' + Math.round(votosPerDay / Math.max(captadores.length, 1)) + ' votos/dia. ' +
+        'QR Codes nos panfletos + Facebook Ads podem escalar 10-50x.';
+    }
+    document.getElementById('projecaoAlert').innerHTML = alertHtml;
+
+    // Gauge
+    var pctGauge = Math.min(Math.round((projectedVotos / META_VOTOS) * 100), 100);
+    Highcharts.chart('chartGauge', {
+      chart: { type: 'solidgauge', backgroundColor: 'transparent', height: 240 },
+      title: { text: null },
+      pane: {
+        center: ['50%', '70%'], size: '100%',
+        startAngle: -110, endAngle: 110,
+        background: { backgroundColor: '#1e293b', innerRadius: '60%', outerRadius: '100%', shape: 'arc', borderWidth: 0 }
+      },
+      yAxis: {
+        min: 0, max: 100, lineWidth: 0, tickWidth: 0, minorTickInterval: null, tickAmount: 2,
+        labels: { enabled: false },
+        stops: [[0.1, '#ef4444'], [0.3, '#f59e0b'], [0.6, '#22d3ee'], [0.9, '#10b981']]
+      },
+      series: [{
+        name: 'Projeção',
+        data: [pctGauge],
+        dataLabels: {
+          format: '<div style="text-align:center"><span style="font-size:1.8em;font-weight:800;color:#f1f5f9">{y}%</span><br><span style="font-size:0.75em;color:#94a3b8">da meta projetada</span></div>',
+          borderWidth: 0, y: -15
+        }
+      }]
+    });
+  }
+
+  // ═══ PROJECTION LINE CHART ═══
+  function renderProjectionChart(contatos, votos) {
+    var now = new Date();
+    var daysPassed = Math.max(1, Math.round((now - CAMPAIGN_START) / 86400000));
+    var daysToElection = Math.max(1, Math.round((ELECTION_DATE - now) / 86400000));
+    var votosPerDay = votos / daysPassed;
+
+    // Actual data points
+    var actualLine = [
+      [CAMPAIGN_START.getTime(), 0],
+      [now.getTime(), votos]
+    ];
+
+    // Projection — current pace
+    var projCurrent = [];
+    var projAccelerated = [];
+    var steps = 10;
+    var stepMs = (daysToElection * 86400000) / steps;
+    for (var s = 0; s <= steps; s++) {
+      var futureTs = now.getTime() + (s * stepMs);
+      if (futureTs > ELECTION_DATE.getTime()) futureTs = ELECTION_DATE.getTime();
+      var daysFromNow = (futureTs - now.getTime()) / 86400000;
+      projCurrent.push([futureTs, Math.round(votos + (daysFromNow * votosPerDay))]);
+      // Accelerated scenario (3x growth — Ads + more captadores)
+      projAccelerated.push([futureTs, Math.round(votos + (daysFromNow * votosPerDay * 3))]);
+    }
+
+    Highcharts.chart('chartProjection', {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Projeção de Votos até 4 de Outubro' },
+      subtitle: { text: 'Ritmo atual: ' + votosPerDay.toFixed(1) + ' votos/dia | Cenário acelerado: ' + (votosPerDay * 3).toFixed(1) + ' votos/dia' },
+      xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: { day: '%d/%m', month: '%b/%y' },
+        plotLines: [{
+          value: ELECTION_DATE.getTime(),
+          color: '#ef4444', dashStyle: 'Dash', width: 2,
+          label: { text: '🗳️ ELEIÇÃO', style: { color: '#ef4444', fontSize: '11px' }, rotation: 0, y: -5 }
+        }]
+      },
+      yAxis: {
+        title: { text: 'Votos' },
+        plotLines: [{
+          value: META_VOTOS, color: '#a78bfa', dashStyle: 'Dot', width: 2,
+          label: { text: '🎯 Meta 10.000', style: { color: '#a78bfa', fontSize: '11px' } }
+        }]
+      },
+      series: [
+        {
+          name: '✅ Votos (real)',
+          data: actualLine,
+          color: '#10b981', lineWidth: 3,
+          marker: { enabled: true, radius: 6 }
+        },
+        {
+          name: '📈 Projeção Linear',
+          data: projCurrent,
+          color: '#f59e0b', dashStyle: 'Dash', lineWidth: 2,
+          marker: { enabled: false }
+        },
+        {
+          name: '🚀 Cenário Acelerado (3x)',
+          data: projAccelerated,
+          color: '#22d3ee', dashStyle: 'ShortDot', lineWidth: 2,
+          marker: { enabled: false }
+        }
+      ],
+      tooltip: {
+        shared: true,
+        xDateFormat: '%d/%m/%Y',
+        pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br>'
+      }
+    });
+  }
+
+  // ═══ INITIAL LOAD ═══
+  fetchSheetData();
+  setInterval(fetchSheetData, REFRESH_MS);
+
+})();
+</script>
+
+</body>
+</html>

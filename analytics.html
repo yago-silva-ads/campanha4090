@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 ANALYTICS & INTELIGÊNCIA — Campanha 4090</title>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts-more.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/heatmap.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/solid-gauge.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/wordcloud.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════
+   ANALYTICS & INTELIGÊNCIA ESTRATÉGICA — Campanha 4090
+   Data-driven insights • Actionable intelligence
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --green: #10b981;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --blue: #818cf8;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --cyan: #22d3ee;
+  --pink: #f472b6;
+  --radius: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  padding: 12px;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ═══ HEADER ═══ */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 24px 16px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--gold), var(--green));
+}
+.header h1 { font-size: 1.6em; margin-bottom: 4px; letter-spacing: -0.02em; }
+.header .sub { color: var(--muted); font-size: 0.85em; margin-bottom: 12px; }
+
+.live-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.live {
+  display: inline-flex; align-items: center;
+  background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.25);
+  border-radius: 20px; padding: 5px 14px; font-size: 0.78em; color: var(--green); font-weight: 600;
+}
+.live .dot {
+  width: 7px; height: 7px; background: var(--green);
+  border-radius: 50%; margin-right: 6px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.btn-refresh {
+  background: rgba(99,102,241,.15); color: var(--blue);
+  border: 1px solid rgba(99,102,241,.3); padding: 5px 14px;
+  border-radius: 20px; font-size: 0.78em; cursor: pointer;
+  font-weight: 600; transition: all .2s;
+}
+.btn-refresh:hover { background: rgba(99,102,241,.3); }
+
+.btn-back {
+  background: rgba(255,255,255,.06); color: var(--muted);
+  border: 1px solid var(--border); padding: 5px 14px;
+  border-radius: 20px; font-size: 0.78em; text-decoration: none;
+  font-weight: 600; transition: all .2s;
+}
+.btn-back:hover { background: rgba(255,255,255,.1); color: var(--text); }
+
+/* ═══ STATS ROW ═══ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px; margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; text-align: center;
+  transition: transform .2s, border-color .2s;
+}
+.stat-card:hover { transform: translateY(-2px); border-color: rgba(99,102,241,.3); }
+.stat-card .label {
+  font-size: 0.72em; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.stat-card .value {
+  font-size: 2em; font-weight: 800;
+  font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace;
+}
+.stat-card .sub { font-size: 0.72em; color: var(--muted); margin-top: 2px; }
+.stat-card .trend-up { color: var(--green); font-size: 0.78em; font-weight: 700; }
+.stat-card .trend-down { color: var(--red); font-size: 0.78em; font-weight: 700; }
+
+/* ═══ SECTIONS ═══ */
+.section {
+  margin-bottom: 20px; padding: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius);
+  position: relative;
+}
+.section-premium {
+  background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, var(--card) 100%);
+  border-color: rgba(99,102,241,0.25);
+}
+.section-premium::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+.section-gold {
+  background: linear-gradient(135deg, rgba(245,158,11,0.06) 0%, var(--card) 100%);
+  border-color: rgba(245,158,11,0.25);
+}
+.section-gold::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.section-green {
+  background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, var(--card) 100%);
+  border-color: rgba(16,185,129,0.25);
+}
+.section-green::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.section-red {
+  background: linear-gradient(135deg, rgba(239,68,68,0.04) 0%, var(--card) 100%);
+  border-color: rgba(239,68,68,0.2);
+}
+.section-red::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+.section-title {
+  font-size: 1.1em; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title .count {
+  background: rgba(99,102,241,.2); color: var(--blue);
+  padding: 2px 10px; border-radius: 10px; font-size: 0.7em;
+}
+
+/* ═══ CHART GRID ═══ */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 16px;
+}
+.chart-box {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; min-height: 320px;
+}
+.chart-box-full {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; min-height: 340px;
+}
+
+/* ═══ TOP ENGAJADORES TABLE ═══ */
+.table-container { overflow-x: auto; }
+table.data-table {
+  width: 100%; border-collapse: collapse; font-size: 0.88em;
+}
+table.data-table thead th {
+  background: var(--bg); color: var(--muted); font-weight: 700;
+  text-transform: uppercase; font-size: 0.72em; letter-spacing: 0.05em;
+  padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+}
+table.data-table tbody tr {
+  border-bottom: 1px solid rgba(51,65,85,0.4);
+  transition: background .15s;
+}
+table.data-table tbody tr:hover { background: rgba(99,102,241,0.05); }
+table.data-table tbody td {
+  padding: 10px 12px; vertical-align: middle;
+}
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  font-weight: 800; font-size: 0.82em;
+  font-family: 'SF Mono', Consolas, monospace;
+}
+.rank-1 { background: rgba(245,158,11,.2); color: var(--gold); }
+.rank-2 { background: rgba(148,163,184,.2); color: #cbd5e1; }
+.rank-3 { background: rgba(180,83,9,.2); color: var(--orange); }
+.rank-other { background: rgba(99,102,241,.1); color: var(--muted); }
+
+.badge-sm {
+  padding: 2px 8px; border-radius: 8px; font-size: 0.72em;
+  font-weight: 700; display: inline-flex; align-items: center; gap: 3px;
+}
+.b-apoiador { background: rgba(16,185,129,.15); color: var(--green); }
+.b-contra { background: rgba(239,68,68,.15); color: var(--red); }
+.b-potencial { background: rgba(245,158,11,.15); color: var(--gold); }
+.b-neutro { background: rgba(148,163,184,.15); color: var(--muted); }
+.b-pendente { background: rgba(245,158,11,.12); color: var(--gold); }
+.plat-fb { background: rgba(24,119,242,.12); color: #60a5fa; padding: 2px 8px; border-radius: 4px; font-size: 0.72em; font-weight: 700; }
+.plat-ig { background: rgba(228,64,95,.12); color: #fb7185; padding: 2px 8px; border-radius: 4px; font-size: 0.72em; font-weight: 700; }
+
+/* ═══ PROGRESS BARS ═══ */
+.goal-item { margin-bottom: 16px; }
+.goal-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.goal-label { font-size: 0.9em; font-weight: 600; }
+.goal-numbers {
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 0.85em; color: var(--muted);
+}
+.goal-numbers strong { color: var(--text); }
+.goal-bar-bg {
+  background: var(--bg); border-radius: 8px; height: 18px;
+  overflow: hidden; border: 1px solid var(--border);
+}
+.goal-bar-fill {
+  height: 100%; border-radius: 8px;
+  transition: width 1.5s ease;
+  position: relative;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 6px;
+  font-size: 0.65em; font-weight: 700; color: #fff;
+  min-width: 30px;
+}
+.goal-bar-fill.bar-green { background: linear-gradient(90deg, #059669, var(--green)); }
+.goal-bar-fill.bar-blue { background: linear-gradient(90deg, #4f46e5, var(--blue)); }
+.goal-bar-fill.bar-purple { background: linear-gradient(90deg, #7c3aed, var(--purple)); }
+
+/* ═══ COUNTDOWN ═══ */
+.countdown-box {
+  text-align: center; padding: 20px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; margin-top: 16px;
+}
+.countdown-number {
+  font-size: 3em; font-weight: 900; color: var(--gold);
+  font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  text-shadow: 0 0 30px rgba(245,158,11,0.3);
+}
+.countdown-label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
+
+/* ═══ COMPETITOR CARDS ═══ */
+.competitor-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.competitor-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px;
+  transition: all .2s; border-left: 3px solid var(--red);
+}
+.competitor-card:hover { border-color: rgba(239,68,68,.4); }
+.competitor-name { font-weight: 700; font-size: 1em; margin-bottom: 4px; }
+.competitor-handle { color: var(--muted); font-size: 0.82em; margin-bottom: 8px; }
+.competitor-stats {
+  display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.78em;
+}
+.competitor-stat { color: var(--muted); }
+.competitor-stat strong { color: var(--text); }
+
+/* ═══ INSIGHT BOX ═══ */
+.insight-box {
+  background: rgba(34,211,238,0.06); border: 1px solid rgba(34,211,238,0.15);
+  border-radius: 10px; padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 12px;
+  border-left: 3px solid var(--cyan);
+}
+.insight-box .icon { font-size: 1.3em; flex-shrink: 0; }
+.insight-box .text { font-size: 0.88em; color: var(--text); line-height: 1.5; }
+.insight-box .text strong { color: var(--cyan); }
+
+/* ═══ KEYWORD TAGS ═══ */
+.keyword-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.keyword-tag {
+  padding: 5px 14px; border-radius: 20px; font-size: 0.82em;
+  font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
+}
+.keyword-tag.hot { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
+.keyword-tag.warm { background: rgba(245,158,11,.12); color: var(--gold); border: 1px solid rgba(245,158,11,.25); }
+.keyword-tag.cool { background: rgba(99,102,241,.12); color: var(--blue); border: 1px solid rgba(99,102,241,.25); }
+
+/* ═══ LOADING / EMPTY ═══ */
+.loading-spinner {
+  text-align: center; padding: 40px; color: var(--muted);
+}
+.loading-spinner::after {
+  content: ''; display: inline-block; width: 24px; height: 24px;
+  border: 3px solid var(--border); border-top-color: var(--blue);
+  border-radius: 50%; animation: spin .8s linear infinite;
+  margin-right: 8px; vertical-align: middle;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+.empty-state {
+  text-align: center; padding: 40px 20px; color: var(--muted);
+}
+.empty-state .icon { font-size: 2.5em; margin-bottom: 8px; opacity: .5; }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  text-align: center; color: var(--muted); font-size: 0.7em;
+  margin-top: 14px; padding-bottom: 20px;
+}
+.footer a { color: var(--blue); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* ═══ TOAST ═══ */
+.toast {
+  position: fixed; bottom: 20px; right: 20px;
+  padding: 14px 22px; border-radius: 10px;
+  font-size: 0.82em; font-weight: 600; z-index: 9999;
+  display: none; animation: slideIn .3s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.toast.info { background: var(--blue); color: #fff; }
+@keyframes slideIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  body { padding: 8px; }
+  .header h1 { font-size: 1.2em; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .stat-card .value { font-size: 1.5em; }
+  .chart-grid { grid-template-columns: 1fr; }
+  .chart-box { min-height: 260px; }
+  .competitor-grid { grid-template-columns: 1fr; }
+  .countdown-number { font-size: 2em; }
+}
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .stat-card { padding: 10px; }
+  .stat-card .value { font-size: 1.3em; }
+  .chart-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
+  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
+  <span style="color:#475569;">|</span>
+  <a href="redes.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📡 QG Redes</a>
+  <a href="congresso.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🏛️ Congresso</a>
+  <a href="votar.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🗳️ Votar</a>
+  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
+  <a href="leads.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">👥 Leads</a>
+  <a href="analytics.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">📊 Analytics</a>
+  <a href="conteudo.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📝 Conteúdo</a>
+  <a href="config.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">⚙️ Config</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════ -->
+<div class="header">
+  <h1>📊 ANALYTICS & INTELIGÊNCIA — Campanha 4090</h1>
+  <div class="sub">Inteligência Estratégica • Dados em Tempo Real • Decisões Orientadas por Dados</div>
+  <div class="live-row">
+    <div class="live"><span class="dot"></span>AO VIVO — Atualiza a cada 5 min</div>
+    <button class="btn-refresh" onclick="loadAllData()">⟳ Atualizar Agora</button>
+    <a href="index.html" class="btn-back">← Painel Principal</a>
+    <span style="color:var(--muted);font-size:0.72em" id="lastUpdate"></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     1. PANORAMA — TOP KPIs (DADOS REAIS)
+     ═══════════════════════════════════════════════════════ -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-card">
+    <div class="label">🗳️ Votos Confirmados</div>
+    <div class="value" id="kpiVotos" style="color:var(--green)">—</div>
+    <div class="sub" id="kpiVotosSub">dados reais da planilha</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">📋 Total Contatos</div>
+    <div class="value" id="kpiContatos" style="color:var(--blue)">—</div>
+    <div class="sub" id="kpiContatosSub">captados pela equipe</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">📈 Taxa Conversão</div>
+    <div class="value" id="kpiTaxa" style="color:var(--cyan)">—</div>
+    <div class="sub" id="kpiTaxaSub">contatos → votos</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">💬 Interações Redes</div>
+    <div class="value" id="kpiTotal" style="color:var(--purple)">—</div>
+    <div class="sub" id="kpiTotalSub">comentários capturados</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">📑 Proposições</div>
+    <div class="value" id="kpiProposicoes" style="color:var(--gold)">—</div>
+    <div class="sub" id="kpiProposicoesSub">projetos de lei</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">⏳ Dias p/ Eleição</div>
+    <div class="value" id="kpiDias" style="color:var(--orange)">—</div>
+    <div class="sub" id="kpiDiasSub">4 de outubro de 2026</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     2. ENGAJAMENTO POR PLATAFORMA
+     ═══════════════════════════════════════════════════════ -->
+<div class="section section-premium">
+  <div class="section-title">📱 Engajamento por Plataforma <span class="count" id="engCount">—</span></div>
+  <div class="chart-grid">
+    <div class="chart-box" id="chartPie"></div>
+    <div class="chart-box" id="chartBarDaily"></div>
+  </div>
+  <div class="chart-box-full" id="chartLineTrend" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     3. ANÁLISE DE SENTIMENTO
+     ═══════════════════════════════════════════════════════ -->
+<div class="section section-green">
+  <div class="section-title" style="color:var(--green)">🎯 Análise de Sentimento <span class="count" id="sentCount" style="background:rgba(16,185,129,.15);color:var(--green)">—</span></div>
+  <div class="chart-grid">
+    <div class="chart-box" id="chartDonut"></div>
+    <div class="chart-box" id="chartSentimentTrend"></div>
+  </div>
+  <div class="chart-box-full" id="chartWordcloud" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     4. HORÁRIOS DE PICO
+     ═══════════════════════════════════════════════════════ -->
+<div class="section section-gold">
+  <div class="section-title" style="color:var(--gold)">🕐 Horários de Pico <span class="count" id="peakLabel" style="background:rgba(245,158,11,.15);color:var(--gold)">análise temporal</span></div>
+  <div class="chart-box-full" id="chartHeatmap"></div>
+  <div class="insight-box" id="peakInsight" style="margin-top:14px">
+    <div class="icon">💡</div>
+    <div class="text" id="peakInsightText">Carregando análise de horários...</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     5. TOP ENGAJADORES
+     ═══════════════════════════════════════════════════════ -->
+<div class="section section-premium">
+  <div class="section-title">🏆 Top Engajadores <span class="count" id="topCount">—</span></div>
+  <div class="table-container" style="max-height: 600px; overflow-y: auto;">
+    <table class="data-table" id="topTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Plataforma</th>
+          <th>Total Comentários</th>
+          <th>Classificação</th>
+          <th>Último Contato</th>
+        </tr>
+      </thead>
+      <tbody id="topTableBody">
+        <tr><td colspan="6" class="loading-spinner">Carregando top engajadores...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Analytics JS -->
+<script>
+const SHEET_VOTOS = '1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
+const SHEET_PROPOSICOES = '1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
+
+function loadGVIZ(sheetId, sheetName) {
+  const url = 'https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:json' + (sheetName ? '&sheet=' + sheetName : '');
+  return fetch(url).then(r => r.text()).then(text => {
+    const json = JSON.parse(text.substring(47).slice(0, -2));
+    return json.table;
+  });
+}
+
+function loadAnalytics() {
+  // Load COMENTARIOS data
+  loadGVIZ(SHEET_VOTOS, 'COMENTARIOS').then(table => {
+    const rows = table.rows;
+    
+    // Count by classification
+    let apoio = 0, neutro = 0, contra = 0, potencial = 0, total = rows.length;
+    let igCount = 0, fbCount = 0;
+    let byDate = {};
+    let topAuthors = {};
+    
+    rows.forEach(r => {
+      const cls = (r.c[6] ? r.c[6].v || '' : '').toUpperCase();
+      const plat = r.c[7] ? r.c[7].v || '' : '';
+      const autor = r.c[1] ? r.c[1].v || '' : '';
+      const data = r.c[0] ? (r.c[0].v || '').substring(0, 10) : '';
+      
+      if (cls.includes('APOIADOR') || cls.includes('APOIO')) apoio++;
+      else if (cls.includes('CONTRA') || cls.includes('ATAQUE')) contra++;
+      else if (cls.includes('NEUTRO')) neutro++;
+      else potencial++;
+      
+      if (plat === 'Instagram') igCount++;
+      if (plat === 'Facebook') fbCount++;
+      
+      if (data) byDate[data] = (byDate[data] || 0) + 1;
+      if (autor) topAuthors[autor] = (topAuthors[autor] || 0) + 1;
+    });
+    
+    // Update stat cards
+    var statInteracoes = document.getElementById('statInteracoes');
+    if (statInteracoes) statInteracoes.textContent = total;
+    
+    // Pie chart - Classification
+    if (typeof Highcharts !== 'undefined' && document.getElementById('chartSentimento')) {
+      Highcharts.chart('chartSentimento', {
+        chart: { type: 'pie', backgroundColor: 'transparent', height: 300 },
+        title: { text: 'Distribuição de Sentimento', style: { color: '#f1f5f9' } },
+        plotOptions: { pie: { dataLabels: { color: '#94a3b8' }, borderColor: '#334155' } },
+        series: [{ name: 'Comentários', data: [
+          { name: '✅ Apoio', y: apoio, color: '#10b981' },
+          { name: '⚪ Neutro', y: neutro, color: '#94a3b8' },
+          { name: '🔴 Contra', y: contra, color: '#ef4444' },
+          { name: '🔵 Potencial', y: potencial, color: '#818cf8' }
+        ]}]
+      });
+    }
+    
+    // Bar chart - Platform
+    if (typeof Highcharts !== 'undefined' && document.getElementById('chartPlataforma')) {
+      Highcharts.chart('chartPlataforma', {
+        chart: { type: 'pie', backgroundColor: 'transparent', height: 300 },
+        title: { text: 'Distribuição por Plataforma', style: { color: '#f1f5f9' } },
+        series: [{ name: 'Comentários', data: [
+          { name: '📘 Facebook', y: fbCount, color: '#3b82f6' },
+          { name: '📸 Instagram', y: igCount, color: '#f59e0b' }
+        ]}]
+      });
+    }
+    
+    // Timeline chart - Comments per day
+    var dates = Object.keys(byDate).sort();
+    var fbData = [];
+    var igData = [];
+    dates.forEach(d => {
+      var ts = new Date(d).getTime();
+      fbData.push([ts, Math.round(byDate[d] * fbCount / total)]);
+      igData.push([ts, Math.round(byDate[d] * igCount / total)]);
+    });
+    
+    if (typeof Highcharts !== 'undefined' && document.getElementById('chartTimeline')) {
+      Highcharts.chart('chartTimeline', {
+        chart: { type: 'area', backgroundColor: 'transparent', height: 300 },
+        title: { text: 'Comentários / Dia', style: { color: '#f1f5f9' } },
+        xAxis: { type: 'datetime', labels: { style: { color: '#94a3b8' } } },
+        yAxis: { title: { text: '' }, labels: { style: { color: '#94a3b8' } }, gridLineColor: '#1e293b' },
+        series: [
+          { name: 'Facebook', data: fbData, color: '#3b82f6' },
+          { name: 'Instagram', data: igData, color: '#f59e0b' }
+        ]
+      });
+    }
+    
+    // Top engajadores table
+    var sorted = Object.entries(topAuthors).sort((a,b) => b[1] - a[1]).slice(0, 10);
+    var tbody = document.getElementById('topTableBody');
+    if (tbody) {
+      tbody.innerHTML = sorted.map((item, i) => 
+        '<tr><td>' + (i+1) + '</td><td style="font-weight:600">' + item[0] + '</td><td>' + item[1] + '</td><td>—</td><td>—</td><td>—</td></tr>'
+      ).join('');
+    }
+    
+    document.getElementById('tsUpdate').textContent = '✅ Atualizado ' + new Date().toLocaleTimeString('pt-BR');
+  }).catch(err => {
+    console.error('Analytics error:', err);
+  });
+  
+  // Load proposições count
+  loadGVIZ(SHEET_PROPOSICOES).then(table => {
+    var el = document.getElementById('statProposicoes');
+    if (el) el.textContent = table.rows.length;
+  }).catch(() => {});
+}
+
+loadAnalytics();
+setInterval(loadAnalytics, 300000);
+</script>
+</body>
+</html>
