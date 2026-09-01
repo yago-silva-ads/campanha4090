@@ -179,12 +179,13 @@ async function loadTab(tabName) {
   // Data: B(1)=Nome, C(2)=Número/Rede, D(3)=Categoria, E(4)=Observação
   const contatos = [];
   for(let i=3; i<rows.length; i++) {
-    const nome = val(rows[i], 1);
-    if(!nome) continue;
+    const cat = val(rows[i], 3);
+    if(!cat) continue; // skip rows without category
+    const nome = val(rows[i], 1) || 'Sem nome';
     contatos.push({
       nome: nome,
       rede: val(rows[i], 2),
-      status: normCat(val(rows[i], 3)),
+      status: normCat(cat),
       obs: val(rows[i], 4),
       captador: tabName
     });
