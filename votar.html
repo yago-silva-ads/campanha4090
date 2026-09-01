@@ -2,560 +2,123 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Votar — Projetos em Votação | Campanha 4090</title>
-<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<title>📋 Proposições — Luciano da Luz 4090</title>
 <style>
-:root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --border: #334155;
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --green: #10b981;
-  --red: #ef4444;
-  --blue: #818cf8;
-  --yellow: #fbbf24;
-  --gold: #f59e0b;
-}
+:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:var(--text); font-size:16px; line-height:1.6; min-height:100vh; }
-a { color:var(--blue); text-decoration:none; }
-a:hover { text-decoration:underline; }
-
-/* Header */
-.header { text-align:center; padding:40px 20px 20px; }
-.header h1 { font-size:1.8em; margin-bottom:8px; }
-.header p { color:var(--muted); font-size:1em; max-width:600px; margin:0 auto; }
-
-/* Source indicator */
-.source-indicator{text-align:center;margin-bottom:12px;padding:6px 14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:8px;font-size:.78em;color:var(--muted);display:inline-block}
-.source-indicator.sheets{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.2);color:var(--green)}
-.source-indicator.api{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.2);color:var(--gold)}
-.source-wrap{text-align:center;margin-bottom:14px}
-
-/* Overview Chart */
-.overview-section { max-width:900px; margin:0 auto; padding:0 20px 20px; display:flex; justify-content:center; }
-#overview-chart { width:220px; height:220px; }
-
-/* Filters */
-.filters { max-width:900px; margin:0 auto; padding:10px 20px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-.filter-tabs { display:flex; gap:6px; flex-wrap:wrap; }
-.filter-tab { background:var(--card); border:1px solid var(--border); color:var(--muted); padding:8px 16px; border-radius:20px; cursor:pointer; font-size:.9em; transition:all .2s; }
-.filter-tab:hover, .filter-tab.active { background:var(--blue); color:#fff; border-color:var(--blue); }
-.sort-select { background:var(--card); border:1px solid var(--border); color:var(--text); padding:8px 14px; border-radius:10px; font-size:.9em; margin-left:auto; cursor:pointer; }
-
-/* Cards */
-.cards-container { max-width:900px; margin:0 auto; padding:20px; display:flex; flex-direction:column; gap:20px; }
-.proposal-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; transition:border-color .2s; }
-.proposal-card:hover { border-color:var(--blue); }
-.card-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
-.badge-tipo { padding:4px 12px; border-radius:8px; font-size:.75em; font-weight:700; text-transform:uppercase; }
-.badge-PEC { background:rgba(239,68,68,.15); color:var(--red); border:1px solid rgba(239,68,68,.3); }
-.badge-PL { background:rgba(129,140,248,.15); color:var(--blue); border:1px solid rgba(129,140,248,.3); }
-.badge-PLP { background:rgba(251,191,36,.15); color:var(--yellow); border:1px solid rgba(251,191,36,.3); }
-.badge-other { background:rgba(148,163,184,.15); color:var(--muted); border:1px solid rgba(148,163,184,.3); }
-.card-title { font-size:1.1em; font-weight:600; }
-.card-ementa { color:var(--muted); margin:10px 0 14px; font-size:.95em; line-height:1.5; }
-.card-meta { display:flex; flex-wrap:wrap; gap:14px; color:var(--muted); font-size:.85em; margin-bottom:16px; }
-.card-meta span { display:flex; align-items:center; gap:4px; }
-.aligned-badge { background:rgba(16,185,129,.12); color:var(--green); border:1px solid rgba(16,185,129,.3); padding:4px 10px; border-radius:10px; font-size:.8em; margin-bottom:14px; display:inline-block; }
-
-/* Voting */
-.vote-section { margin-bottom:14px; }
-.vote-bar { height:8px; border-radius:4px; background:var(--border); overflow:hidden; margin-bottom:10px; }
-.vote-bar-inner { height:100%; display:flex; }
-.vote-bar-green { background:var(--green); transition:width .5s ease; }
-.vote-bar-red { background:var(--red); transition:width .5s ease; }
-.vote-buttons { display:flex; gap:10px; flex-wrap:wrap; }
-.vote-btn { padding:10px 20px; border-radius:12px; border:2px solid; font-size:.9em; font-weight:600; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:6px; }
-.vote-btn-favor { background:rgba(16,185,129,.1); border-color:var(--green); color:var(--green); }
-.vote-btn-favor:hover:not(.voted) { background:rgba(16,185,129,.25); transform:scale(1.03); }
-.vote-btn-contra { background:rgba(239,68,68,.1); border-color:var(--red); color:var(--red); }
-.vote-btn-contra:hover:not(.voted) { background:rgba(239,68,68,.25); transform:scale(1.03); }
-.vote-btn.voted { opacity:.7; cursor:default; }
-.vote-btn.voted::after { content:" ✓"; }
-.vote-count { font-size:.85em; opacity:.8; }
-.vote-pct { display:flex; justify-content:space-between; font-size:.8em; color:var(--muted); margin-bottom:6px; }
-
-/* Card footer */
-.card-actions { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-.btn-link { background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.3); color:var(--blue); padding:8px 14px; border-radius:10px; font-size:.85em; transition:all .2s; display:inline-flex; align-items:center; gap:4px; }
-.btn-link:hover { background:rgba(129,140,248,.25); text-decoration:none; }
-.btn-whatsapp { background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.3); color:#25d366; padding:8px 14px; border-radius:10px; font-size:.85em; transition:all .2s; display:inline-flex; align-items:center; gap:4px; }
-.btn-whatsapp:hover { background:rgba(37,211,102,.25); text-decoration:none; }
-
-/* Footer */
-.page-footer { text-align:center; padding:40px 20px; color:var(--muted); font-size:.85em; }
-.page-footer a { color:var(--blue); }
-.back-link { display:inline-flex; align-items:center; gap:4px; margin-bottom:10px; font-size:1em; }
-
-/* Loading */
-.loading { text-align:center; padding:60px 20px; color:var(--muted); font-size:1.1em; }
-.loading-spinner { display:inline-block; width:24px; height:24px; border:3px solid var(--border); border-top-color:var(--blue); border-radius:50%; animation:spin .8s linear infinite; margin-right:10px; vertical-align:middle; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* Animate count */
-@keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.3)} 100%{transform:scale(1)} }
-.count-pop { animation:pop .3s ease; }
-
-/* Responsive */
-@media(max-width:600px) {
-  .header h1 { font-size:1.4em; }
-  .proposal-card { padding:18px; }
-  .vote-buttons { flex-direction:column; }
-  .vote-btn { justify-content:center; }
-  .filters { flex-direction:column; align-items:stretch; }
-  .sort-select { margin-left:0; }
-}
+body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
+nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-brand { font-weight:800; font-size:1.1rem; } .nav-brand span { color:var(--accent); font-size:1.3rem; }
+.nav-links { display:flex; gap:4px; }
+.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
+.nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
+.container { max-width:1200px; margin:0 auto; padding:24px 16px; }
+h1 { font-size:1.5rem; margin-bottom:8px; } h1 span { color:var(--accent); }
+.subtitle { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
+.filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:.82rem; transition:all .2s; }
+.filters button:hover,.filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.9rem; margin-bottom:16px; outline:none; }
+.search-box:focus { border-color:var(--accent); }
+.table-wrap { overflow-x:auto; border-radius:12px; border:1px solid var(--card-border); }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
+thead { background:var(--primary); }
+th { padding:12px 10px; text-align:left; font-weight:600; font-size:.75rem; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:10px; border-bottom:1px solid rgba(74,36,128,.3); }
+tr:hover td { background:rgba(59,30,109,.3); }
+.badge-rel { background:rgba(242,124,56,.2); color:var(--accent); padding:3px 8px; border-radius:6px; font-size:.7rem; font-weight:700; }
+.tag { display:inline-block; background:rgba(59,30,109,.5); color:var(--muted); padding:2px 6px; border-radius:4px; font-size:.68rem; margin:1px 2px; }
+a.link { color:var(--accent); text-decoration:none; font-weight:600; } a.link:hover { text-decoration:underline; }
+.footer { text-align:center; padding:24px; color:var(--muted); font-size:.75rem; margin-top:32px; border-top:1px solid var(--card-border); }
+@media(max-width:768px) { .nav-links{display:none;} }
 </style>
 </head>
 <body>
-<nav class="global-nav" style="background:#0f172a;border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;">
-  <a href="index.html" style="color:#e2e8f0;text-decoration:none;font-weight:bold;font-size:1.1em;">🎯 Central</a>
-  <span style="color:#475569;">|</span>
-  <a href="redes.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📡 QG Redes</a>
-  <a href="congresso.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">🏛️ Congresso</a>
-  <a href="votar.html" class="nav-link" style="color:#6366f1;text-decoration:none;font-size:0.9em;font-weight:bold;">🗳️ Votar</a>
-  <a href="votos.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📋 Votos</a>
-  <a href="leads.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">👥 Leads</a>
-  <a href="analytics.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📊 Analytics</a>
-  <a href="conteudo.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">📝 Conteúdo</a>
-  <a href="config.html" class="nav-link" style="color:#94a3b8;text-decoration:none;font-size:0.9em;">⚙️ Config</a>
-</nav>
-
-<div class="header">
-  <h1>🏛️ PROJETOS EM VOTAÇÃO</h1>
-  <p>O que Brasília está decidindo sobre sua vida</p>
-  <p style="margin-top:8px;font-size:.9em;">Leia, opine e acompanhe. Sua voz importa. • <strong>Campanha Luciano da Luz 4090</strong></p>
-</div>
-
-<div class="source-wrap"><span class="source-indicator" id="sourceIndicator">Carregando fonte de dados...</span></div>
-
-<div class="overview-section">
-  <div id="overview-chart"></div>
-</div>
-
-<div class="filters">
-  <div class="filter-tabs">
-    <div class="filter-tab active" data-filter="todos">Todos</div>
-    <div class="filter-tab" data-filter="PL">PL</div>
-    <div class="filter-tab" data-filter="PEC">PEC</div>
-    <div class="filter-tab" data-filter="PLP">PLP</div>
-    <div class="filter-tab" data-filter="polemicos">🔥 Polêmicos</div>
+<nav>
+  <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
+  <div class="nav-links">
+    <a href="index.html">Central</a><a href="redes.html">QG Redes</a>
+    <a href="congresso.html">Congresso</a><a href="votar.html" class="active">Proposições</a>
+    <a href="votos.html">Controle</a><a href="analytics.html">Analytics</a>
   </div>
-  <select class="sort-select" id="sort-select">
-    <option value="recentes">Mais recentes</option>
-    <option value="votados">Mais votados</option>
-    <option value="polemicos">Mais polêmicos</option>
-  </select>
-</div>
+</nav>
+<div class="container">
+  <h1>📋 Proposições — <span>Tabela Completa</span></h1>
+  <p class="subtitle" id="lastUpdate">Carregando...</p>
 
-<div class="cards-container" id="cards-container">
-  <div class="loading"><span class="loading-spinner"></span>Carregando proposições...</div>
-</div>
+  <div class="filters" id="filters">
+    <button class="active" data-filter="TODOS">Todos</button>
+    <button data-filter="RELEVANTE">🎯 Relevantes</button>
+    <button data-filter="PL">PL</button>
+    <button data-filter="PEC">PEC</button>
+    <button data-filter="PLP">PLP</button>
+  </div>
 
-<footer style="background:#0f172a;border-top:2px solid #6366f1;padding:16px;text-align:center;color:#64748b;font-size:0.85em;margin-top:40px;">
-  Campanha Luciano da Luz — 4090 PSB-SP | Sistema de Inteligência Eleitoral v3.0 | 
-  <a href="https://vozdapaulista.com" target="_blank" style="color:#6366f1;">vozdapaulista.com</a>
-</footer>
+  <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por tipo, número, ementa...">
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tipo</th><th>Nº/Ano</th><th>Ementa</th><th>Data</th><th>Temas</th><th>Relevante</th><th>Link</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+<div class="footer">Dados: dadosabertos.camara.leg.br · Auto-refresh 5 min</div>
 
 <script>
-// ═══ CONFIG ═══
 const SHEET_ID = '1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
-const SHEET_NAME = 'Página1';
-const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-const CAMARA_API_URL = 'https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=PL,PEC,PLP&dataApresentacaoInicio=2026-01-01&ordem=DESC&ordenarPor=dataApresentacao&itens=50';
-const REFRESH_MS = 5 * 60 * 1000;
+let allProps = [], currentFilter = 'TODOS';
+function val(r,i){return r.c&&r.c[i]?(r.c[i].v||''):'';}
 
-const ALIGNED_KEYWORDS = ['periferias','periferia','saneamento','fiscalização','fiscalizacao','parques','parque','agricultura','mandato aberto','consulta pública','consulta publica','acessibilidade','inclusão','inclusao'];
-
-let allProposals = [];
-let currentFilter = 'todos';
-let currentSort = 'recentes';
-let dataSource = ''; // 'sheets' or 'api'
-
-// ═══ DUAL FETCH: PRIMARY (Google Sheets) + FALLBACK (Câmara API) ═══
-function fetchGviz() {
-  const url = GVIZ_URL + '&_cb=' + Date.now();
-  return fetch(url, { cache: 'no-store' }).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.text();
-  }).then(t => {
-    const match = t.match(/google\.visualization\.Query\.setResponse\((.+)\)/s);
-    if (!match) throw new Error('Invalid gviz response');
-    const json = JSON.parse(match[1]);
-    if (!json.table || !json.table.rows || json.table.rows.length === 0) {
-      throw new Error('Empty response from Sheets');
-    }
-    return json.table.rows;
+function render() {
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const filtered = allProps.filter(p => {
+    if(currentFilter==='RELEVANTE' && (p.relevante||'').toUpperCase()!=='SIM') return false;
+    if(['PL','PEC','PLP'].includes(currentFilter) && (p.tipo||'').toUpperCase()!==currentFilter) return false;
+    if(q) return [p.tipo,p.numero,p.ano,p.ementa,p.temas].join(' ').toLowerCase().includes(q);
+    return true;
   });
-}
-
-function fetchCamaraAPI() {
-  return fetch(CAMARA_API_URL).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  }).then(response => {
-    const dados = response.dados || [];
-    if (dados.length === 0) throw new Error('No data from Câmara API');
-    // Convert to same structure as gviz rows for unified parsing
-    return dados.map(item => {
-      let dataFormatted = '';
-      if (item.dataApresentacao) {
-        const parts = item.dataApresentacao.split('-');
-        if (parts.length === 3) {
-          dataFormatted = parts[2] + '/' + parts[1] + '/' + parts[0];
-        } else {
-          dataFormatted = item.dataApresentacao;
-        }
-      }
-      const link = 'https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=' + item.id;
-      const proposicao = (item.siglaTipo || '') + ' ' + (item.numero || '') + '/' + (item.ano || '');
-      // Return in pseudo-gviz row format
-      return {
-        c: [
-          { v: proposicao },        // 0: Proposição
-          { v: item.siglaTipo || '' }, // 1: Tipo
-          { v: (item.numero || '').toString() }, // 2: Número
-          { v: (item.ano || '').toString() },    // 3: Ano
-          { v: item.ementa || '' },  // 4: Ementa
-          { v: '' },                 // 5: Autor (not available)
-          { v: '' },                 // 6: Situação (not available)
-          { v: dataFormatted, f: dataFormatted }, // 7: Data
-          { v: link }               // 8: Link
-        ]
-      };
-    });
-  });
-}
-
-function fetchData() {
-  return fetchGviz().then(rows => {
-    dataSource = 'sheets';
-    return rows;
-  }).catch(err => {
-    console.warn('Sheets gviz failed, falling back to Câmara API:', err.message);
-    return fetchCamaraAPI().then(rows => {
-      dataSource = 'api';
-      return rows;
-    });
-  });
-}
-
-function updateSourceIndicator() {
-  const el = document.getElementById('sourceIndicator');
-  if (dataSource === 'sheets') {
-    el.className = 'source-indicator sheets';
-    el.innerHTML = '📊 Fonte: Google Sheets (atualizada a cada 6h)';
-  } else if (dataSource === 'api') {
-    el.className = 'source-indicator api';
-    el.innerHTML = '🔗 Fonte: API Câmara (tempo real)';
-  }
-}
-
-// ═══ VOTE STORAGE ═══
-function getVotes(id) {
-  const stored = localStorage.getItem('votar_votes_' + id);
-  if (stored) return JSON.parse(stored);
-  // Seed with realistic random
-  const seed = hashCode(id);
-  const favor = Math.floor(seededRandom(seed) * 200 + 50);
-  const contra = Math.floor(seededRandom(seed + 1) * 150 + 30);
-  const data = { favor, contra, voted: null };
-  localStorage.setItem('votar_votes_' + id, JSON.stringify(data));
-  return data;
-}
-function saveVotes(id, data) {
-  localStorage.setItem('votar_votes_' + id, JSON.stringify(data));
-}
-function hashCode(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-function seededRandom(seed) {
-  const x = Math.sin(seed + 1) * 10000;
-  return x - Math.floor(x);
-}
-
-function isAligned(ementa) {
-  if (!ementa) return false;
-  const lower = ementa.toLowerCase();
-  return ALIGNED_KEYWORDS.some(kw => lower.includes(kw));
-}
-
-function getBadgeClass(tipo) {
-  const t = (tipo || '').toUpperCase().trim();
-  if (t === 'PEC') return 'badge-PEC';
-  if (t === 'PL') return 'badge-PL';
-  if (t === 'PLP') return 'badge-PLP';
-  return 'badge-other';
-}
-
-function parseGvizDate(cell) {
-  if (!cell) return '';
-  if (cell.f) return cell.f; // formatted value
-  if (cell.v && typeof cell.v === 'string') return cell.v;
-  if (cell.v && cell.v.toString().startsWith('Date(')) {
-    const match = cell.v.toString().match(/Date\((\d+),(\d+),(\d+)\)/);
-    if (match) {
-      const d = new Date(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
-      return d.toLocaleDateString('pt-BR');
-    }
-  }
-  return cell.v ? cell.v.toString() : '';
-}
-
-// ═══ FETCH & PARSE ═══
-async function fetchProposals() {
-  try {
-    const rows = await fetchData();
-    updateSourceIndicator();
-
-    allProposals = rows.map((row, idx) => {
-      const cells = row.c || [];
-      const getVal = (i) => cells[i] ? (cells[i].f || (cells[i].v !== null && cells[i].v !== undefined ? cells[i].v.toString() : '')) : '';
-      const getDate = (i) => cells[i] ? parseGvizDate(cells[i]) : '';
-      
-      return {
-        id: `prop_${idx}_${getVal(0)}`,
-        proposicao: getVal(0),
-        tipo: getVal(1),
-        numero: getVal(2),
-        ano: getVal(3),
-        ementa: getVal(4),
-        autor: getVal(5),
-        situacao: getVal(6),
-        data: getDate(7),
-        link: getVal(8),
-      };
-    }).filter(p => p.proposicao || p.ementa);
-
-    renderAll();
-  } catch(e) {
-    document.getElementById('cards-container').innerHTML = `<div class="loading" style="color:var(--red);">Erro ao carregar proposições. Tente novamente em instantes.<br><small>${e.message}</small></div>`;
-    document.getElementById('sourceIndicator').className = 'source-indicator';
-    document.getElementById('sourceIndicator').textContent = '⚠️ Falha ao carregar dados';
-  }
-}
-
-function getFilteredSorted() {
-  let list = [...allProposals];
-  
-  // Filter
-  if (currentFilter === 'PL' || currentFilter === 'PEC' || currentFilter === 'PLP') {
-    list = list.filter(p => (p.tipo || '').toUpperCase().trim() === currentFilter);
-  } else if (currentFilter === 'polemicos') {
-    // Sort by closest to 50/50
-    list.sort((a, b) => {
-      const va = getVotes(a.id), vb = getVotes(b.id);
-      const totalA = va.favor + va.contra, totalB = vb.favor + vb.contra;
-      const ratioA = totalA ? Math.abs(va.favor / totalA - 0.5) : 1;
-      const ratioB = totalB ? Math.abs(vb.favor / totalB - 0.5) : 1;
-      return ratioA - ratioB;
-    });
-    return list;
-  }
-  
-  // Sort
-  if (currentSort === 'recentes') {
-    list.sort((a, b) => {
-      const parseDate = (d) => {
-        if (!d) return 0;
-        const parts = d.split('/');
-        if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]).getTime();
-        return new Date(d).getTime() || 0;
-      };
-      return parseDate(b.data) - parseDate(a.data);
-    });
-  } else if (currentSort === 'votados') {
-    list.sort((a, b) => {
-      const va = getVotes(a.id), vb = getVotes(b.id);
-      return (vb.favor + vb.contra) - (va.favor + va.contra);
-    });
-  } else if (currentSort === 'polemicos') {
-    list.sort((a, b) => {
-      const va = getVotes(a.id), vb = getVotes(b.id);
-      const totalA = va.favor + va.contra, totalB = vb.favor + vb.contra;
-      const ratioA = totalA ? Math.abs(va.favor / totalA - 0.5) : 1;
-      const ratioB = totalB ? Math.abs(vb.favor / totalB - 0.5) : 1;
-      return ratioA - ratioB;
-    });
-  }
-  
-  return list;
-}
-
-function renderCards() {
-  const container = document.getElementById('cards-container');
-  const list = getFilteredSorted();
-  
-  if (list.length === 0) {
-    container.innerHTML = '<div class="loading">Nenhuma proposição encontrada para este filtro.</div>';
-    return;
-  }
-  
-  container.innerHTML = list.map(p => {
-    const votes = getVotes(p.id);
-    const total = votes.favor + votes.contra;
-    const pctFavor = total ? Math.round(votes.favor / total * 100) : 50;
-    const pctContra = 100 - pctFavor;
-    const aligned = isAligned(p.ementa);
-    const tipoLabel = (p.tipo || 'PROJ').toUpperCase().trim();
-    const badgeClass = getBadgeClass(p.tipo);
-    const titulo = `${tipoLabel} ${p.numero || ''}/${p.ano || ''}`.trim();
-    const votedFavor = votes.voted === 'favor';
-    const votedContra = votes.voted === 'contra';
-    
-    const whatsappText = encodeURIComponent(`🏛️ ${titulo}\n\n${(p.ementa||'').substring(0,200)}...\n\nOpine: ${window.location.href}\n\n— Campanha Luciano da Luz 4090`);
-    
-    return `
-    <div class="proposal-card" data-id="${p.id}" data-tipo="${tipoLabel}">
-      <div class="card-header">
-        <span class="badge-tipo ${badgeClass}">${tipoLabel}</span>
-        <span class="card-title">${titulo}</span>
-      </div>
-      <div class="card-ementa">${p.ementa || 'Sem ementa disponível.'}</div>
-      <div class="card-meta">
-        ${p.autor ? `<span>👤 ${p.autor}</span>` : ''}
-        ${p.data ? `<span>📅 ${p.data}</span>` : ''}
-        ${p.situacao ? `<span>📍 ${p.situacao}</span>` : ''}
-      </div>
-      ${aligned ? '<div class="aligned-badge">🎯 Alinhado com as propostas do Luciano</div>' : ''}
-      <div class="vote-section">
-        <div class="vote-pct">
-          <span>👍 A favor: ${pctFavor}%</span>
-          <span>👎 Contra: ${pctContra}%</span>
-        </div>
-        <div class="vote-bar">
-          <div class="vote-bar-inner">
-            <div class="vote-bar-green" style="width:${pctFavor}%"></div>
-            <div class="vote-bar-red" style="width:${pctContra}%"></div>
-          </div>
-        </div>
-        <div class="vote-buttons">
-          <button class="vote-btn vote-btn-favor ${votedFavor ? 'voted' : ''}" onclick="vote('${p.id}','favor',this)" ${votes.voted ? 'disabled' : ''}>
-            👍 Sou a favor <span class="vote-count" id="count-favor-${p.id}">${votes.favor}</span>
-          </button>
-          <button class="vote-btn vote-btn-contra ${votedContra ? 'voted' : ''}" onclick="vote('${p.id}','contra',this)" ${votes.voted ? 'disabled' : ''}>
-            👎 Sou contra <span class="vote-count" id="count-contra-${p.id}">${votes.contra}</span>
-          </button>
-        </div>
-      </div>
-      <div class="card-actions">
-        ${p.link ? `<a href="${p.link}" target="_blank" class="btn-link">📄 Ver Inteiro Teor ↗</a>` : ''}
-        <a href="https://wa.me/?text=${whatsappText}" target="_blank" class="btn-whatsapp">📲 Compartilhar no WhatsApp</a>
-      </div>
-    </div>`;
+  document.getElementById('tbody').innerHTML = filtered.slice(0,200).map(p => {
+    const tags = (p.temas||'').split(',').filter(t=>t.trim()).map(t=>`<span class="tag">${t.trim()}</span>`).join('');
+    const rel = (p.relevante||'').toUpperCase()==='SIM' ? '<span class="badge-rel">🎯 SIM</span>' : '—';
+    const link = p.id ? `https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=${p.id}` : '#';
+    return `<tr>
+      <td style="font-weight:600">${p.tipo||'—'}</td>
+      <td>${p.numero}/${p.ano}</td>
+      <td style="max-width:400px">${p.ementa||'—'}</td>
+      <td style="white-space:nowrap">${p.data||'—'}</td>
+      <td>${tags||'—'}</td>
+      <td style="text-align:center">${rel}</td>
+      <td><a class="link" href="${link}" target="_blank">Ver →</a></td>
+    </tr>`;
   }).join('');
 }
 
-function vote(id, type, btn) {
-  const votes = getVotes(id);
-  if (votes.voted) return;
-  
-  votes[type]++;
-  votes.voted = type;
-  saveVotes(id, votes);
-  
-  // Animate count
-  const countEl = document.getElementById(`count-${type}-${id}`);
-  if (countEl) {
-    countEl.textContent = votes[type];
-    countEl.classList.add('count-pop');
-    setTimeout(() => countEl.classList.remove('count-pop'), 300);
-  }
-  
-  // Update buttons
-  const card = btn.closest('.proposal-card');
-  const buttons = card.querySelectorAll('.vote-btn');
-  buttons.forEach(b => {
-    b.disabled = true;
-    if (b.classList.contains(`vote-btn-${type}`)) {
-      b.classList.add('voted');
-    }
-  });
-  
-  // Update bar
-  const total = votes.favor + votes.contra;
-  const pctFavor = total ? Math.round(votes.favor / total * 100) : 50;
-  const pctContra = 100 - pctFavor;
-  const barGreen = card.querySelector('.vote-bar-green');
-  const barRed = card.querySelector('.vote-bar-red');
-  if (barGreen) barGreen.style.width = pctFavor + '%';
-  if (barRed) barRed.style.width = pctContra + '%';
-  
-  const pctSpans = card.querySelectorAll('.vote-pct span');
-  if (pctSpans[0]) pctSpans[0].textContent = `👍 A favor: ${pctFavor}%`;
-  if (pctSpans[1]) pctSpans[1].textContent = `👎 Contra: ${pctContra}%`;
-  
-  // Update overview chart
-  renderOverviewChart();
+async function loadData() {
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=PROPOSICOES`;
+    const text = await fetch(url).then(r=>r.text());
+    const json = JSON.parse(text.substring(47).slice(0,-2));
+    allProps = (json.table.rows||[]).map(r=>({
+      id:val(r,0),tipo:val(r,1),numero:val(r,2),ano:val(r,3),
+      ementa:val(r,4),data:val(r,5),autores:val(r,6),status:val(r,7),
+      relevante:val(r,8),temas:val(r,9)
+    }));
+    document.getElementById('lastUpdate').textContent = `${allProps.length} proposições · Atualizado: ${new Date().toLocaleString('pt-BR')}`;
+    render();
+  } catch(e) { document.getElementById('lastUpdate').textContent='Erro: '+e.message; }
 }
 
-function renderOverviewChart() {
-  let totalFavor = 0, totalContra = 0;
-  allProposals.forEach(p => {
-    const v = getVotes(p.id);
-    totalFavor += v.favor;
-    totalContra += v.contra;
-  });
-  
-  Highcharts.chart('overview-chart', {
-    chart: { type:'pie', backgroundColor:'transparent', height:220, width:220 },
-    title: { text:'Opinião Geral', style:{color:'#f1f5f9',fontSize:'13px'}, y:15 },
-    credits: { enabled:false },
-    tooltip: { pointFormat:'{point.percentage:.1f}%' },
-    plotOptions: {
-      pie: {
-        innerSize:'60%',
-        dataLabels: { enabled:false },
-        borderWidth:0,
-        states: { hover:{brightness:0.1} }
-      }
-    },
-    series: [{
-      name:'Votos',
-      data:[
-        { name:'A favor', y:totalFavor, color:'#10b981' },
-        { name:'Contra', y:totalContra, color:'#ef4444' }
-      ]
-    }]
-  });
-}
-
-function renderAll() {
-  renderCards();
-  renderOverviewChart();
-}
-
-// Filter tabs
-document.querySelectorAll('.filter-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentFilter = tab.dataset.filter;
-    renderCards();
-  });
+document.getElementById('filters').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON') return;
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentFilter=e.target.dataset.filter;
+  render();
 });
-
-// Sort select
-document.getElementById('sort-select').addEventListener('change', (e) => {
-  currentSort = e.target.value;
-  renderCards();
-});
-
-// ═══ INIT ═══
-fetchProposals();
-
-// Auto-refresh every 5 minutes
-setInterval(fetchProposals, REFRESH_MS);
+document.getElementById('searchBox').addEventListener('input',render);
+loadData(); setInterval(loadData,300000);
 </script>
 </body>
 </html>

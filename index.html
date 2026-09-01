@@ -3,236 +3,244 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎯 Central de Campanha — Luciano da Luz 4090</title>
+<title>🎯 Central de Controle — Luciano da Luz 4090</title>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
 <style>
 :root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --card-hover: #253348;
-  --border: #334155;
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --green: #10b981;
-  --gold: #f59e0b;
-  --red: #ef4444;
-  --blue: #818cf8;
-  --purple: #a78bfa;
-  --orange: #fb923c;
-  --cyan: #22d3ee;
-  --radius: 14px;
+  --primary: #3B1E6D;
+  --accent: #F27C38;
+  --dark-bg: #0f0520;
+  --card-bg: #1e0e3e;
+  --card-border: #4a2480;
+  --text: #f0e6ff;
+  --muted: #9b8ab8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:var(--text);padding:0;font-size:16px;line-height:1.6;min-height:100vh;}
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-.container{max-width:1280px;margin:0 auto;padding:12px 16px;}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; }
 
-/* Nav */
-.global-nav{background:var(--bg);border-bottom:2px solid #6366f1;padding:8px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:1000;}
-.global-nav a{color:#94a3b8;text-decoration:none;font-size:0.9em;transition:color 0.2s;}
-.global-nav a:hover,.global-nav a.active{color:#e2e8f0;}
-.global-nav .brand{color:#e2e8f0;font-weight:bold;font-size:1.1em;}
-.sep{color:#475569;}
+/* NAV */
+nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-brand { font-weight:800; font-size:1.1rem; letter-spacing:1px; }
+.nav-brand span { color:var(--accent); font-size:1.3rem; }
+.nav-links { display:flex; gap:4px; }
+.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
+.nav-links a:hover, .nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
 
-/* Hero */
-.hero{text-align:center;padding:32px 16px 24px;border-bottom:1px solid var(--border);}
-.hero h1{font-size:1.8em;margin-bottom:4px;}
-.hero .subtitle{color:var(--muted);font-size:0.95em;}
-.live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);color:var(--green);padding:4px 12px;border-radius:20px;font-size:0.8em;margin-top:8px;}
-.live-badge .dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+/* LAYOUT */
+.container { max-width:1200px; margin:0 auto; padding:24px 16px; }
+.header { text-align:center; margin-bottom:32px; }
+.header h1 { font-size:1.6rem; font-weight:700; }
+.header h1 span { color:var(--accent); }
+.header p { color:var(--muted); margin-top:4px; font-size:.9rem; }
 
-/* KPI Grid */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0;}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:all 0.2s;}
-.kpi:hover{border-color:#6366f1;transform:translateY(-2px);}
-.kpi .label{color:var(--muted);font-size:0.75em;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;}
-.kpi .value{font-size:2.2em;font-weight:700;font-family:'SF Mono',Consolas,monospace;}
-.kpi .sub{color:var(--muted);font-size:0.78em;margin-top:4px;}
+/* KPI GRID */
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:16px; margin-bottom:32px; }
+.kpi { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; text-align:center; transition:transform .2s, border-color .2s; }
+.kpi:hover { transform:translateY(-2px); border-color:var(--accent); }
+.kpi-value { font-size:2.2rem; font-weight:800; color:var(--accent); line-height:1; }
+.kpi-label { font-size:.8rem; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:.5px; }
+.kpi-sub { font-size:.75rem; color:var(--muted); margin-top:4px; }
 
-/* Section */
-.section-title{font-size:0.8em;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin:24px 0 12px;display:flex;align-items:center;gap:10px;}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+/* PROGRESS BAR */
+.progress-section { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:24px; margin-bottom:32px; }
+.progress-section h3 { font-size:1rem; margin-bottom:12px; }
+.progress-section h3 span { color:var(--accent); }
+.progress-bar-bg { background:#1a0a30; border-radius:8px; height:28px; overflow:hidden; position:relative; }
+.progress-bar-fill { background:linear-gradient(90deg, var(--primary), var(--accent)); height:100%; border-radius:8px; transition:width 1s ease; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:.75rem; font-weight:700; }
+.progress-stats { display:flex; justify-content:space-between; margin-top:8px; font-size:.8rem; color:var(--muted); }
 
-/* Nav Grid */
-.nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:16px 0;}
-.nav-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-decoration:none;color:var(--text);transition:all 0.25s;cursor:pointer;display:block;}
-.nav-card:hover{border-color:#6366f1;background:var(--card-hover);transform:translateY(-2px);}
-.nav-card .icon{font-size:1.8em;margin-bottom:8px;}
-.nav-card .name{font-weight:600;font-size:1.05em;margin-bottom:4px;}
-.nav-card .desc{color:var(--muted);font-size:0.82em;line-height:1.4;}
+/* CHARTS ROW */
+.charts-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }
+.chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; }
+.chart-card h3 { font-size:.95rem; margin-bottom:12px; color:var(--text); }
 
-/* Workflows Status */
-.wf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin:12px 0;}
-.wf-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
-.wf-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.wf-dot.active{background:var(--green);box-shadow:0 0 8px rgba(16,185,129,0.4);}
-.wf-dot.error{background:var(--red);}
-.wf-name{font-size:0.88em;font-weight:500;}
-.wf-schedule{color:var(--muted);font-size:0.75em;}
+/* NAV CARDS */
+.nav-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:12px; margin-bottom:32px; }
+.nav-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; text-align:center; text-decoration:none; color:var(--text); transition:all .2s; }
+.nav-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.nav-card .icon { font-size:2rem; margin-bottom:8px; }
+.nav-card .label { font-size:.85rem; font-weight:600; }
 
-#loadStatus{text-align:center;color:var(--muted);font-size:0.8em;margin:8px 0;}
+/* WORKFLOWS */
+.wf-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
+.wf { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px 16px; display:flex; align-items:center; gap:10px; font-size:.82rem; }
+.wf-dot { width:10px; height:10px; border-radius:50%; background:var(--success); flex-shrink:0; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.wf-name { flex:1; }
+.wf-schedule { color:var(--muted); font-size:.75rem; }
+
+.footer { text-align:center; padding:24px; color:var(--muted); font-size:.75rem; margin-top:32px; border-top:1px solid var(--card-border); }
+
+@media(max-width:768px) {
+  .charts-row { grid-template-columns:1fr; }
+  .nav-links { display:none; }
+  .kpi-value { font-size:1.6rem; }
+}
 </style>
 </head>
 <body>
-
-<nav class="global-nav">
-  <a href="index.html" class="brand active">🎯 Central</a>
-  <span class="sep">|</span>
-  <a href="redes.html">📡 QG Redes</a>
-  <a href="congresso.html">🏛️ Congresso</a>
-  <a href="votar.html">🗳️ Votar</a>
-  <a href="leads.html">🎯 Leads</a>
-  <a href="analytics.html">📊 Analytics</a>
-  <a href="conteudo.html">📝 Conteúdo</a>
-  <a href="config.html">⚙️ Config</a>
+<nav>
+  <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
+  <div class="nav-links">
+    <a href="index.html" class="active">Central</a>
+    <a href="redes.html">QG Redes</a>
+    <a href="congresso.html">Congresso</a>
+    <a href="votar.html">Proposições</a>
+    <a href="votos.html">Controle</a>
+    <a href="analytics.html">Analytics</a>
+  </div>
 </nav>
 
 <div class="container">
+  <div class="header">
+    <h1>Central de Controle — <span>Campanha 4090</span></h1>
+    <p id="lastUpdate">Carregando dados...</p>
+  </div>
 
-<div class="hero">
-  <h1>🎯 Central de Campanha</h1>
-  <div class="subtitle">Luciano da Luz — Deputado Federal 4090 — PSB-SP</div>
-  <div class="live-badge"><span class="dot"></span> AO VIVO — dados atualizando</div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-value" id="kpiComentarios">—</div><div class="kpi-label">Comentários Captados</div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiApoiadores">—</div><div class="kpi-label">Apoiadores</div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiContatos">—</div><div class="kpi-label">Contatos Confirmados</div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiProposicoes">—</div><div class="kpi-label">Proposições</div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiFB">—</div><div class="kpi-label">Facebook</div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiIG">—</div><div class="kpi-label">Instagram</div></div>
+  </div>
+
+  <div class="progress-section">
+    <h3>Meta Método Sniper: <span id="progressCount">0</span> / 4.050 apoiadores organizados</h3>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="progress-stats">
+      <span id="progressPct">0%</span>
+      <span>Meta operacional: 4.050 rede organizada</span>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card"><h3>Classificação dos Comentários</h3><div id="chartClassificacao" style="height:260px"></div></div>
+    <div class="chart-card"><h3>Plataforma de Origem</h3><div id="chartPlataforma" style="height:260px"></div></div>
+  </div>
+
+  <h3 style="margin-bottom:12px;">📂 Módulos</h3>
+  <div class="nav-grid">
+    <a class="nav-card" href="redes.html"><div class="icon">📡</div><div class="label">QG Redes</div></a>
+    <a class="nav-card" href="congresso.html"><div class="icon">🏛️</div><div class="label">Congresso</div></a>
+    <a class="nav-card" href="votar.html"><div class="icon">📋</div><div class="label">Proposições</div></a>
+    <a class="nav-card" href="votos.html"><div class="icon">✅</div><div class="label">Controle Votos</div></a>
+    <a class="nav-card" href="analytics.html"><div class="icon">📈</div><div class="label">Analytics</div></a>
+    <a class="nav-card" href="leads.html"><div class="icon">🎯</div><div class="label">Leads</div></a>
+  </div>
+
+  <h3 style="margin:24px 0 12px;">⚡ Workflows Ativos (n8n Cloud)</h3>
+  <div class="wf-grid">
+    <div class="wf"><div class="wf-dot"></div><div class="wf-name">📡 Captação Inteligente</div><div class="wf-schedule">2h</div></div>
+    <div class="wf"><div class="wf-dot"></div><div class="wf-name">🔒 Resposta Segura</div><div class="wf-schedule">3h</div></div>
+    <div class="wf"><div class="wf-dot"></div><div class="wf-name">📊 Funil CRM</div><div class="wf-schedule">6h</div></div>
+    <div class="wf"><div class="wf-dot"></div><div class="wf-name">🏛️ Monitor Congresso</div><div class="wf-schedule">6h</div></div>
+    <div class="wf"><div class="wf-dot"></div><div class="wf-name">📈 Relatório Diário</div><div class="wf-schedule">8h</div></div>
+    <div class="wf"><div class="wf-dot"></div><div class="wf-name">🔄 Enriquecimento Perfis</div><div class="wf-schedule">12h</div></div>
+  </div>
 </div>
 
-<!-- KPIs -->
-<div class="kpi-grid">
-  <div class="kpi">
-    <div class="label">Total Comentários</div>
-    <div class="value" id="kpiTotal" style="color:var(--blue);">—</div>
-    <div class="sub">capturados das redes</div>
-  </div>
-  <div class="kpi">
-    <div class="label">✅ Apoiadores</div>
-    <div class="value" id="kpiApoio" style="color:var(--green);">—</div>
-    <div class="sub">classificados</div>
-  </div>
-  <div class="kpi">
-    <div class="label">⚔️ Contra/Ataques</div>
-    <div class="value" id="kpiContra" style="color:var(--red);">—</div>
-    <div class="sub">monitorados</div>
-  </div>
-  <div class="kpi">
-    <div class="label">🏛️ Proposições</div>
-    <div class="value" id="kpiProposicoes" style="color:var(--purple);">—</div>
-    <div class="sub">monitoradas no Congresso</div>
-  </div>
-  <div class="kpi">
-    <div class="label">📸 Instagram</div>
-    <div class="value" id="kpiIG" style="color:var(--orange);">—</div>
-    <div class="sub">comentários IG</div>
-  </div>
-  <div class="kpi">
-    <div class="label">📘 Facebook</div>
-    <div class="value" id="kpiFB" style="color:var(--cyan);">—</div>
-    <div class="sub">comentários FB</div>
-  </div>
-</div>
-
-<div id="loadStatus"></div>
-
-<!-- Navigation -->
-<div class="section-title">Módulos da Campanha</div>
-<div class="nav-grid">
-  <a class="nav-card" href="redes.html">
-    <div class="icon">📡</div>
-    <div class="name">QG Redes Sociais</div>
-    <div class="desc">Comentários, classificação, radar de influenciadores e menções</div>
-  </a>
-  <a class="nav-card" href="congresso.html">
-    <div class="icon">🏛️</div>
-    <div class="name">Monitor do Congresso</div>
-    <div class="desc">Proposições, votações, projetos de lei em tramitação</div>
-  </a>
-  <a class="nav-card" href="votar.html">
-    <div class="icon">🗳️</div>
-    <div class="name">Sistema de Votos</div>
-    <div class="desc">Contagem de votos a favor e contra</div>
-  </a>
-  <a class="nav-card" href="leads.html">
-    <div class="icon">🎯</div>
-    <div class="name">Captação de Leads</div>
-    <div class="desc">Contatos captados, conversão, funil</div>
-  </a>
-  <a class="nav-card" href="analytics.html">
-    <div class="icon">📊</div>
-    <div class="name">Analytics</div>
-    <div class="desc">Métricas consolidadas, tendências, relatórios</div>
-  </a>
-  <a class="nav-card" href="conteudo.html">
-    <div class="icon">📝</div>
-    <div class="name">Central de Conteúdo</div>
-    <div class="desc">Banco de respostas, roteiros, estratégia TikTok</div>
-  </a>
-</div>
-
-<!-- Workflow Status -->
-<div class="section-title">Automações Ativas</div>
-<div class="wf-grid">
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Busca Estratégica / Monitor de Menções</div><div class="wf-schedule">A cada 2h</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Radar de Influenciadores</div><div class="wf-schedule">A cada 1h</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Meta Captação → Planilha</div><div class="wf-schedule">A cada 1h</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Captação V6 (Manual)</div><div class="wf-schedule">A cada 30min</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Captação & Sync Completo</div><div class="wf-schedule">A cada 8h</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Congresso — Proposições</div><div class="wf-schedule">A cada 6h</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">🧠 ML Classificador Adaptativo</div><div class="wf-schedule">A cada 30min</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">🧠 ML Análise Semanal</div><div class="wf-schedule">Domingos 8h</div></div></div>
-  <div class="wf-card"><div class="wf-dot active"></div><div><div class="wf-name">Webhooks (Classificar + Responder)</div><div class="wf-schedule">Sob demanda</div></div></div>
-</div>
-
-</div>
+<div class="footer">Campanha Luciano da Luz — Deputado Federal 4090 · PSB-SP · Atualização automática a cada 5 min</div>
 
 <script>
-const SHEET_VOTOS = '1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
-const SHEET_PROPOSICOES = '1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
+const SHEETS = {
+  comentarios: { id:'1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME', sheet:'COMENTARIOS' },
+  proposicoes: { id:'1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI', sheet:'PROPOSICOES' },
+  controle:    { id:'16nEZG1Asgz-61JbDtluYQxvc4k_CWJrLya36zwrKtEo', sheet:'PLANILHA DE CONTROLE' }
+};
 
-function loadKPIs() {
-  document.getElementById('loadStatus').textContent = '⏳ Carregando dados...';
-  
-  // Load COMENTARIOS
-  fetch(`https://docs.google.com/spreadsheets/d/${SHEET_VOTOS}/gviz/tq?tqx=out:json&sheet=COMENTARIOS`)
-    .then(r => r.text())
-    .then(text => {
-      const json = JSON.parse(text.substring(47).slice(0, -2));
-      const rows = json.table.rows;
-      
-      document.getElementById('kpiTotal').textContent = rows.length;
-      
-      let apoio = 0, contra = 0, ig = 0, fb = 0;
-      rows.forEach(r => {
-        const cls = r.c[6] ? (r.c[6].v || '').toUpperCase() : '';
-        const plat = r.c[7] ? r.c[7].v || '' : '';
-        if (cls.includes('APOIADOR') || cls.includes('APOIO')) apoio++;
-        if (cls.includes('CONTRA') || cls.includes('ATAQUE')) contra++;
-        if (plat === 'Instagram') ig++;
-        if (plat === 'Facebook') fb++;
-      });
-      
-      document.getElementById('kpiApoio').textContent = apoio;
-      document.getElementById('kpiContra').textContent = contra;
-      document.getElementById('kpiIG').textContent = ig;
-      document.getElementById('kpiFB').textContent = fb;
-      document.getElementById('loadStatus').textContent = '✅ Dados carregados — ' + new Date().toLocaleTimeString('pt-BR');
-    })
-    .catch(err => {
-      document.getElementById('loadStatus').textContent = '❌ Erro: ' + err.message;
-    });
-  
-  // Load PROPOSICOES from Câmara API directly (more reliable than Google Sheets)
-  fetch('https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=PL,PEC,PLP&dataApresentacaoInicio=2026-01-01&ordem=DESC&ordenarPor=dataApresentacao&itens=50')
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById('kpiProposicoes').textContent = data.dados ? data.dados.length : '—';
-    })
-    .catch(() => {
-      document.getElementById('kpiProposicoes').textContent = '—';
-    });
+function gvizUrl(s) {
+  return `https://docs.google.com/spreadsheets/d/${s.id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(s.sheet)}`;
 }
 
-loadKPIs();
-setInterval(loadKPIs, 300000);
+function parseGviz(text) {
+  try {
+    const json = JSON.parse(text.substring(47).slice(0,-2));
+    return json.table.rows;
+  } catch(e) { return []; }
+}
+
+function val(row, i) { return row.c && row.c[i] ? (row.c[i].v || '') : ''; }
+
+async function loadData() {
+  try {
+    const [cRes, pRes, vRes] = await Promise.all([
+      fetch(gvizUrl(SHEETS.comentarios)).then(r=>r.text()),
+      fetch(gvizUrl(SHEETS.proposicoes)).then(r=>r.text()),
+      fetch(gvizUrl(SHEETS.controle)).then(r=>r.text())
+    ]);
+    const comentarios = parseGviz(cRes);
+    const proposicoes = parseGviz(pRes);
+    const contatos = parseGviz(vRes);
+
+    // KPIs
+    const total = comentarios.length;
+    const apoiadores = comentarios.filter(r => {
+      const c = (val(r,5)||'').toUpperCase();
+      return c.includes('APOIO') || c.includes('COLETIVO') || c.includes('COORDENADOR') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO');
+    }).length;
+    const fb = comentarios.filter(r => (val(r,4)||'').toLowerCase().includes('facebook')).length;
+    const ig = comentarios.filter(r => (val(r,4)||'').toLowerCase().includes('instagram')).length;
+
+    document.getElementById('kpiComentarios').textContent = total.toLocaleString('pt-BR');
+    document.getElementById('kpiApoiadores').textContent = apoiadores.toLocaleString('pt-BR');
+    document.getElementById('kpiContatos').textContent = contatos.length.toLocaleString('pt-BR');
+    document.getElementById('kpiProposicoes').textContent = proposicoes.length.toLocaleString('pt-BR');
+    document.getElementById('kpiFB').textContent = fb.toLocaleString('pt-BR');
+    document.getElementById('kpiIG').textContent = ig.toLocaleString('pt-BR');
+
+    // Progress bar
+    const pct = Math.min((apoiadores / 4050) * 100, 100);
+    document.getElementById('progressCount').textContent = apoiadores.toLocaleString('pt-BR');
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct.toFixed(1) + '%';
+
+    // Classificação chart
+    const classMap = {};
+    comentarios.forEach(r => {
+      const c = (val(r,5)||'PENDENTE').toUpperCase();
+      classMap[c] = (classMap[c]||0) + 1;
+    });
+    const classColors = { 'APOIO_DIRETO':'#10b981', 'APOIO_FORTE':'#10b981', 'APOIO_MODERADO':'#34d399',
+      'MENCAO_CANDIDATO':'#F27C38', 'POTENCIAL':'#f59e0b', 'NEUTRO':'#9b8ab8',
+      'CONTRA':'#ef4444', 'ATAQUE':'#dc2626', 'PENDENTE':'#6b7280', 'SPAM':'#374151' };
+    Highcharts.chart('chartClassificacao', {
+      chart:{ type:'pie', backgroundColor:'transparent' },
+      title:{ text:null },
+      plotOptions:{ pie:{ dataLabels:{ enabled:true, format:'{point.name}: {point.y}', style:{ color:'#f0e6ff', fontSize:'11px', textOutline:'none' }},
+        borderWidth:0 }},
+      series:[{ data: Object.entries(classMap).map(([k,v])=>({ name:k, y:v, color:classColors[k]||'#4a2480' })) }],
+      credits:{ enabled:false }
+    });
+
+    // Plataforma chart
+    Highcharts.chart('chartPlataforma', {
+      chart:{ type:'pie', backgroundColor:'transparent' },
+      title:{ text:null },
+      plotOptions:{ pie:{ dataLabels:{ enabled:true, format:'{point.name}: {point.y}', style:{ color:'#f0e6ff', fontSize:'11px', textOutline:'none' }},
+        borderWidth:0, innerSize:'50%' }},
+      series:[{ data:[
+        { name:'Facebook', y:fb, color:'#1877F2' },
+        { name:'Instagram', y:ig, color:'#E4405F' },
+        { name:'Outros', y:Math.max(0, total-fb-ig), color:'#4a2480' }
+      ]}],
+      credits:{ enabled:false }
+    });
+
+    document.getElementById('lastUpdate').textContent = 'Atualizado: ' + new Date().toLocaleString('pt-BR');
+  } catch(e) {
+    document.getElementById('lastUpdate').textContent = 'Erro ao carregar: ' + e.message;
+  }
+}
+
+loadData();
+setInterval(loadData, 300000);
 </script>
 </body>
 </html>
