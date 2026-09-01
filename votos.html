@@ -3,43 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✅ Controle de Votos — Luciano da Luz 4090</title>
+<title>🗳️ QG Controle de Votos — Luciano da Luz 4090</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGElEQVR4nLWXy3JcNRCGv5Z0LnOL7XIcEgdSbIAdUMWKHfAibHgfXoBnYQ8LWGTjgsoiiySOYzuemvucI4lqnZnxbcaxk9DlqSPr6Kj//rvV3ZKff/o1+qoiDF5z2LcgwkWR5f8xrubOR++QGMnKkt1ijOB567ex0nwdQsBai3vdf4ava/zgmOOxUZXn34dAVdcNCJsRY0z4MiO3BuCqnMl0hsTAmFMMMRmge1trkIJPoqhSycjsBStDpGy3eLy/z3g8xg4OyZ1hUsOrUbgA8yYRYgz4qKsFg7/0LgFs5Z2lyhXLamUgUGQtnM0pczDtHQoL05HSWbOJBJ0OF3kUi1u51V1fv5V9vtalSlRmCuqQYUxM/qqDgVDhRK0ymORPXanjQIiSrM1MM9Z5YY4P80uuvShukx2idkibbx9t0596DoeBxz3LsIKZj3x2z/BqqIpgqzCcTgK9Qvi0Jzw9CjzsQC+3/HvSx8cTEI2v67aa9QAWLEToVxmzYDEixKwDxqZ3c9NaWRVtmdzmsQxCK0V6Tc6UFiJN0G0S2eSCECNbZQtj2kyqgBVlxKWgami36WgtgcY01qAziNSNbWIJfkIVponTW7vAGhjOI79849judvjtr5Je5lNwGWMIPhCCR4whyxzPXxzA4nxfs1DjINF/JwYkKdju7dAp7zGZeYxR6yLV/OJRaqRh5dosIpZ5PWRWDxcg4m2DkOTTWSXkLseZqqFX85FZWnNOqSy2ljUAKj+5MXe6tcqBOtbc7z5kr/MVo8mIXq/DbDqn22slJvpno5TJdKzPre0Ok/GcVqfg7HRIILJ3f5eD538wPjvGiV0LQzYFoaJ2tsSKpuCQfN+kYkkBer5bBJMRsi4FY2xRMjzr46ykb2o/p/bTu+YBFUkJpApKoR7jcwCax5OPEoiIFUM7jPDG86jtcGXFm1HAaTQnxZsTt+NG0QzXjDSI9PAlAMvUusBgRcj0oIlwz0VmuePN2GP0m9UR3aThRml4bgxt0q4+F6NLq3S2xnBcZfSnIW2sc+8q3YbbypJF2byRF8tRlfN2EjYWq/cHEK8817zW8pNLxJnbNy2G95R1BkYN3Ej6yf8NIK5RnsWKz8sp+z2bQHwEALL8uxQDegjSQbhippaDXAJO03aC9G5xN73Uc6/NoyozwRCijk2qE03PoN1PTOlZa+NULC/nOf3xuCnfHwIgakfkHHle4r1PYJpsCM7ZBGxZAIKPjHwgimFQZ4zmysLtItFtNl8VObrdHrPZNCksi5LZfEar1cInAA3Nk1nN23HNlgnkIotW7UKV+hAX1L5u6r92t75ObMznVaoPWhOUap236oxVibjtGeBmACnOUsQtPC5NutUG9ejoZJEVI8bliNMWLdz16sLNDGzYS5uTBw/2VremybSiP55D0y5+PAZUVtl8cWlQd5yenqbnysfGYSTXZMxdxSUrrlqZLi3NNWzVTC7ob2KhCcAVRbrWXLF8kSjSI92MNgCovXaw1yUFWar7DQeqWEEt3/mwLLeL3JCCslmje2r/szRO5y/YlsAt93L3ew+aicsEpAVZllPYnMxNCWLJXEbeaVMXVbq0qhusM1TRQnSUWY3LC/a2DKI3FmtX4JbAE3Gh6bD053784Ut+//vPlMmuSh0C3uVsff0du6PXKcanU7U8R6Sgu7PDm6cHfP/Q8M9um8HLfbrHLzj8ok148oTZswP88QnWueSmoizIs4JWp81gMCBzOf8BEn6N9d6wnugAAAAASUVORK5CYII=">
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
 <style>
 :root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
 nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-.nav-brand { font-weight:800; font-size:1rem; display:flex; align-items:center; gap:8px; }
-.nav-brand .num { color:var(--accent); font-size:1.2rem; }
+.nav-brand { font-weight:800; font-size:1rem; } .nav-brand .num { color:var(--accent); font-size:1.2rem; }
 .nav-links { display:flex; gap:4px; }
 .nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.82rem; font-weight:500; transition:all .2s; }
 .nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
-.container { max-width:1200px; margin:0 auto; padding:24px 16px; }
-h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
-.subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
-.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px; }
-.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
-.stat-val { font-size:1.6rem; font-weight:800; color:var(--accent); }
-.stat-lbl { font-size:.7rem; color:var(--muted); text-transform:uppercase; margin-top:3px; }
+.container { max-width:1300px; margin:0 auto; padding:24px 16px; }
+.hero { text-align:center; background:linear-gradient(135deg,#3B1E6D,#1a0a30); border-radius:16px; padding:28px 20px; margin-bottom:24px; border:1px solid var(--card-border); }
+.hero h1 { font-size:1.4rem; margin-bottom:4px; } .hero h1 span { color:var(--accent); }
+.hero p { color:var(--muted); font-size:.85rem; }
+.live { display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,.15); color:var(--success); padding:6px 14px; border-radius:20px; font-size:.78rem; font-weight:600; margin-top:8px; }
+.live::before { content:''; width:8px; height:8px; background:var(--success); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+.kpi { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; text-align:center; }
+.kpi-val { font-size:2.2rem; font-weight:800; line-height:1; }
+.kpi-val.green { color:var(--success); }
+.kpi-val.orange { color:var(--accent); }
+.kpi-val.red { color:var(--danger); }
+.kpi-val.accent { color:var(--accent); }
+.kpi-lbl { font-size:.72rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
+.kpi-sub { font-size:.7rem; color:var(--muted); margin-top:2px; }
+
+.charts-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; }
+.chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; }
+.chart-card h3 { font-size:.9rem; margin-bottom:10px; }
+
 .search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.85rem; margin-bottom:14px; outline:none; }
 .search-box:focus { border-color:var(--accent); }
 .filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
 .filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:7px 14px; border-radius:8px; cursor:pointer; font-size:.8rem; transition:all .2s; }
 .filters button:hover,.filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
 .table-wrap { overflow-x:auto; border-radius:12px; border:1px solid var(--card-border); }
 table { width:100%; border-collapse:collapse; font-size:.82rem; }
 thead { background:var(--primary); }
-th { padding:10px 8px; text-align:left; font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; }
+th { padding:10px 8px; text-align:left; font-weight:600; font-size:.72rem; text-transform:uppercase; }
 td { padding:8px; border-bottom:1px solid rgba(74,36,128,.3); }
 tr:hover td { background:rgba(59,30,109,.3); }
-.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; text-transform:uppercase; }
+.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; }
 .badge-vai { background:rgba(16,185,129,.2); color:#10b981; }
 .badge-talvez { background:rgba(242,124,56,.2); color:#F27C38; }
 .badge-nao { background:rgba(239,68,68,.2); color:#ef4444; }
-.badge-sem { background:rgba(107,114,128,.2); color:#6b7280; }
+.badge-coletivo { background:rgba(168,139,250,.2); color:#a78bfa; }
 .footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links{display:none;} .stat-val{font-size:1.2rem;} }
+@media(max-width:768px) { .nav-links{display:none;} .kpis{grid-template-columns:repeat(2,1fr);} .charts-row{grid-template-columns:1fr;} .kpi-val{font-size:1.6rem;} }
 </style>
 </head>
 <body>
@@ -55,137 +71,211 @@ tr:hover td { background:rgba(59,30,109,.3); }
   </div>
 </nav>
 <div class="container">
-  <h1>✅ Controle de Votos — <span>Contatos Confirmados</span></h1>
-  <p class="subtitle" id="lastUpdate">Carregando contatos...</p>
-  <div class="stats">
-    <div class="stat"><div class="stat-val" id="sTotal">—</div><div class="stat-lbl">Total Contatos</div></div>
-    <div class="stat"><div class="stat-val" id="sVai">—</div><div class="stat-lbl">Vai Votar ✅</div></div>
-    <div class="stat"><div class="stat-val" id="sTalvez">—</div><div class="stat-lbl">Talvez 🤔</div></div>
-    <div class="stat"><div class="stat-val" id="sNao">—</div><div class="stat-lbl">Não Vai ❌</div></div>
+  <div class="hero">
+    <h1>🗳️ CAMPANHA 4090 — <span>QG CONTROLE DE VOTOS</span></h1>
+    <p>Deputado Federal · PSB · São Paulo · Luciano da Luz</p>
+    <div class="live">AO VIVO — Atualiza a cada 2 min</div>
   </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-val green" id="kConfirmado">—</div><div class="kpi-lbl">Votos Confirmados</div><div class="kpi-sub" id="kTotal"></div></div>
+    <div class="kpi"><div class="kpi-val orange" id="kTalvez">—</div><div class="kpi-lbl">Talvez</div></div>
+    <div class="kpi"><div class="kpi-val red" id="kNao">—</div><div class="kpi-lbl">Não Vota</div></div>
+    <div class="kpi"><div class="kpi-val accent" id="kDias">—</div><div class="kpi-lbl">Dias p/ Eleição</div></div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card"><h3>📊 Votos por Captador</h3><div id="chartCaptador" style="height:280px"></div></div>
+    <div class="chart-card"><h3>📈 Status Geral</h3><div id="chartStatus" style="height:280px"></div></div>
+  </div>
+
+  <h3 style="margin-bottom:12px;">📋 TODOS OS CONTATOS — VOTOS CAPTADOS</h3>
   <div class="filters" id="filters">
     <button class="active" data-filter="TODOS">Todos</button>
     <button data-filter="VAI">Vai Votar</button>
     <button data-filter="TALVEZ">Talvez</button>
-    <button data-filter="NAO">Não Vai</button>
+    <button data-filter="NAO">Não Vota</button>
+    <button data-filter="COLETIVO">Coletivo</button>
   </div>
-  <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por nome, rede social, observação...">
+  <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por nome, captador, observação...">
   <div class="table-wrap">
     <table>
-      <thead><tr><th>#</th><th>Nome</th><th>Número / Rede Social</th><th>Categoria</th><th>Observação</th></tr></thead>
+      <thead><tr><th>#</th><th>Nome</th><th>Rede/Contato</th><th>Captador</th><th>Status</th><th>Observação</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 </div>
-<div class="footer">Campanha Luciano da Luz 4090 · Controle de Votos · Auto-refresh 5 min</div>
+<div class="footer">Campanha Luciano da Luz 4090 · QG Controle de Votos · Auto-refresh 2 min</div>
 
 <script>
 const SHEET_ID = '16nEZG1Asgz-61JbDtluYQxvc4k_CWJrLya36zwrKtEo';
-const SHEET_NAME = 'PLANILHA DE CONTROLE';
+const TABS = ['ALICE','DANIEL','LEONILDA','LOSE'];
 let allContatos = [];
 let currentFilter = 'TODOS';
 
-function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.c[i].v) : ''; } catch(e) { return ''; } }
+function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.c[i].v).trim() : ''; } catch(e) { return ''; } }
+
+function parseGviz(text) {
+  const s = text.indexOf('{');
+  const e = text.lastIndexOf('}');
+  if(s<0||e<0) return [];
+  return JSON.parse(text.substring(s, e+1)).table.rows || [];
+}
+
+function normCat(c) {
+  c = (c||'').toUpperCase().trim();
+  if(c.includes('NÃO') || c.includes('NAO')) return 'NAO_VOTA';
+  if(c.includes('VAI VOTAR') || c==='VAI VOTAR') return 'VAI_VOTAR';
+  if(c.includes('TALVEZ')) return 'TALVEZ';
+  if(c.includes('COLETIVO') || c.includes('APOIADOR')) return 'COLETIVO';
+  if(c.includes('AGUARDANDO')) return 'TALVEZ';
+  if(c) return 'VAI_VOTAR'; // default if has a value
+  return '';
+}
 
 function catBadge(cat) {
-  const c = (cat||'').toUpperCase();
-  if(c.includes('VAI VOTAR') && !c.includes('NÃO') && !c.includes('NAO')) return '<span class="badge badge-vai">VAI VOTAR</span>';
-  if(c.includes('TALVEZ')) return '<span class="badge badge-talvez">TALVEZ</span>';
-  if(c.includes('NÃO') || c.includes('NAO')) return '<span class="badge badge-nao">NÃO VAI VOTAR</span>';
-  if(c) return '<span class="badge badge-sem">' + cat + '</span>';
+  if(cat==='VAI_VOTAR') return '<span class="badge badge-vai">✅ VAI VOTAR</span>';
+  if(cat==='TALVEZ') return '<span class="badge badge-talvez">🤔 TALVEZ</span>';
+  if(cat==='NAO_VOTA') return '<span class="badge badge-nao">❌ NÃO VOTA</span>';
+  if(cat==='COLETIVO') return '<span class="badge badge-coletivo">⭐ COLETIVO</span>';
   return '<span style="color:var(--muted)">—</span>';
 }
 
-function matchCatFilter(cat, f) {
-  if(f === 'TODOS') return true;
-  const c = (cat||'').toUpperCase();
-  if(f === 'VAI') return c.includes('VAI VOTAR') && !c.includes('NÃO') && !c.includes('NAO');
-  if(f === 'TALVEZ') return c.includes('TALVEZ');
-  if(f === 'NAO') return c.includes('NÃO') || c.includes('NAO');
+function matchFilter(cat, f) {
+  if(f==='TODOS') return true;
+  if(f==='VAI') return cat==='VAI_VOTAR';
+  if(f==='TALVEZ') return cat==='TALVEZ';
+  if(f==='NAO') return cat==='NAO_VOTA';
+  if(f==='COLETIVO') return cat==='COLETIVO';
   return true;
 }
 
 function render() {
   const s = document.getElementById('searchBox').value.toLowerCase();
   const filtered = allContatos.filter(c => {
-    if(!matchCatFilter(c.categoria, currentFilter)) return false;
-    if(s) return [c.nome, c.rede, c.categoria, c.obs].join(' ').toLowerCase().includes(s);
+    if(!matchFilter(c.status, currentFilter)) return false;
+    if(s) return [c.nome, c.captador, c.rede, c.obs].join(' ').toLowerCase().includes(s);
     return true;
   });
 
-  document.getElementById('tbody').innerHTML = filtered.map((c, i) => {
+  document.getElementById('tbody').innerHTML = filtered.map((c,i) => {
     return '<tr>' +
       '<td style="color:var(--muted)">' + (i+1) + '</td>' +
       '<td style="font-weight:600">' + (c.nome||'—') + '</td>' +
-      '<td>' + (c.rede||'—') + '</td>' +
-      '<td>' + catBadge(c.categoria) + '</td>' +
-      '<td style="font-size:.8rem;color:var(--muted);max-width:300px">' + (c.obs||'—') + '</td>' +
+      '<td style="font-size:.78rem">' + (c.rede||'—') + '</td>' +
+      '<td><span style="color:var(--accent);font-weight:600">' + c.captador + '</span></td>' +
+      '<td>' + catBadge(c.status) + '</td>' +
+      '<td style="font-size:.78rem;color:var(--muted);max-width:280px">' + (c.obs||'—') + '</td>' +
       '</tr>';
   }).join('');
 }
 
+async function loadTab(tabName) {
+  const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(tabName);
+  const text = await fetch(url).then(r=>r.text());
+  const rows = parseGviz(text);
+
+  // Skip first 3 rows (title, name, headers) in each tab
+  // Data: B(1)=Nome, C(2)=Número/Rede, D(3)=Categoria, E(4)=Observação
+  const contatos = [];
+  for(let i=3; i<rows.length; i++) {
+    const nome = val(rows[i], 1);
+    if(!nome) continue;
+    contatos.push({
+      nome: nome,
+      rede: val(rows[i], 2),
+      status: normCat(val(rows[i], 3)),
+      obs: val(rows[i], 4),
+      captador: tabName
+    });
+  }
+  return contatos;
+}
+
 async function loadData() {
   try {
-    const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
-    const resp = await fetch(url);
-    const text = await resp.text();
+    // Load all 4 tabs in parallel
+    const results = await Promise.all(TABS.map(t => loadTab(t)));
+    allContatos = results.flat();
 
-    const startIdx = text.indexOf('{');
-    const endIdx = text.lastIndexOf('}');
-    if(startIdx < 0 || endIdx < 0) throw new Error('GVIZ parse failed');
-    const json = JSON.parse(text.substring(startIdx, endIdx + 1));
-    const rows = json.table.rows || [];
-
-    console.log('Total GVIZ rows:', rows.length);
-    // Debug first 5 rows
-    rows.slice(0,5).forEach((r,i) => {
-      const vals = [0,1,2,3,4].map(j => val(r,j));
-      console.log('Row ' + i + ':', vals);
-    });
-
-    // Skip first 3 rows (title, ALICE, header), filter by col B having a value
-    allContatos = rows.slice(3).filter(r => val(r,1)).map(r => ({
-      nome: val(r,1),
-      rede: val(r,2),
-      categoria: val(r,3),
-      obs: val(r,4)
-    }));
-
-    console.log('Parsed contatos:', allContatos.length);
+    console.log('Loaded:', allContatos.length, 'contacts from', TABS.join(', '));
 
     const total = allContatos.length;
-    const vaiVotar = allContatos.filter(c => {
-      const cat = (c.categoria||'').toUpperCase();
-      return cat.includes('VAI VOTAR') && !cat.includes('NÃO') && !cat.includes('NAO');
-    }).length;
-    const talvez = allContatos.filter(c => (c.categoria||'').toUpperCase().includes('TALVEZ')).length;
-    const naoVai = allContatos.filter(c => {
-      const cat = (c.categoria||'').toUpperCase();
-      return cat.includes('NÃO') || cat.includes('NAO');
-    }).length;
+    const confirmado = allContatos.filter(c=>c.status==='VAI_VOTAR'||c.status==='COLETIVO').length;
+    const talvez = allContatos.filter(c=>c.status==='TALVEZ').length;
+    const nao = allContatos.filter(c=>c.status==='NAO_VOTA').length;
 
-    document.getElementById('sTotal').textContent = total;
-    document.getElementById('sVai').textContent = vaiVotar;
-    document.getElementById('sTalvez').textContent = talvez;
-    document.getElementById('sNao').textContent = naoVai;
-    document.getElementById('lastUpdate').textContent = total + ' contatos · Atualizado: ' + new Date().toLocaleString('pt-BR');
+    document.getElementById('kConfirmado').textContent = confirmado;
+    document.getElementById('kTotal').textContent = 'de ' + total + ' contatos';
+    document.getElementById('kTalvez').textContent = talvez;
+    document.getElementById('kNao').textContent = nao;
+
+    // Days until election (Oct 4, 2026)
+    const election = new Date(2026, 9, 4); // Oct 4
+    const today = new Date();
+    const dias = Math.ceil((election - today) / (1000*60*60*24));
+    document.getElementById('kDias').textContent = dias;
+
+    // Chart: Votos por Captador (stacked bar)
+    const captadorData = {};
+    TABS.forEach(t => { captadorData[t] = {confirmado:0, talvez:0, nao:0}; });
+    allContatos.forEach(c => {
+      if(c.status==='VAI_VOTAR'||c.status==='COLETIVO') captadorData[c.captador].confirmado++;
+      else if(c.status==='TALVEZ') captadorData[c.captador].talvez++;
+      else if(c.status==='NAO_VOTA') captadorData[c.captador].nao++;
+    });
+    // Sort by total desc
+    const capSorted = TABS.sort((a,b) => {
+      const ta = captadorData[a].confirmado+captadorData[a].talvez;
+      const tb = captadorData[b].confirmado+captadorData[b].talvez;
+      return tb - ta;
+    });
+
+    Highcharts.chart('chartCaptador', {
+      chart: { type:'bar', backgroundColor:'transparent' },
+      title: { text:null },
+      xAxis: { categories:capSorted, labels:{ style:{ color:'#9b8ab8', fontWeight:'bold' } } },
+      yAxis: { title:{ text:null }, labels:{ style:{ color:'#9b8ab8' } }, gridLineColor:'rgba(74,36,128,.3)' },
+      plotOptions: { bar:{ stacking:'normal', borderRadius:3, borderWidth:0 } },
+      series: [
+        { name:'Confirmado', data:capSorted.map(t=>captadorData[t].confirmado), color:'#10b981' },
+        { name:'Talvez', data:capSorted.map(t=>captadorData[t].talvez), color:'#F27C38' },
+        { name:'Não vota', data:capSorted.map(t=>captadorData[t].nao), color:'#ef4444' }
+      ],
+      legend: { itemStyle:{ color:'#9b8ab8' } },
+      credits: { enabled:false }
+    });
+
+    // Chart: Status Geral (donut)
+    Highcharts.chart('chartStatus', {
+      chart: { type:'pie', backgroundColor:'transparent' },
+      title: { text:null },
+      plotOptions: { pie:{ innerSize:'55%', borderWidth:0, dataLabels:{ enabled:true, format:'{point.name}: {point.y}', style:{ color:'#f0e6ff', fontSize:'12px', textOutline:'none' } } } },
+      series: [{ data:[
+        { name:'Confirmado', y:confirmado, color:'#10b981' },
+        { name:'Talvez', y:talvez, color:'#F27C38' },
+        { name:'Não Vota', y:nao, color:'#ef4444' }
+      ]}],
+      credits: { enabled:false }
+    });
+
     render();
   } catch(e) {
     console.error('Load error:', e);
-    document.getElementById('lastUpdate').textContent = 'Erro: ' + e.message;
+    document.getElementById('kConfirmado').textContent = 'Erro';
   }
 }
 
 document.getElementById('filters').addEventListener('click', e => {
-  if(e.target.tagName !== 'BUTTON') return;
-  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+  if(e.target.tagName!=='BUTTON') return;
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
   e.target.classList.add('active');
   currentFilter = e.target.dataset.filter;
   render();
 });
 document.getElementById('searchBox').addEventListener('input', render);
 loadData();
-setInterval(loadData, 300000);
+setInterval(loadData, 120000); // 2 min
 </script>
 </body>
 </html>
