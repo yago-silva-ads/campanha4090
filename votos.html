@@ -53,16 +53,16 @@ tr:hover td { background:rgba(59,30,109,.3); }
 
   <div class="stats">
     <div class="stat"><div class="stat-val" id="sTotal">—</div><div class="stat-lbl">Total Contatos</div></div>
-    <div class="stat"><div class="stat-val" id="sFB">—</div><div class="stat-lbl">Facebook</div></div>
-    <div class="stat"><div class="stat-val" id="sIG">—</div><div class="stat-lbl">Instagram</div></div>
-    <div class="stat"><div class="stat-val" id="sOutros">—</div><div class="stat-lbl">Outros</div></div>
+    <div class="stat"><div class="stat-val" id="sFB">—</div><div class="stat-lbl">Vai Votar</div></div>
+    <div class="stat"><div class="stat-val" id="sIG">—</div><div class="stat-lbl">Talvez</div></div>
+    <div class="stat"><div class="stat-val" id="sOutros">—</div><div class="stat-lbl">Facebook</div></div>
   </div>
 
   <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por nome, rede social...">
 
   <div class="table-wrap">
     <table>
-      <thead><tr><th>#</th><th>Nome</th><th>Número / Rede Social</th><th>Plataforma</th></tr></thead>
+      <thead><tr><th>#</th><th>Nome</th><th>Plataforma</th><th>Categoria</th><th>Observação</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
@@ -80,16 +80,19 @@ function render() {
   const q = document.getElementById('searchBox').value.toLowerCase();
   const filtered = allContatos.filter(c => {
     if(!q) return true;
-    return [c.nome,c.rede,c.plataforma].join(' ').toLowerCase().includes(q);
+    return [c.nome,c.plataforma,c.categoria,c.obs].join(' ').toLowerCase().includes(q);
   });
   document.getElementById('tbody').innerHTML = filtered.map((c,i) => {
-    const platClass = (c.plataforma||'').toLowerCase().includes('facebook') ? 'platform-fb' :
-                      (c.plataforma||'').toLowerCase().includes('instagram') ? 'platform-ig' : '';
+    const cat = (c.categoria||'').toUpperCase();
+    const catBadge = cat.includes('VAI VOTAR') ? '<span style="background:rgba(16,185,129,.2);color:#10b981;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700">VAI VOTAR</span>' :
+                     cat.includes('TALVEZ') ? '<span style="background:rgba(242,124,56,.2);color:#F27C38;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700">TALVEZ</span>' :
+                     '<span style="color:var(--muted)">'+(c.categoria||'—')+'</span>';
     return `<tr>
       <td style="color:var(--muted)">${i+1}</td>
       <td style="font-weight:600">${c.nome||'—'}</td>
-      <td>${c.rede||'—'}</td>
-      <td class="${platClass}">${c.plataforma||'—'}</td>
+      <td class="platform-fb">${c.plataforma||'—'}</td>
+      <td>${catBadge}</td>
+      <td style="font-size:.8rem;color:var(--muted);max-width:300px">${c.obs||'—'}</td>
     </tr>`;
   }).join('');
 }
@@ -102,19 +105,21 @@ async function loadData() {
     const rows = json.table.rows||[];
 
     // Data starts at row 6 in the sheet but GVIZ returns only data rows after headers
-    allContatos = rows.filter(r=>val(r,0)).map(r=>({
-      nome: val(r,0), rede: val(r,1), plataforma: val(r,2)
+    // Skip header rows (first 3), data in cols B(1),C(2),D(3),E(4)
+    allContatos = rows.slice(3).filter(r=>val(r,1)).map(r=>({
+      nome: val(r,1), plataforma: val(r,2), categoria: val(r,3), obs: val(r,4)
     }));
 
     const total = allContatos.length;
+    const vaiVotar = allContatos.filter(c=>(c.categoria||'').toUpperCase().includes('VAI VOTAR')).length;
+    const talvez = allContatos.filter(c=>(c.categoria||'').toUpperCase().includes('TALVEZ')).length;
     const fb = allContatos.filter(c=>(c.plataforma||'').toLowerCase().includes('facebook')).length;
-    const ig = allContatos.filter(c=>(c.plataforma||'').toLowerCase().includes('instagram')).length;
 
     document.getElementById('sTotal').textContent = total;
-    document.getElementById('sFB').textContent = fb;
-    document.getElementById('sIG').textContent = ig;
-    document.getElementById('sOutros').textContent = Math.max(0,total-fb-ig);
-    document.getElementById('lastUpdate').textContent = `${total} contatos · Atualizado: ${new Date().toLocaleString('pt-BR')}`;
+    document.getElementById('sFB').textContent = vaiVotar;
+    document.getElementById('sIG').textContent = talvez;
+    document.getElementById('sOutros').textContent = fb;
+    document.getElementById('lastUpdate').textContent = `${total} contatos confirmados · Atualizado: ${new Date().toLocaleString('pt-BR')}`;
     render();
   } catch(e) { document.getElementById('lastUpdate').textContent='Erro: '+e.message; }
 }

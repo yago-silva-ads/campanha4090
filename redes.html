@@ -159,16 +159,24 @@ function matchFilter(cls,f) {
 function actBtns(r) {
   const pid=getPostId(r), cid=getCommentId(r), p=getPlatform(r).toLowerCase(), aid=getAuthorId(r);
   let h='<div class="actions">';
+  const isFB = p.includes('facebook');
+  const isIG = p.includes('instagram');
   if(cid) {
-    if(p.includes('facebook')) {
-      h+=`<a class="act-btn act-reply" href="https://facebook.com/${cid}" target="_blank">💬 Responder</a>`;
-      if(pid) h+=`<a class="act-btn act-original" href="https://facebook.com/${pid}" target="_blank">📄 Post</a>`;
-    } else if(p.includes('instagram')) {
-      h+=`<a class="act-btn act-reply" href="https://instagram.com" target="_blank">💬 Ver IG</a>`;
+    if(isFB) {
+      // FB comment ID format: pageId_postId_commentId or just commentId
+      h+=`<a class="act-btn act-reply" href="https://facebook.com/${cid}" target="_blank" title="Abrir comentário no Facebook">💬 Responder</a>`;
+    } else if(isIG) {
+      h+=`<a class="act-btn act-reply" href="https://instagram.com" target="_blank" title="Abrir Instagram">💬 Ver IG</a>`;
     }
   }
-  if(aid && p.includes('facebook')) h+=`<a class="act-btn act-profile" href="https://facebook.com/${aid}" target="_blank">👤 @</a>`;
-  if(!cid && !aid) h+='<span style="color:var(--muted);font-size:.7rem">—</span>';
+  if(pid) {
+    if(isFB) h+=`<a class="act-btn act-original" href="https://facebook.com/${pid}" target="_blank" title="Ver post original">📄 Post</a>`;
+  }
+  if(aid && isFB) h+=`<a class="act-btn act-profile" href="https://facebook.com/profile.php?id=${aid}" target="_blank" title="Ver perfil do autor">👤 @</a>`;
+  if(!cid && !pid && !aid) {
+    if(isIG) h+=`<a class="act-btn act-reply" href="https://instagram.com" target="_blank">💬 Ver IG</a>`;
+    else h+='<span style="color:var(--muted);font-size:.7rem">—</span>';
+  }
   return h+'</div>';
 }
 
@@ -202,7 +210,7 @@ async function loadData() {
     const total=allRows.length;
     const clsArr=allRows.map(r=>getCls(r).toUpperCase());
     document.getElementById('sTotal').textContent=total;
-    document.getElementById('sApoio').textContent=clsArr.filter(c=>c.includes('APOIO')||c.includes('EMBAIXADOR')||c.includes('ENGAJADO')).length;
+    document.getElementById('sApoio').textContent=clsArr.filter(c=>c.includes('APOIO')||c.includes('EMBAIXADOR')||c.includes('ENGAJADO')||c.includes('COORDENADOR')).length;
     document.getElementById('sPotencial').textContent=clsArr.filter(c=>c.includes('POTENCIAL')||c.includes('LEAD')||c.includes('COLETIVO')).length;
     document.getElementById('sContra').textContent=clsArr.filter(c=>c.includes('CONTRA')||c.includes('ATAQUE')).length;
     document.getElementById('sNeutro').textContent=clsArr.filter(c=>c.includes('NEUTRO')).length;
