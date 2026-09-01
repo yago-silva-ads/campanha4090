@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>📡 QG Redes — Luciano da Luz 4090</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGElEQVR4nLWXy3JcNRCGv5Z0LnOL7XIcEgdSbIAdUMWKHfAibHgfXoBnYQ8LWGTjgsoiiySOYzuemvucI4lqnZnxbcaxk9DlqSPr6Kj//rvV3ZKff/o1+qoiDF5z2LcgwkWR5f8xrubOR++QGMnKkt1ijOB567ex0nwdQsBai3vdf4ava/zgmOOxUZXn34dAVdcNCJsRY0z4MiO3BuCqnMl0hsTAmFMMMRmge1trkIJPoqhSycjsBStDpGy3eLy/z3g8xg4OyZ1hUsOrUbgA8yYRYgz4qKsFg7/0LgFs5Z2lyhXLamUgUGQtnM0pczDtHQoL05HSWbOJBJ0OF3kUi1u51V1fv5V9vtalSlRmCuqQYUxM/qqDgVDhRK0ymORPXanjQIiSrM1MM9Z5YY4P80uuvShukx2idkibbx9t0596DoeBxz3LsIKZj3x2z/BqqIpgqzCcTgK9Qvi0Jzw9CjzsQC+3/HvSx8cTEI2v67aa9QAWLEToVxmzYDEixKwDxqZ3c9NaWRVtmdzmsQxCK0V6Tc6UFiJN0G0S2eSCECNbZQtj2kyqgBVlxKWgami36WgtgcY01qAziNSNbWIJfkIVponTW7vAGhjOI79849judvjtr5Je5lNwGWMIPhCCR4whyxzPXxzA4nxfs1DjINF/JwYkKdju7dAp7zGZeYxR6yLV/OJRaqRh5dosIpZ5PWRWDxcg4m2DkOTTWSXkLseZqqFX85FZWnNOqSy2ljUAKj+5MXe6tcqBOtbc7z5kr/MVo8mIXq/DbDqn22slJvpno5TJdKzPre0Ok/GcVqfg7HRIILJ3f5eD538wPjvGiV0LQzYFoaJ2tsSKpuCQfN+kYkkBer5bBJMRsi4FY2xRMjzr46ykb2o/p/bTu+YBFUkJpApKoR7jcwCax5OPEoiIFUM7jPDG86jtcGXFm1HAaTQnxZsTt+NG0QzXjDSI9PAlAMvUusBgRcj0oIlwz0VmuePN2GP0m9UR3aThRml4bgxt0q4+F6NLq3S2xnBcZfSnIW2sc+8q3YbbypJF2byRF8tRlfN2EjYWq/cHEK8817zW8pNLxJnbNy2G95R1BkYN3Ej6yf8NIK5RnsWKz8sp+z2bQHwEALL8uxQDegjSQbhippaDXAJO03aC9G5xN73Uc6/NoyozwRCijk2qE03PoN1PTOlZa+NULC/nOf3xuCnfHwIgakfkHHle4r1PYJpsCM7ZBGxZAIKPjHwgimFQZ4zmysLtItFtNl8VObrdHrPZNCksi5LZfEar1cInAA3Nk1nN23HNlgnkIotW7UKV+hAX1L5u6r92t75ObMznVaoPWhOUap236oxVibjtGeBmACnOUsQtPC5NutUG9ejoZJEVI8bliNMWLdz16sLNDGzYS5uTBw/2VremybSiP55D0y5+PAZUVtl8cWlQd5yenqbnysfGYSTXZMxdxSUrrlqZLi3NNWzVTC7ob2KhCcAVRbrWXLF8kSjSI92MNgCovXaw1yUFWar7DQeqWEEt3/mwLLeL3JCCslmje2r/szRO5y/YlsAt93L3ew+aicsEpAVZllPYnMxNCWLJXEbeaVMXVbq0qhusM1TRQnSUWY3LC/a2DKI3FmtX4JbAE3Gh6bD053784Ut+//vPlMmuSh0C3uVsff0du6PXKcanU7U8R6Sgu7PDm6cHfP/Q8M9um8HLfbrHLzj8ok148oTZswP88QnWueSmoizIs4JWp81gMCBzOf8BEn6N9d6wnugAAAAASUVORK5CYII=">
 <style>
 :root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; }
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -156,22 +157,31 @@ function actBtns(r) {
   const isFB = p.includes('FACEBOOK');
   const isIG = p.includes('INSTAGRAM');
 
-  // RESPONDER COMO LUCIANO — abre o comentário no Facebook/Instagram
-  if(cid && isFB) {
-    h += '<a class="act-btn act-reply" href="https://facebook.com/' + cid + '" target="_blank" title="Abrir comentário para responder como Luciano">✍️ Responder</a>';
-  }
-  if(pid && isFB) {
-    h += '<a class="act-btn act-original" href="https://facebook.com/' + pid + '" target="_blank" title="Ver post original">📄 Original</a>';
-  }
-  if(aid && isFB) {
-    h += '<a class="act-btn act-profile" href="https://facebook.com/profile.php?id=' + aid + '" target="_blank" title="Ver perfil">👤</a>';
-  }
-  if(isIG) {
-    if(pid) {
-      h += '<a class="act-btn act-reply" href="https://instagram.com/p/' + pid + '/" target="_blank" title="Abrir post no Instagram para responder">✍️ Responder</a>';
+  if(isFB) {
+    // FB comment URL: facebook.com/{post_id}?comment_id={actual_comment_id}
+    // post_id format: pageId_postId (e.g. 656539144216536_122190851306926835)
+    // comment_id format: postPart_commentPart — we need just the commentPart
+    if(pid && cid) {
+      const actualCommentId = cid.includes('_') ? cid.split('_').pop() : cid;
+      h += '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCommentId + '" target="_blank" title="Responder como Luciano — abre o comentário exato">✍️ Responder</a>';
+      h += '<a class="act-btn act-original" href="https://www.facebook.com/' + pid + '" target="_blank" title="Ver post original completo">📄 Original</a>';
+    } else if(pid) {
+      h += '<a class="act-btn act-original" href="https://www.facebook.com/' + pid + '" target="_blank" title="Ver post">📄 Original</a>';
+    } else if(cid) {
+      const actualCommentId = cid.includes('_') ? cid.split('_').pop() : cid;
+      h += '<a class="act-btn act-reply" href="https://www.facebook.com/' + cid + '" target="_blank" title="Ver comentário">✍️ Responder</a>';
     }
-    h += '<a class="act-btn act-original" href="https://instagram.com" target="_blank" title="Abrir Instagram">📸 IG</a>';
+    if(aid) {
+      h += '<a class="act-btn act-profile" href="https://www.facebook.com/profile.php?id=' + aid + '" target="_blank" title="Ver perfil do autor">👤</a>';
+    }
   }
+
+  if(isIG) {
+    // IG não tem link direto para comentário individual
+    // Melhor: link pro perfil do Luciano onde pode achar o post
+    h += '<a class="act-btn act-reply" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" title="Abrir perfil do Luciano no IG para encontrar o post">📸 Ver no IG</a>';
+  }
+
   if(!h.includes('act-btn')) {
     h += '<span style="color:var(--muted);font-size:.7rem">—</span>';
   }
