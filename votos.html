@@ -181,10 +181,13 @@ async function loadTab(tabName) {
   for(let i=3; i<rows.length; i++) {
     const cat = val(rows[i], 3);
     if(!cat) continue; // skip rows without category
-    const nome = val(rows[i], 1) || 'Sem nome';
+    const nome = val(rows[i], 1);
+    const rede = val(rows[i], 2);
+    // Skip ghost rows: have category but NO name AND NO contact info
+    if(!nome && !rede) continue;
     contatos.push({
-      nome: nome,
-      rede: val(rows[i], 2),
+      nome: nome || 'Sem nome',
+      rede: rede,
       status: normCat(cat),
       obs: val(rows[i], 4),
       captador: tabName

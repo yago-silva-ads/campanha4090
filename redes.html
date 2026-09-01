@@ -138,7 +138,22 @@ function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.
 
 // Smart getters that handle both old (cols A-G) and new (cols M-T) formats
 function getDate(r)     { return val(r,15) || val(r,11) || val(r,0) || ''; }
-function getName(r)     { return val(r,12) || val(r,1) || val(r,2) || ''; }
+function getName(r) {
+  var n = val(r,12) || val(r,1) || '';
+  // Filter out "Desconhecido" as it's useless
+  if(n === 'Desconhecido') n = '';
+  // Try username (col 2) with @ prefix for IG
+  if(!n) {
+    var u = val(r,2);
+    if(u) n = '@' + u;
+  }
+  // Last resort: first 25 chars of comment as identifier
+  if(!n) {
+    var c = val(r,14) || val(r,3) || '';
+    if(c) n = c.substring(0,25) + (c.length > 25 ? '…' : '');
+  }
+  return n;
+}
 function getComment(r)  { return val(r,14) || val(r,3) || ''; }
 function getPlatform(r) { return val(r,4) || ''; }
 function getCls(r)      { return val(r,5) || ''; }
@@ -203,6 +218,9 @@ function actBtns(r) {
     return '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCid + '" target="_blank" title="Abrir comentário no Facebook">✍️ Responder</a>';
   }
   if(p === 'INSTAGRAM') {
+    if(pid) {
+      return '<a class="act-btn" style="background:rgba(225,48,108,.12);color:#E1306C" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" title="Post ID: ' + pid + '">📸 Ver post</a>';
+    }
     return '<span style="color:var(--muted);font-size:.68rem">📸 IG</span>';
   }
   return '—';
