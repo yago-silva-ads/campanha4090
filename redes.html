@@ -133,20 +133,26 @@ function fmtDate(d) {
 
 function badgeClass(c) {
   c = (c||'').toUpperCase();
-  if(c.includes('APOIO') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO')) return 'badge-apoio';
-  if(c.includes('POTENCIAL') || c.includes('LEAD') || c.includes('COLETIVO') || c.includes('COORDENADOR')) return 'badge-potencial';
-  if(c.includes('CONTRA') || c.includes('ATAQUE')) return 'badge-contra';
-  if(c.includes('NEUTRO')) return 'badge-neutro';
+  const APOIO = ['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+  const POT = ['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
+  const CONTRA = ['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
+  if(APOIO.indexOf(c) >= 0) return 'badge-apoio';
+  if(POT.indexOf(c) >= 0) return 'badge-potencial';
+  if(CONTRA.indexOf(c) >= 0) return 'badge-contra';
+  if(c === 'NEUTRO') return 'badge-neutro';
   return 'badge-pendente';
 }
 
 function matchFilter(cls, f) {
   if(f === 'TODOS') return true;
   const c = (cls||'').toUpperCase();
-  if(f === 'APOIO') return c.includes('APOIO') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO');
-  if(f === 'POTENCIAL') return c.includes('POTENCIAL') || c.includes('LEAD') || c.includes('COLETIVO') || c.includes('COORDENADOR');
-  if(f === 'NEUTRO') return c.includes('NEUTRO');
-  if(f === 'CONTRA') return c.includes('CONTRA') || c.includes('ATAQUE');
+  const APOIO = ['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+  const POT = ['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
+  const CONTRA = ['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
+  if(f === 'APOIO') return APOIO.indexOf(c) >= 0;
+  if(f === 'POTENCIAL') return POT.indexOf(c) >= 0;
+  if(f === 'NEUTRO') return c === 'NEUTRO';
+  if(f === 'CONTRA') return CONTRA.indexOf(c) >= 0;
   if(f === 'PENDENTE') return !c || c === '';
   return true;
 }
@@ -177,9 +183,8 @@ function actBtns(r) {
   }
 
   if(isIG) {
-    // IG não tem link direto para comentário individual
-    // Melhor: link pro perfil do Luciano onde pode achar o post
-    h += '<a class="act-btn act-reply" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" title="Abrir perfil do Luciano no IG para encontrar o post">📸 Ver no IG</a>';
+    // IG não tem link direto para comentário — remover link quebrado
+    h += '<span style="color:var(--muted);font-size:.7rem">📸 Instagram</span>';
   }
 
   if(!h.includes('act-btn')) {
@@ -265,18 +270,14 @@ async function loadData() {
     console.log('Classification distribution:', clsDist);
 
     document.getElementById('sTotal').textContent = total;
-    document.getElementById('sApoio').textContent = clsArr.filter(c =>
-      c.includes('APOIO') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO')
-    ).length;
-    document.getElementById('sPotencial').textContent = clsArr.filter(c =>
-      c.includes('POTENCIAL') || c.includes('LEAD') || c.includes('COLETIVO') || c.includes('COORDENADOR')
-    ).length;
-    document.getElementById('sContra').textContent = clsArr.filter(c =>
-      c.includes('CONTRA') || c.includes('ATAQUE')
-    ).length;
-    document.getElementById('sNeutro').textContent = clsArr.filter(c =>
-      c.includes('NEUTRO')
-    ).length;
+    // Use exact match — includes() has a JIT bug in some browsers
+    const APOIO_SET = new Set(['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO']);
+    const POT_SET = new Set(['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE']);
+    const CONTRA_SET = new Set(['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA']);
+    document.getElementById('sApoio').textContent = clsArr.filter(c => APOIO_SET.has(c)).length;
+    document.getElementById('sPotencial').textContent = clsArr.filter(c => POT_SET.has(c)).length;
+    document.getElementById('sContra').textContent = clsArr.filter(c => CONTRA_SET.has(c)).length;
+    document.getElementById('sNeutro').textContent = clsArr.filter(c => c === 'NEUTRO').length;
     document.getElementById('sFB').textContent = allRows.filter(r =>
       getPlatform(r).toUpperCase().includes('FACEBOOK')
     ).length;
