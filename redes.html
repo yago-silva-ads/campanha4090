@@ -156,6 +156,9 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
   </div>
 
   <div id="countInfo" style="font-size:.78rem; color:var(--muted); margin-bottom:8px;"></div>
+  <div style="background:rgba(242,124,56,.1); border:1px solid rgba(242,124,56,.3); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:.78rem; color:var(--accent);">
+    ⚠️ <strong>Pra responder como Lucianodaluz no FB:</strong> Antes de clicar "Responder", vá no Facebook → foto de perfil → "Mudar para Lucianodaluz". Assim responde como a Página.
+  </div>
 
   <div class="table-wrap">
     <table>
@@ -303,22 +306,23 @@ function actBtns(r) {
   if(p === 'FACEBOOK') {
     if(pid && cid) {
       var actualCid = cid.indexOf('_') >= 0 ? cid.substring(cid.lastIndexOf('_')+1) : cid;
-      btns += '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCid + '" target="_blank" rel="noopener" title="Abrir comentário no Facebook">✍️ Responder</a>';
+      btns += '<a class="act-btn act-ig" href="https://www.facebook.com/' + pid + '" target="_blank" rel="noopener" title="Ver post original">👁 Ver Post</a> ';
+      btns += '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCid + '" target="_blank" rel="noopener" title="Responder como Lucianodaluz — troque para a Página antes!">✍️ Responder</a>';
     } else {
       btns += '<span style="color:var(--muted);font-size:.68rem">📘 FB (sem link)</span>';
     }
   }
 
   if(p === 'INSTAGRAM') {
-    var shortcode = pid ? igMediaIdToShortcode(pid) : '';
-    if(shortcode) {
-      var postUrl = 'https://www.instagram.com/p/' + shortcode + '/';
-      btns += '<a class="act-btn act-ig" href="' + postUrl + '" target="_blank" rel="noopener" title="Ver post no Instagram">📸 Ver post</a> ';
-      btns += '<a class="act-btn act-reply" href="' + postUrl + '" target="_blank" rel="noopener" title="Abrir post para responder">✍️ Responder</a>';
-    } else {
-      // Fallback to profile
-      btns += '<a class="act-btn act-ig" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" rel="noopener">📸 Perfil</a>';
+    // IG media IDs from Graph API cannot be converted to public shortcodes
+    // Best option: link to Luciano's profile for engagement
+    var profileUrl = 'https://www.instagram.com/lucianodaluz4090/';
+    var username = val(r,2) || '';
+    if(username && username !== 'Desconhecido') {
+      // If we have the commenter's username, link to their profile too
+      btns += '<a class="act-btn act-ig" href="https://www.instagram.com/' + username.replace('@','') + '/" target="_blank" rel="noopener" title="Ver perfil do apoiador">👤 Perfil</a> ';
     }
+    btns += '<a class="act-btn act-reply" href="' + profileUrl + '" target="_blank" rel="noopener" title="Abrir perfil Luciano no IG pra responder">✍️ Responder no IG</a>';
   }
 
   return btns || '—';
