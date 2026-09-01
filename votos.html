@@ -5,64 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>✅ Controle de Votos — Luciano da Luz 4090</title>
 <style>
-:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; }
+:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
-nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-.nav-left { display:flex; align-items:center; gap:12px; }
-.nav-avatar { width:40px; height:40px; border-radius:50%; border:2px solid var(--accent); object-fit:cover; }
-.nav-brand { font-weight:800; font-size:1.1rem; } .nav-brand span { color:var(--accent); font-size:1.3rem; }
+nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-brand { font-weight:800; font-size:1rem; display:flex; align-items:center; gap:8px; }
+.nav-brand .num { color:var(--accent); font-size:1.2rem; }
 .nav-links { display:flex; gap:4px; }
-.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
+.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.82rem; font-weight:500; transition:all .2s; }
 .nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
 .container { max-width:1200px; margin:0 auto; padding:24px 16px; }
-h1 { font-size:1.5rem; margin-bottom:8px; } h1 span { color:var(--accent); }
-.subtitle { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
-.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:24px; }
-.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:20px; text-align:center; }
-.stat-val { font-size:2rem; font-weight:800; color:var(--accent); }
-.stat-lbl { font-size:.75rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
-.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.9rem; margin-bottom:16px; outline:none; }
+h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
+.subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px; }
+.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
+.stat-val { font-size:1.6rem; font-weight:800; color:var(--accent); }
+.stat-lbl { font-size:.7rem; color:var(--muted); text-transform:uppercase; margin-top:3px; }
+.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.85rem; margin-bottom:14px; outline:none; }
 .search-box:focus { border-color:var(--accent); }
+.filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:7px 14px; border-radius:8px; cursor:pointer; font-size:.8rem; transition:all .2s; }
+.filters button:hover,.filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 .table-wrap { overflow-x:auto; border-radius:12px; border:1px solid var(--card-border); }
-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
 thead { background:var(--primary); }
-th { padding:12px 10px; text-align:left; font-weight:600; font-size:.75rem; text-transform:uppercase; letter-spacing:.5px; }
-td { padding:10px; border-bottom:1px solid rgba(74,36,128,.3); }
+th { padding:10px 8px; text-align:left; font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:8px; border-bottom:1px solid rgba(74,36,128,.3); }
 tr:hover td { background:rgba(59,30,109,.3); }
-.platform-fb { color:#1877F2; font-weight:600; } .platform-ig { color:#E4405F; font-weight:600; }
-.footer { text-align:center; padding:24px; color:var(--muted); font-size:.75rem; margin-top:32px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links{display:none;} }
+.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; text-transform:uppercase; }
+.badge-vai { background:rgba(16,185,129,.2); color:#10b981; }
+.badge-talvez { background:rgba(242,124,56,.2); color:#F27C38; }
+.badge-nao { background:rgba(239,68,68,.2); color:#ef4444; }
+.badge-sem { background:rgba(107,114,128,.2); color:#6b7280; }
+.footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
+@media(max-width:768px) { .nav-links{display:none;} .stat-val{font-size:1.2rem;} }
 </style>
 </head>
 <body>
 <nav>
-  <div class="nav-left">
-    <img class="nav-avatar" src="luciano.png" alt="Luciano da Luz" onerror="this.style.display='none'">
-    <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
-  </div>
+  <div class="nav-brand">LUCIANO DA LUZ <span class="num">4090</span></div>
   <div class="nav-links">
-    <a href="index.html">Central</a><a href="redes.html">QG Redes</a>
-    <a href="congresso.html">Congresso</a><a href="votar.html">Proposições</a>
-    <a href="votos.html" class="active">Controle</a><a href="analytics.html">Analytics</a>
+    <a href="index.html">Central</a>
+    <a href="redes.html">QG Redes</a>
+    <a href="congresso.html">Congresso</a>
+    <a href="votar.html">Proposições</a>
+    <a href="votos.html" class="active">Controle</a>
+    <a href="analytics.html">Analytics</a>
   </div>
 </nav>
 <div class="container">
   <h1>✅ Controle de Votos — <span>Contatos Confirmados</span></h1>
-  <p class="subtitle" id="lastUpdate">Carregando contatos da planilha de controle...</p>
-
+  <p class="subtitle" id="lastUpdate">Carregando contatos...</p>
   <div class="stats">
     <div class="stat"><div class="stat-val" id="sTotal">—</div><div class="stat-lbl">Total Contatos</div></div>
-    <div class="stat"><div class="stat-val" id="sFB">—</div><div class="stat-lbl">Vai Votar</div></div>
-    <div class="stat"><div class="stat-val" id="sIG">—</div><div class="stat-lbl">Talvez</div></div>
-    <div class="stat"><div class="stat-val" id="sOutros">—</div><div class="stat-lbl">Facebook</div></div>
+    <div class="stat"><div class="stat-val" id="sVai">—</div><div class="stat-lbl">Vai Votar ✅</div></div>
+    <div class="stat"><div class="stat-val" id="sTalvez">—</div><div class="stat-lbl">Talvez 🤔</div></div>
+    <div class="stat"><div class="stat-val" id="sNao">—</div><div class="stat-lbl">Não Vai ❌</div></div>
   </div>
-
-  <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por nome, rede social...">
-
+  <div class="filters" id="filters">
+    <button class="active" data-filter="TODOS">Todos</button>
+    <button data-filter="VAI">Vai Votar</button>
+    <button data-filter="TALVEZ">Talvez</button>
+    <button data-filter="NAO">Não Vai</button>
+  </div>
+  <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por nome, rede social, observação...">
   <div class="table-wrap">
     <table>
-      <thead><tr><th>#</th><th>Nome</th><th>Plataforma</th><th>Categoria</th><th>Observação</th></tr></thead>
+      <thead><tr><th>#</th><th>Nome</th><th>Número / Rede Social</th><th>Categoria</th><th>Observação</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
@@ -73,59 +82,109 @@ tr:hover td { background:rgba(59,30,109,.3); }
 const SHEET_ID = '16nEZG1Asgz-61JbDtluYQxvc4k_CWJrLya36zwrKtEo';
 const SHEET_NAME = 'PLANILHA DE CONTROLE';
 let allContatos = [];
+let currentFilter = 'TODOS';
 
-function val(r,i){return r.c&&r.c[i]?(r.c[i].v||''):'';}
+function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.c[i].v) : ''; } catch(e) { return ''; } }
+
+function catBadge(cat) {
+  const c = (cat||'').toUpperCase();
+  if(c.includes('VAI VOTAR') && !c.includes('NÃO') && !c.includes('NAO')) return '<span class="badge badge-vai">VAI VOTAR</span>';
+  if(c.includes('TALVEZ')) return '<span class="badge badge-talvez">TALVEZ</span>';
+  if(c.includes('NÃO') || c.includes('NAO')) return '<span class="badge badge-nao">NÃO VAI VOTAR</span>';
+  if(c) return '<span class="badge badge-sem">' + cat + '</span>';
+  return '<span style="color:var(--muted)">—</span>';
+}
+
+function matchCatFilter(cat, f) {
+  if(f === 'TODOS') return true;
+  const c = (cat||'').toUpperCase();
+  if(f === 'VAI') return c.includes('VAI VOTAR') && !c.includes('NÃO') && !c.includes('NAO');
+  if(f === 'TALVEZ') return c.includes('TALVEZ');
+  if(f === 'NAO') return c.includes('NÃO') || c.includes('NAO');
+  return true;
+}
 
 function render() {
-  const q = document.getElementById('searchBox').value.toLowerCase();
+  const s = document.getElementById('searchBox').value.toLowerCase();
   const filtered = allContatos.filter(c => {
-    if(!q) return true;
-    return [c.nome,c.plataforma,c.categoria,c.obs].join(' ').toLowerCase().includes(q);
+    if(!matchCatFilter(c.categoria, currentFilter)) return false;
+    if(s) return [c.nome, c.rede, c.categoria, c.obs].join(' ').toLowerCase().includes(s);
+    return true;
   });
-  document.getElementById('tbody').innerHTML = filtered.map((c,i) => {
-    const cat = (c.categoria||'').toUpperCase();
-    const catBadge = cat.includes('VAI VOTAR') ? '<span style="background:rgba(16,185,129,.2);color:#10b981;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700">VAI VOTAR</span>' :
-                     cat.includes('TALVEZ') ? '<span style="background:rgba(242,124,56,.2);color:#F27C38;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700">TALVEZ</span>' :
-                     '<span style="color:var(--muted)">'+(c.categoria||'—')+'</span>';
-    return `<tr>
-      <td style="color:var(--muted)">${i+1}</td>
-      <td style="font-weight:600">${c.nome||'—'}</td>
-      <td class="platform-fb">${c.plataforma||'—'}</td>
-      <td>${catBadge}</td>
-      <td style="font-size:.8rem;color:var(--muted);max-width:300px">${c.obs||'—'}</td>
-    </tr>`;
+
+  document.getElementById('tbody').innerHTML = filtered.map((c, i) => {
+    return '<tr>' +
+      '<td style="color:var(--muted)">' + (i+1) + '</td>' +
+      '<td style="font-weight:600">' + (c.nome||'—') + '</td>' +
+      '<td>' + (c.rede||'—') + '</td>' +
+      '<td>' + catBadge(c.categoria) + '</td>' +
+      '<td style="font-size:.8rem;color:var(--muted);max-width:300px">' + (c.obs||'—') + '</td>' +
+      '</tr>';
   }).join('');
 }
 
 async function loadData() {
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const text = await fetch(url).then(r=>r.text());
-    const json = JSON.parse(text.substring(47).slice(0,-2));
-    const rows = json.table.rows||[];
+    const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
+    const resp = await fetch(url);
+    const text = await resp.text();
 
-    // Data starts at row 6 in the sheet but GVIZ returns only data rows after headers
-    // Skip header rows (first 3), data in cols B(1),C(2),D(3),E(4)
-    allContatos = rows.slice(3).filter(r=>val(r,1)).map(r=>({
-      nome: val(r,1), plataforma: val(r,2), categoria: val(r,3), obs: val(r,4)
+    const startIdx = text.indexOf('{');
+    const endIdx = text.lastIndexOf('}');
+    if(startIdx < 0 || endIdx < 0) throw new Error('GVIZ parse failed');
+    const json = JSON.parse(text.substring(startIdx, endIdx + 1));
+    const rows = json.table.rows || [];
+
+    console.log('Total GVIZ rows:', rows.length);
+    // Debug first 5 rows
+    rows.slice(0,5).forEach((r,i) => {
+      const vals = [0,1,2,3,4].map(j => val(r,j));
+      console.log('Row ' + i + ':', vals);
+    });
+
+    // Skip first 3 rows (title, ALICE, header), filter by col B having a value
+    allContatos = rows.slice(3).filter(r => val(r,1)).map(r => ({
+      nome: val(r,1),
+      rede: val(r,2),
+      categoria: val(r,3),
+      obs: val(r,4)
     }));
 
+    console.log('Parsed contatos:', allContatos.length);
+
     const total = allContatos.length;
-    const vaiVotar = allContatos.filter(c=>(c.categoria||'').toUpperCase().includes('VAI VOTAR')).length;
-    const talvez = allContatos.filter(c=>(c.categoria||'').toUpperCase().includes('TALVEZ')).length;
-    const fb = allContatos.filter(c=>(c.plataforma||'').toLowerCase().includes('facebook')).length;
+    const vaiVotar = allContatos.filter(c => {
+      const cat = (c.categoria||'').toUpperCase();
+      return cat.includes('VAI VOTAR') && !cat.includes('NÃO') && !cat.includes('NAO');
+    }).length;
+    const talvez = allContatos.filter(c => (c.categoria||'').toUpperCase().includes('TALVEZ')).length;
+    const naoVai = allContatos.filter(c => {
+      const cat = (c.categoria||'').toUpperCase();
+      return cat.includes('NÃO') || cat.includes('NAO');
+    }).length;
 
     document.getElementById('sTotal').textContent = total;
-    document.getElementById('sFB').textContent = vaiVotar;
-    document.getElementById('sIG').textContent = talvez;
-    document.getElementById('sOutros').textContent = fb;
-    document.getElementById('lastUpdate').textContent = `${total} contatos confirmados · Atualizado: ${new Date().toLocaleString('pt-BR')}`;
+    document.getElementById('sVai').textContent = vaiVotar;
+    document.getElementById('sTalvez').textContent = talvez;
+    document.getElementById('sNao').textContent = naoVai;
+    document.getElementById('lastUpdate').textContent = total + ' contatos · Atualizado: ' + new Date().toLocaleString('pt-BR');
     render();
-  } catch(e) { document.getElementById('lastUpdate').textContent='Erro: '+e.message; }
+  } catch(e) {
+    console.error('Load error:', e);
+    document.getElementById('lastUpdate').textContent = 'Erro: ' + e.message;
+  }
 }
 
-document.getElementById('searchBox').addEventListener('input',render);
-loadData(); setInterval(loadData,300000);
+document.getElementById('filters').addEventListener('click', e => {
+  if(e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentFilter = e.target.dataset.filter;
+  render();
+});
+document.getElementById('searchBox').addEventListener('input', render);
+loadData();
+setInterval(loadData, 300000);
 </script>
 </body>
 </html>

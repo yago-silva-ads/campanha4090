@@ -8,65 +8,56 @@
 :root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
-nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-
-.nav-left { display:flex; align-items:center; gap:12px; }
-.nav-avatar { width:40px; height:40px; border-radius:50%; border:2px solid var(--accent); object-fit:cover; }
-
-.nav-brand { font-weight:800; font-size:1.1rem; }
-.nav-brand span { color:var(--accent); font-size:1.3rem; }
+nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-brand { font-weight:800; font-size:1rem; display:flex; align-items:center; gap:8px; }
+.nav-brand .num { color:var(--accent); font-size:1.2rem; }
 .nav-links { display:flex; gap:4px; }
-.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
+.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.82rem; font-weight:500; transition:all .2s; }
 .nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
 .container { max-width:1400px; margin:0 auto; padding:24px 16px; }
-h1 { font-size:1.5rem; margin-bottom:8px; } h1 span { color:var(--accent); }
-.subtitle { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
-.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; margin-bottom:24px; }
-.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:16px; text-align:center; }
-.stat-val { font-size:1.8rem; font-weight:800; color:var(--accent); }
-.stat-lbl { font-size:.75rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
-.filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
-.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:.82rem; transition:all .2s; }
+h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
+.subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; margin-bottom:20px; }
+.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
+.stat-val { font-size:1.6rem; font-weight:800; color:var(--accent); }
+.stat-lbl { font-size:.7rem; color:var(--muted); text-transform:uppercase; margin-top:3px; }
+.filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:7px 14px; border-radius:8px; cursor:pointer; font-size:.8rem; transition:all .2s; }
 .filters button:hover,.filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.9rem; margin-bottom:16px; outline:none; }
+.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.85rem; margin-bottom:14px; outline:none; }
 .search-box:focus { border-color:var(--accent); }
 .table-wrap { overflow-x:auto; border-radius:12px; border:1px solid var(--card-border); }
-table { width:100%; border-collapse:collapse; font-size:.82rem; }
+table { width:100%; border-collapse:collapse; font-size:.8rem; }
 thead { background:var(--primary); }
-th { padding:12px 10px; text-align:left; font-weight:600; font-size:.75rem; text-transform:uppercase; letter-spacing:.5px; position:sticky; top:0; }
-td { padding:10px; border-bottom:1px solid rgba(74,36,128,.3); vertical-align:top; }
+th { padding:10px 8px; text-align:left; font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:8px; border-bottom:1px solid rgba(74,36,128,.3); vertical-align:top; }
 tr:hover td { background:rgba(59,30,109,.3); }
-.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.7rem; font-weight:700; text-transform:uppercase; }
+.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; text-transform:uppercase; }
 .badge-apoio { background:rgba(16,185,129,.2); color:#10b981; }
 .badge-neutro { background:rgba(155,138,184,.2); color:#9b8ab8; }
 .badge-contra { background:rgba(239,68,68,.2); color:#ef4444; }
 .badge-potencial { background:rgba(242,124,56,.2); color:#F27C38; }
 .badge-pendente { background:rgba(107,114,128,.2); color:#6b7280; }
-.badge-spam { background:rgba(55,65,81,.2); color:#4b5563; }
-.badge-mencao { background:rgba(59,30,109,.3); color:#a78bfa; }
-.comment-text { max-width:360px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; }
+.comment-text { max-width:340px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; }
 .comment-text:hover { white-space:normal; }
 .platform-fb { color:#1877F2; font-weight:600; } .platform-ig { color:#E4405F; font-weight:600; }
 .actions { display:flex; gap:4px; flex-wrap:nowrap; }
-.act-btn { display:inline-flex; align-items:center; gap:3px; padding:3px 8px; border-radius:6px; font-size:.68rem; font-weight:600; text-decoration:none; cursor:pointer; transition:all .2s; white-space:nowrap; }
-.act-reply { background:rgba(24,119,242,.15); color:#5b9ef4; border:1px solid rgba(24,119,242,.3); }
-.act-reply:hover { background:rgba(24,119,242,.3); }
+.act-btn { display:inline-flex; align-items:center; gap:3px; padding:3px 8px; border-radius:6px; font-size:.66rem; font-weight:600; text-decoration:none; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.act-reply { background:rgba(16,185,129,.15); color:#10b981; border:1px solid rgba(16,185,129,.3); }
+.act-reply:hover { background:rgba(16,185,129,.3); }
 .act-original { background:rgba(242,124,56,.15); color:#F27C38; border:1px solid rgba(242,124,56,.3); }
 .act-original:hover { background:rgba(242,124,56,.3); }
 .act-profile { background:rgba(168,139,250,.12); color:#a78bfa; border:1px solid rgba(168,139,250,.3); }
 .act-profile:hover { background:rgba(168,139,250,.3); }
 .nome-link { color:var(--text); text-decoration:none; font-weight:600; }
 .nome-link:hover { color:var(--accent); text-decoration:underline; }
-.footer { text-align:center; padding:24px; color:var(--muted); font-size:.75rem; margin-top:32px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links{display:none;} .stat-val{font-size:1.3rem;} .comment-text{max-width:200px;} }
+.footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
+@media(max-width:768px) { .nav-links{display:none;} .stat-val{font-size:1.2rem;} .comment-text{max-width:180px;} }
 </style>
 </head>
 <body>
 <nav>
-  <div class="nav-left">
-    <img class="nav-avatar" src="luciano.png" alt="Luciano da Luz" onerror="this.style.display='none'">
-    <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
-  </div>
+  <div class="nav-brand">LUCIANO DA LUZ <span class="num">4090</span></div>
   <div class="nav-links">
     <a href="index.html">Central</a>
     <a href="redes.html" class="active">QG Redes</a>
@@ -92,7 +83,6 @@ tr:hover td { background:rgba(59,30,109,.3); }
     <button class="active" data-filter="TODOS">Todos</button>
     <button data-filter="APOIO">Apoiadores</button>
     <button data-filter="POTENCIAL">Potenciais</button>
-    <button data-filter="MENCAO">Menções</button>
     <button data-filter="NEUTRO">Neutros</button>
     <button data-filter="CONTRA">Contra</button>
     <button data-filter="PENDENTE">Pendentes</button>
@@ -113,124 +103,195 @@ const SHEET_NAME = 'COMENTARIOS';
 let allRows = [];
 let currentFilter = 'TODOS';
 
-function val(r,i) { return r.c && r.c[i] ? (r.c[i].v||'') : ''; }
+function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.c[i].v) : ''; } catch(e) { return ''; } }
 
-// Smart getters — merge OLD columns (A-L) and NEW columns (M-T)
-function getDate(r) { return val(r,0) || val(r,15) || val(r,11) || ''; }
-function getName(r) { return val(r,1) || val(r,12) || ''; }
-function getComment(r) { return val(r,3) || val(r,14) || ''; }
-function getPlatform(r) { return val(r,4) || ''; }
-function getCls(r) { return val(r,5) || ''; }
-function getRel(r) { return val(r,6) || val(r,18) || ''; }
-function getPostId(r) { return val(r,9) || ''; }
-function getCommentId(r) { return val(r,10) || ''; }
-function getAuthorId(r) { return val(r,13) || ''; }
-function getPostText(r) { return val(r,16) || ''; }
+// Column mapping — merges OLD (A-L) and NEW (M-T) formats
+// A(0)=data_hora, B(1)=nome, C(2)=username, D(3)=comentario, E(4)=plataforma
+// F(5)=classificacao, G(6)=relevancia, J(9)=post_id, K(10)=comment_id, L(11)=data_captura
+// M(12)=autor_nome, N(13)=autor_id, O(14)=mensagem, P(15)=data_comentario, Q(16)=post_texto, S(18)=relevancia_score
+
+function getDate(r)    { return val(r,15) || val(r,0) || val(r,11) || ''; }
+function getName(r)    { return val(r,12) || val(r,1) || ''; }
+function getComment(r) { return val(r,14) || val(r,3) || ''; }
+function getPlatform(r){ return val(r,4) || ''; }
+function getCls(r)     { return val(r,5) || ''; }
+function getRel(r)     { return val(r,18) || val(r,6) || ''; }
+function getPostId(r)  { return val(r,9) || ''; }
+function getCommentId(r){ return val(r,10) || ''; }
+function getAuthorId(r){ return val(r,13) || ''; }
+function getPostText(r){ return val(r,16) || ''; }
 
 function fmtDate(d) {
   if(!d) return '—';
-  try { const dt=new Date(d); return isNaN(dt)?d.substring(0,16):dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
-  catch(e) { return d.substring(0,16); }
+  try {
+    const dt = new Date(d);
+    if(isNaN(dt)) return d.substring(0,16);
+    return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) { return d.substring(0,16); }
 }
 
 function badgeClass(c) {
-  c=(c||'').toUpperCase();
-  if(c.includes('APOIO')||c.includes('EMBAIXADOR')||c.includes('ENGAJADO')) return 'badge-apoio';
-  if(c.includes('POTENCIAL')||c.includes('LEAD')||c.includes('COLETIVO')) return 'badge-potencial';
-  if(c.includes('MENCAO')) return 'badge-mencao';
-  if(c.includes('CONTRA')||c.includes('ATAQUE')) return 'badge-contra';
+  c = (c||'').toUpperCase();
+  if(c.includes('APOIO') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO')) return 'badge-apoio';
+  if(c.includes('POTENCIAL') || c.includes('LEAD') || c.includes('COLETIVO') || c.includes('COORDENADOR')) return 'badge-potencial';
+  if(c.includes('CONTRA') || c.includes('ATAQUE')) return 'badge-contra';
   if(c.includes('NEUTRO')) return 'badge-neutro';
-  if(c.includes('SPAM')) return 'badge-spam';
   return 'badge-pendente';
 }
 
-function matchFilter(cls,f) {
-  if(f==='TODOS') return true;
-  const c=(cls||'').toUpperCase();
-  if(f==='APOIO') return c.includes('APOIO')||c.includes('EMBAIXADOR')||c.includes('ENGAJADO');
-  if(f==='POTENCIAL') return c.includes('POTENCIAL')||c.includes('LEAD')||c.includes('COLETIVO');
-  if(f==='MENCAO') return c.includes('MENCAO');
-  if(f==='NEUTRO') return c.includes('NEUTRO');
-  if(f==='CONTRA') return c.includes('CONTRA')||c.includes('ATAQUE');
-  if(f==='PENDENTE') return !c||c==='PENDENTE'||c==='';
+function matchFilter(cls, f) {
+  if(f === 'TODOS') return true;
+  const c = (cls||'').toUpperCase();
+  if(f === 'APOIO') return c.includes('APOIO') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO');
+  if(f === 'POTENCIAL') return c.includes('POTENCIAL') || c.includes('LEAD') || c.includes('COLETIVO') || c.includes('COORDENADOR');
+  if(f === 'NEUTRO') return c.includes('NEUTRO');
+  if(f === 'CONTRA') return c.includes('CONTRA') || c.includes('ATAQUE');
+  if(f === 'PENDENTE') return !c || c === '';
   return true;
 }
 
 function actBtns(r) {
-  const pid=getPostId(r), cid=getCommentId(r), p=getPlatform(r).toLowerCase(), aid=getAuthorId(r);
-  let h='<div class="actions">';
-  const isFB = p.includes('facebook');
-  const isIG = p.includes('instagram');
-  if(cid) {
-    if(isFB) {
-      // FB comment ID format: pageId_postId_commentId or just commentId
-      h+=`<a class="act-btn act-reply" href="https://facebook.com/${cid}" target="_blank" title="Abrir comentário no Facebook">💬 Responder</a>`;
-    } else if(isIG) {
-      h+=`<a class="act-btn act-reply" href="https://instagram.com" target="_blank" title="Abrir Instagram">💬 Ver IG</a>`;
+  const pid = getPostId(r), cid = getCommentId(r), p = getPlatform(r).toUpperCase(), aid = getAuthorId(r);
+  let h = '<div class="actions">';
+  const isFB = p.includes('FACEBOOK');
+  const isIG = p.includes('INSTAGRAM');
+
+  // RESPONDER COMO LUCIANO — abre o comentário no Facebook/Instagram
+  if(cid && isFB) {
+    h += '<a class="act-btn act-reply" href="https://facebook.com/' + cid + '" target="_blank" title="Abrir comentário para responder como Luciano">✍️ Responder</a>';
+  }
+  if(pid && isFB) {
+    h += '<a class="act-btn act-original" href="https://facebook.com/' + pid + '" target="_blank" title="Ver post original">📄 Original</a>';
+  }
+  if(aid && isFB) {
+    h += '<a class="act-btn act-profile" href="https://facebook.com/profile.php?id=' + aid + '" target="_blank" title="Ver perfil">👤</a>';
+  }
+  if(isIG) {
+    if(pid) {
+      h += '<a class="act-btn act-reply" href="https://instagram.com/p/' + pid + '/" target="_blank" title="Abrir post no Instagram para responder">✍️ Responder</a>';
     }
+    h += '<a class="act-btn act-original" href="https://instagram.com" target="_blank" title="Abrir Instagram">📸 IG</a>';
   }
-  if(pid) {
-    if(isFB) h+=`<a class="act-btn act-original" href="https://facebook.com/${pid}" target="_blank" title="Ver post original">📄 Post</a>`;
+  if(!h.includes('act-btn')) {
+    h += '<span style="color:var(--muted);font-size:.7rem">—</span>';
   }
-  if(aid && isFB) h+=`<a class="act-btn act-profile" href="https://facebook.com/profile.php?id=${aid}" target="_blank" title="Ver perfil do autor">👤 @</a>`;
-  if(!cid && !pid && !aid) {
-    if(isIG) h+=`<a class="act-btn act-reply" href="https://instagram.com" target="_blank">💬 Ver IG</a>`;
-    else h+='<span style="color:var(--muted);font-size:.7rem">—</span>';
-  }
-  return h+'</div>';
+  return h + '</div>';
 }
 
 function render() {
-  const s=document.getElementById('searchBox').value.toLowerCase();
-  const filtered=allRows.filter(r=>{
-    if(!matchFilter(getCls(r),currentFilter)) return false;
-    if(s){ const t=[getName(r),getComment(r),getPlatform(r),getPostText(r)].join(' ').toLowerCase(); if(!t.includes(s)) return false; }
+  const s = document.getElementById('searchBox').value.toLowerCase();
+  const filtered = allRows.filter(r => {
+    if(!matchFilter(getCls(r), currentFilter)) return false;
+    if(s) {
+      const t = [getName(r), getComment(r), getPlatform(r), getPostText(r), getCls(r)].join(' ').toLowerCase();
+      if(!t.includes(s)) return false;
+    }
     return true;
   });
-  document.getElementById('tbody').innerHTML=filtered.slice(0,300).map(r=>{
-    const dt=fmtDate(getDate(r)),nome=getName(r),comm=getComment(r),plat=getPlatform(r),cls=getCls(r),rel=getRel(r);
-    const pc=plat.toLowerCase().includes('facebook')?'platform-fb':'platform-ig';
-    const aid=getAuthorId(r);
-    let nH; 
-    if(aid&&plat.toLowerCase().includes('facebook')) nH=`<a class="nome-link" href="https://facebook.com/${aid}" target="_blank">${nome||'Anônimo'}</a>`;
-    else if(nome&&nome!=='Desconhecido'&&nome!=='Anônimo') nH=`<span style="font-weight:600">${nome}</span>`;
-    else nH=`<span style="color:var(--muted)">${nome||'—'}</span>`;
-    const rn=parseInt(rel); const rH=(!isNaN(rn)&&rn>0)?'⭐'.repeat(Math.min(rn,5)):rel||'—';
-    return `<tr><td style="white-space:nowrap;font-size:.75rem">${dt}</td><td>${nH}</td><td class="comment-text" title="${(comm||'').replace(/"/g,'&quot;')}">${comm||'<span style="color:var(--muted)">—</span>'}</td><td class="${pc}">${plat||'—'}</td><td><span class="badge ${badgeClass(cls)}">${cls||'PENDENTE'}</span></td><td style="text-align:center;font-size:.75rem">${rH}</td><td>${actBtns(r)}</td></tr>`;
+
+  document.getElementById('tbody').innerHTML = filtered.slice(0,500).map(r => {
+    const dt = fmtDate(getDate(r));
+    const nome = getName(r);
+    const comm = getComment(r);
+    const plat = getPlatform(r);
+    const cls = getCls(r);
+    const rel = getRel(r);
+    const pc = plat.toUpperCase().includes('FACEBOOK') ? 'platform-fb' : 'platform-ig';
+    const aid = getAuthorId(r);
+
+    let nH;
+    if(aid && plat.toUpperCase().includes('FACEBOOK')) {
+      nH = '<a class="nome-link" href="https://facebook.com/profile.php?id=' + aid + '" target="_blank">' + (nome||'Anônimo') + '</a>';
+    } else if(nome && nome !== 'Desconhecido' && nome !== 'Anônimo') {
+      nH = '<span style="font-weight:600">' + nome + '</span>';
+    } else {
+      nH = '<span style="color:var(--muted)">' + (nome||'—') + '</span>';
+    }
+
+    const rn = parseInt(rel);
+    const rH = (!isNaN(rn) && rn > 0) ? '⭐'.repeat(Math.min(rn,5)) : (rel||'—');
+
+    return '<tr>' +
+      '<td style="white-space:nowrap;font-size:.72rem">' + dt + '</td>' +
+      '<td>' + nH + '</td>' +
+      '<td class="comment-text" title="' + (comm||'').replace(/"/g,'&quot;') + '">' + (comm||'<span style="color:var(--muted)">—</span>') + '</td>' +
+      '<td class="' + pc + '">' + (plat||'—') + '</td>' +
+      '<td><span class="badge ' + badgeClass(cls) + '">' + (cls||'PENDENTE') + '</span></td>' +
+      '<td style="text-align:center;font-size:.72rem">' + rH + '</td>' +
+      '<td>' + actBtns(r) + '</td>' +
+      '</tr>';
   }).join('');
 }
 
 async function loadData() {
   try {
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const text=await fetch(url).then(r=>r.text());
-    const json=JSON.parse(text.substring(47).slice(0,-2));
-    allRows=json.table.rows||[];
-    allRows.sort((a,b)=>{const da=getDate(a),db=getDate(b);if(!da&&!db)return 0;if(!da)return 1;if(!db)return -1;return db.localeCompare(da);});
-    const total=allRows.length;
-    const clsArr=allRows.map(r=>getCls(r).toUpperCase());
-    document.getElementById('sTotal').textContent=total;
-    document.getElementById('sApoio').textContent=clsArr.filter(c=>c.includes('APOIO')||c.includes('EMBAIXADOR')||c.includes('ENGAJADO')||c.includes('COORDENADOR')).length;
-    document.getElementById('sPotencial').textContent=clsArr.filter(c=>c.includes('POTENCIAL')||c.includes('LEAD')||c.includes('COLETIVO')).length;
-    document.getElementById('sContra').textContent=clsArr.filter(c=>c.includes('CONTRA')||c.includes('ATAQUE')).length;
-    document.getElementById('sNeutro').textContent=clsArr.filter(c=>c.includes('NEUTRO')).length;
-    document.getElementById('sFB').textContent=allRows.filter(r=>(getPlatform(r)||'').toLowerCase().includes('facebook')).length;
-    document.getElementById('sIG').textContent=allRows.filter(r=>(getPlatform(r)||'').toLowerCase().includes('instagram')).length;
-    document.getElementById('lastUpdate').textContent=`${total} comentários · Atualizado: ${new Date().toLocaleString('pt-BR')}`;
+    const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
+    const resp = await fetch(url);
+    const text = await resp.text();
+
+    // Parse GVIZ response — find the JSON object
+    const startIdx = text.indexOf('{');
+    const endIdx = text.lastIndexOf('}');
+    if(startIdx < 0 || endIdx < 0) throw new Error('GVIZ parse failed');
+    const json = JSON.parse(text.substring(startIdx, endIdx + 1));
+
+    allRows = json.table.rows || [];
+
+    // Sort by date (newest first)
+    allRows.sort((a,b) => {
+      const da = getDate(a), db = getDate(b);
+      if(!da && !db) return 0;
+      if(!da) return 1;
+      if(!db) return -1;
+      return db.localeCompare(da);
+    });
+
+    const total = allRows.length;
+    const clsArr = allRows.map(r => getCls(r).toUpperCase());
+
+    // Debug: log classification distribution to console
+    const clsDist = {};
+    clsArr.forEach(c => { clsDist[c||'VAZIO'] = (clsDist[c||'VAZIO']||0) + 1; });
+    console.log('Classification distribution:', clsDist);
+
+    document.getElementById('sTotal').textContent = total;
+    document.getElementById('sApoio').textContent = clsArr.filter(c =>
+      c.includes('APOIO') || c.includes('EMBAIXADOR') || c.includes('ENGAJADO')
+    ).length;
+    document.getElementById('sPotencial').textContent = clsArr.filter(c =>
+      c.includes('POTENCIAL') || c.includes('LEAD') || c.includes('COLETIVO') || c.includes('COORDENADOR')
+    ).length;
+    document.getElementById('sContra').textContent = clsArr.filter(c =>
+      c.includes('CONTRA') || c.includes('ATAQUE')
+    ).length;
+    document.getElementById('sNeutro').textContent = clsArr.filter(c =>
+      c.includes('NEUTRO')
+    ).length;
+    document.getElementById('sFB').textContent = allRows.filter(r =>
+      getPlatform(r).toUpperCase().includes('FACEBOOK')
+    ).length;
+    document.getElementById('sIG').textContent = allRows.filter(r =>
+      getPlatform(r).toUpperCase().includes('INSTAGRAM')
+    ).length;
+
+    document.getElementById('lastUpdate').textContent = total + ' comentários · Atualizado: ' + new Date().toLocaleString('pt-BR');
     render();
-  } catch(e){ document.getElementById('lastUpdate').textContent='Erro: '+e.message; }
+  } catch(e) {
+    console.error('Load error:', e);
+    document.getElementById('lastUpdate').textContent = 'Erro ao carregar: ' + e.message;
+  }
 }
 
-document.getElementById('filters').addEventListener('click',e=>{
-  if(e.target.tagName!=='BUTTON')return;
-  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+document.getElementById('filters').addEventListener('click', e => {
+  if(e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
-  currentFilter=e.target.dataset.filter;
+  currentFilter = e.target.dataset.filter;
   render();
 });
-document.getElementById('searchBox').addEventListener('input',render);
+document.getElementById('searchBox').addEventListener('input', render);
 loadData();
-setInterval(loadData,300000);
+setInterval(loadData, 300000);
 </script>
 </body>
 </html>
