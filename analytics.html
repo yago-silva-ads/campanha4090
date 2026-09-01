@@ -10,6 +10,8 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
 nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-left { display:flex; align-items:center; gap:12px; }
+.nav-avatar { width:40px; height:40px; border-radius:50%; border:2px solid var(--accent); object-fit:cover; }
 .nav-brand { font-weight:800; font-size:1.1rem; } .nav-brand span { color:var(--accent); font-size:1.3rem; }
 .nav-links { display:flex; gap:4px; }
 .nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
@@ -37,7 +39,10 @@ td { padding:8px 10px; border-bottom:1px solid rgba(74,36,128,.3); }
 </head>
 <body>
 <nav>
-  <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
+  <div class="nav-left">
+    <img class="nav-avatar" src="luciano.png" alt="Luciano da Luz" onerror="this.style.display='none'">
+    <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
+  </div>
   <div class="nav-links">
     <a href="index.html">Central</a><a href="redes.html">QG Redes</a>
     <a href="congresso.html">Congresso</a><a href="votar.html">Proposições</a>
