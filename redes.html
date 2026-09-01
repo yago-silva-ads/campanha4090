@@ -140,14 +140,19 @@ function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.
 function getDate(r)     { return val(r,15) || val(r,11) || val(r,0) || ''; }
 function getName(r) {
   var n = val(r,12) || val(r,1) || '';
-  // Filter out "Desconhecido" as it's useless
-  if(n === 'Desconhecido') n = '';
-  // Try username (col 2) with @ prefix for IG
+  // Filter out placeholder names
+  if(n === 'Desconhecido' || n === 'Anônimo' || n === 'Anonimo') n = '';
+  // Try username (col 2/col C) with @ prefix
   if(!n) {
     var u = val(r,2);
     if(u) n = '@' + u;
   }
-  // Last resort: first 25 chars of comment as identifier
+  // For IG: try author_id as @user_id
+  if(!n && getPlatform(r).toUpperCase() === 'INSTAGRAM') {
+    var aid = val(r,13);
+    if(aid) n = '👤 IG #' + aid.substring(aid.length-4);
+  }
+  // Last resort for FB: first 25 chars of comment as identifier
   if(!n) {
     var c = val(r,14) || val(r,3) || '';
     if(c) n = c.substring(0,25) + (c.length > 25 ? '…' : '');
@@ -157,6 +162,7 @@ function getName(r) {
 function getComment(r)  { return val(r,14) || val(r,3) || ''; }
 function getPlatform(r) { return val(r,4) || ''; }
 function getCls(r)      { return val(r,5) || ''; }
+function getPermalink(r){ return val(r,16) || ''; }
 function getRelevancia(r){ return val(r,18) || val(r,6) || ''; }
 function getPostId(r)   { return val(r,9) || ''; }
 function getCommentId(r){ return val(r,10) || ''; }
@@ -165,9 +171,16 @@ function getAuthorId(r) { return val(r,13) || ''; }
 function fmtDate(d) {
   if(!d) return '—';
   try {
+    // Fix incomplete dates like "09-01T17:00:14" → "2026-09-01T17:00:14"
+    if(/^\d{2}-\d{2}T/.test(d)) d = '2026-' + d;
+    // Fix dates like "2026-09-01" without time
+    if(/^\d{4}-\d{2}-\d{2}$/.test(d)) d += 'T00:00:00';
     const dt = new Date(d);
     if(isNaN(dt)) return d.substring(0,16).replace('T',' ');
-    return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' + dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    var dateStr = dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'});
+    var h = dt.getHours(), m = dt.getMinutes();
+    if(h === 0 && m === 0) return dateStr; // Don't show 00:00
+    return dateStr + ' ' + dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
   } catch(e) { return d.substring(0,10); }
 }
 
@@ -211,19 +224,44 @@ function matchPlat(r, p) {
   return getPlatform(r).toUpperCase() === p;
 }
 
+// Convert IG numeric media ID to shortcode for permalink
+function igMediaIdToShortcode(mediaId) {
+  try {
+    var id = mediaId.split('_')[0]; // strip _userid if present
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+    var shortcode = '';
+    var num = BigInt(id);
+    while(num > 0n) {
+      shortcode = alphabet[Number(num % 64n)] + shortcode;
+      num = num / 64n;
+    }
+    return shortcode;
+  } catch(e) { return ''; }
+}
+
 function actBtns(r) {
   const pid = getPostId(r), cid = getCommentId(r), p = getPlatform(r).toUpperCase();
+  var btns = '';
+
   if(p === 'FACEBOOK' && pid && cid) {
     const actualCid = cid.indexOf('_') >= 0 ? cid.substring(cid.lastIndexOf('_')+1) : cid;
-    return '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCid + '" target="_blank" title="Abrir comentário no Facebook">✍️ Responder</a>';
+    btns += '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCid + '" target="_blank" title="Abrir comentário no Facebook">✍️ Responder</a>';
+  } else if(p === 'FACEBOOK') {
+    btns += '<span style="color:var(--muted);font-size:.68rem">📘 FB (sem link)</span>';
   }
+
   if(p === 'INSTAGRAM') {
-    if(pid) {
-      return '<a class="act-btn" style="background:rgba(225,48,108,.12);color:#E1306C" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" title="Post ID: ' + pid + '">📸 Ver post</a>';
+    var shortcode = pid ? igMediaIdToShortcode(pid) : '';
+    if(shortcode) {
+      var postUrl = 'https://www.instagram.com/p/' + shortcode + '/';
+      btns += '<a class="act-btn" style="background:rgba(225,48,108,.12);color:#E1306C" href="' + postUrl + '" target="_blank" title="Ver post no Instagram">📸 Ver post</a> ';
+      btns += '<a class="act-btn act-reply" href="' + postUrl + '" target="_blank" title="Abrir post pra responder">✍️ Responder</a>';
+    } else {
+      btns += '<span style="color:var(--muted);font-size:.68rem">📸 IG</span>';
     }
-    return '<span style="color:var(--muted);font-size:.68rem">📸 IG</span>';
   }
-  return '—';
+
+  return btns || '—';
 }
 
 function render() {
