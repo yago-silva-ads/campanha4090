@@ -6,54 +6,62 @@
 <title>📡 QG Redes — Luciano da Luz 4090</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGElEQVR4nLWXy3JcNRCGv5Z0LnOL7XIcEgdSbIAdUMWKHfAibHgfXoBnYQ8LWGTjgsoiiySOYzuemvucI4lqnZnxbcaxk9DlqSPr6Kj//rvV3ZKff/o1+qoiDF5z2LcgwkWR5f8xrubOR++QGMnKkt1ijOB567ex0nwdQsBai3vdf4ava/zgmOOxUZXn34dAVdcNCJsRY0z4MiO3BuCqnMl0hsTAmFMMMRmge1trkIJPoqhSycjsBStDpGy3eLy/z3g8xg4OyZ1hUsOrUbgA8yYRYgz4qKsFg7/0LgFs5Z2lyhXLamUgUGQtnM0pczDtHQoL05HSWbOJBJ0OF3kUi1u51V1fv5V9vtalSlRmCuqQYUxM/qqDgVDhRK0ymORPXanjQIiSrM1MM9Z5YY4P80uuvShukx2idkibbx9t0596DoeBxz3LsIKZj3x2z/BqqIpgqzCcTgK9Qvi0Jzw9CjzsQC+3/HvSx8cTEI2v67aa9QAWLEToVxmzYDEixKwDxqZ3c9NaWRVtmdzmsQxCK0V6Tc6UFiJN0G0S2eSCECNbZQtj2kyqgBVlxKWgami36WgtgcY01qAziNSNbWIJfkIVponTW7vAGhjOI79849judvjtr5Je5lNwGWMIPhCCR4whyxzPXxzA4nxfs1DjINF/JwYkKdju7dAp7zGZeYxR6yLV/OJRaqRh5dosIpZ5PWRWDxcg4m2DkOTTWSXkLseZqqFX85FZWnNOqSy2ljUAKj+5MXe6tcqBOtbc7z5kr/MVo8mIXq/DbDqn22slJvpno5TJdKzPre0Ok/GcVqfg7HRIILJ3f5eD538wPjvGiV0LQzYFoaJ2tsSKpuCQfN+kYkkBer5bBJMRsi4FY2xRMjzr46ykb2o/p/bTu+YBFUkJpApKoR7jcwCax5OPEoiIFUM7jPDG86jtcGXFm1HAaTQnxZsTt+NG0QzXjDSI9PAlAMvUusBgRcj0oIlwz0VmuePN2GP0m9UR3aThRml4bgxt0q4+F6NLq3S2xnBcZfSnIW2sc+8q3YbbypJF2byRF8tRlfN2EjYWq/cHEK8817zW8pNLxJnbNy2G95R1BkYN3Ej6yf8NIK5RnsWKz8sp+z2bQHwEALL8uxQDegjSQbhippaDXAJO03aC9G5xN73Uc6/NoyozwRCijk2qE03PoN1PTOlZa+NULC/nOf3xuCnfHwIgakfkHHle4r1PYJpsCM7ZBGxZAIKPjHwgimFQZ4zmysLtItFtNl8VObrdHrPZNCksi5LZfEar1cInAA3Nk1nN23HNlgnkIotW7UKV+hAX1L5u6r92t75ObMznVaoPWhOUap236oxVibjtGeBmACnOUsQtPC5NutUG9ejoZJEVI8bliNMWLdz16sLNDGzYS5uTBw/2VremybSiP55D0y5+PAZUVtl8cWlQd5yenqbnysfGYSTXZMxdxSUrrlqZLi3NNWzVTC7ob2KhCcAVRbrWXLF8kSjSI92MNgCovXaw1yUFWar7DQeqWEEt3/mwLLeL3JCCslmje2r/szRO5y/YlsAt93L3ew+aicsEpAVZllPYnMxNCWLJXEbeaVMXVbq0qhusM1TRQnSUWY3LC/a2DKI3FmtX4JbAE3Gh6bD053784Ut+//vPlMmuSh0C3uVsff0du6PXKcanU7U8R6Sgu7PDm6cHfP/Q8M9um8HLfbrHLzj8ok148oTZswP88QnWueSmoizIs4JWp81gMCBzOf8BEn6N9d6wnugAAAAASUVORK5CYII=">
 <style>
-:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; }
+:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; --warn:#f59e0b; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
 nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-.nav-brand { font-weight:800; font-size:1rem; display:flex; align-items:center; gap:8px; }
-.nav-brand .num { color:var(--accent); font-size:1.2rem; }
+.nav-brand { font-weight:800; font-size:1rem; } .nav-brand .num { color:var(--accent); font-size:1.2rem; }
 .nav-links { display:flex; gap:4px; }
 .nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.82rem; font-weight:500; transition:all .2s; }
 .nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
-.container { max-width:1400px; margin:0 auto; padding:24px 16px; }
-h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
-.subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
-.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; margin-bottom:20px; }
-.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
-.stat-val { font-size:1.6rem; font-weight:800; color:var(--accent); }
-.stat-lbl { font-size:.7rem; color:var(--muted); text-transform:uppercase; margin-top:3px; }
-.filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
-.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:7px 14px; border-radius:8px; cursor:pointer; font-size:.8rem; transition:all .2s; }
+.container { max-width:1300px; margin:0 auto; padding:24px 16px; }
+.hero { text-align:center; background:linear-gradient(135deg,#3B1E6D,#1a0a30); border-radius:16px; padding:24px 20px; margin-bottom:20px; border:1px solid var(--card-border); }
+.hero h1 { font-size:1.3rem; margin-bottom:4px; } .hero h1 span { color:var(--accent); }
+.hero p { color:var(--muted); font-size:.82rem; }
+.live { display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,.15); color:var(--success); padding:5px 12px; border-radius:20px; font-size:.75rem; font-weight:600; margin-top:6px; }
+.live::before { content:''; width:7px; height:7px; background:var(--success); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+.kpi { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:14px; text-align:center; }
+.kpi-val { font-size:2rem; font-weight:800; line-height:1; }
+.kpi-lbl { font-size:.68rem; color:var(--muted); text-transform:uppercase; margin-top:4px; letter-spacing:.5px; }
+
+.toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+.filters { display:flex; gap:5px; flex-wrap:wrap; }
+.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:7px 14px; border-radius:8px; cursor:pointer; font-size:.78rem; font-weight:500; transition:all .2s; }
 .filters button:hover,.filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.filters button.active-all { background:var(--card-bg); border-color:var(--muted); color:var(--muted); }
+.filters button.active-all.active { background:rgba(155,138,184,.2); color:var(--text); border-color:var(--muted); }
+.plat-filters { display:flex; gap:5px; margin-left:auto; }
+.plat-filters button { background:transparent; border:1px solid var(--card-border); color:var(--muted); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:.75rem; transition:all .2s; }
+.plat-filters button:hover,.plat-filters button.active { border-color:var(--accent); color:var(--accent); }
 .search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.85rem; margin-bottom:14px; outline:none; }
 .search-box:focus { border-color:var(--accent); }
+
 .table-wrap { overflow-x:auto; border-radius:12px; border:1px solid var(--card-border); }
-table { width:100%; border-collapse:collapse; font-size:.8rem; }
+table { width:100%; border-collapse:collapse; font-size:.82rem; }
 thead { background:var(--primary); }
-th { padding:10px 8px; text-align:left; font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; }
-td { padding:8px; border-bottom:1px solid rgba(74,36,128,.3); vertical-align:top; }
+th { padding:10px 8px; text-align:left; font-weight:600; font-size:.7rem; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:8px; border-bottom:1px solid rgba(74,36,128,.3); }
 tr:hover td { background:rgba(59,30,109,.3); }
-.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; text-transform:uppercase; }
+.badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; white-space:nowrap; }
 .badge-apoio { background:rgba(16,185,129,.2); color:#10b981; }
-.badge-neutro { background:rgba(155,138,184,.2); color:#9b8ab8; }
+.badge-potencial { background:rgba(168,139,250,.2); color:#a78bfa; }
 .badge-contra { background:rgba(239,68,68,.2); color:#ef4444; }
-.badge-potencial { background:rgba(242,124,56,.2); color:#F27C38; }
-.badge-pendente { background:rgba(107,114,128,.2); color:#6b7280; }
-.comment-text { max-width:340px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; }
+.badge-neutro { background:rgba(100,100,120,.2); color:#888; }
+.badge-pendente { background:rgba(242,124,56,.15); color:var(--accent); }
+.plat { font-size:.72rem; font-weight:600; }
+.plat-fb { color:#1877F2; }
+.plat-ig { color:#E1306C; }
+.comment-text { max-width:360px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; }
 .comment-text:hover { white-space:normal; }
-.platform-fb { color:#1877F2; font-weight:600; } .platform-ig { color:#E4405F; font-weight:600; }
-.actions { display:flex; gap:4px; flex-wrap:nowrap; }
-.act-btn { display:inline-flex; align-items:center; gap:3px; padding:3px 8px; border-radius:6px; font-size:.66rem; font-weight:600; text-decoration:none; cursor:pointer; transition:all .2s; white-space:nowrap; }
-.act-reply { background:rgba(16,185,129,.15); color:#10b981; border:1px solid rgba(16,185,129,.3); }
+.act-btn { display:inline-block; padding:3px 10px; border-radius:6px; font-size:.7rem; font-weight:600; text-decoration:none; transition:all .2s; }
+.act-reply { background:rgba(16,185,129,.15); color:#10b981; }
 .act-reply:hover { background:rgba(16,185,129,.3); }
-.act-original { background:rgba(242,124,56,.15); color:#F27C38; border:1px solid rgba(242,124,56,.3); }
-.act-original:hover { background:rgba(242,124,56,.3); }
-.act-profile { background:rgba(168,139,250,.12); color:#a78bfa; border:1px solid rgba(168,139,250,.3); }
-.act-profile:hover { background:rgba(168,139,250,.3); }
-.nome-link { color:var(--text); text-decoration:none; font-weight:600; }
-.nome-link:hover { color:var(--accent); text-decoration:underline; }
-.footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links{display:none;} .stat-val{font-size:1.2rem;} .comment-text{max-width:180px;} }
+.count-badge { background:var(--accent); color:#fff; font-size:.65rem; padding:2px 7px; border-radius:10px; margin-left:4px; font-weight:700; }
+.footer { text-align:center; padding:16px; color:var(--muted); font-size:.7rem; margin-top:20px; border-top:1px solid var(--card-border); }
+@media(max-width:768px) { .nav-links{display:none;} .kpis{grid-template-columns:repeat(2,1fr);} .plat-filters{margin-left:0;} .toolbar{flex-direction:column;} }
 </style>
 </head>
 <body>
@@ -69,170 +77,167 @@ tr:hover td { background:rgba(59,30,109,.3); }
   </div>
 </nav>
 <div class="container">
-  <h1>📡 QG Redes — <span>Monitoramento</span></h1>
-  <p class="subtitle" id="lastUpdate">Carregando comentários das redes sociais...</p>
-  <div class="stats">
-    <div class="stat"><div class="stat-val" id="sTotal">—</div><div class="stat-lbl">Total</div></div>
-    <div class="stat"><div class="stat-val" id="sApoio">—</div><div class="stat-lbl">Apoiadores</div></div>
-    <div class="stat"><div class="stat-val" id="sPotencial">—</div><div class="stat-lbl">Potenciais</div></div>
-    <div class="stat"><div class="stat-val" id="sContra">—</div><div class="stat-lbl">Contra</div></div>
-    <div class="stat"><div class="stat-val" id="sNeutro">—</div><div class="stat-lbl">Neutros</div></div>
-    <div class="stat"><div class="stat-val" id="sFB">—</div><div class="stat-lbl">Facebook</div></div>
-    <div class="stat"><div class="stat-val" id="sIG">—</div><div class="stat-lbl">Instagram</div></div>
+  <div class="hero">
+    <h1>📡 QG Redes — <span>Monitoramento de Apoiadores</span></h1>
+    <p id="subtitle">Carregando dados...</p>
+    <div class="live">AO VIVO — Atualiza a cada 3 min</div>
   </div>
-  <div class="filters" id="filters">
-    <button class="active" data-filter="TODOS">Todos</button>
-    <button data-filter="APOIO">Apoiadores</button>
-    <button data-filter="POTENCIAL">Potenciais</button>
-    <button data-filter="NEUTRO">Neutros</button>
-    <button data-filter="CONTRA">Contra</button>
-    <button data-filter="PENDENTE">Pendentes</button>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-val" id="kApoio" style="color:var(--success)">—</div><div class="kpi-lbl">✅ Apoiadores</div></div>
+    <div class="kpi"><div class="kpi-val" id="kPotencial" style="color:#a78bfa">—</div><div class="kpi-lbl">⭐ Potenciais</div></div>
+    <div class="kpi"><div class="kpi-val" id="kContra" style="color:var(--danger)">—</div><div class="kpi-lbl">❌ Contra</div></div>
+    <div class="kpi"><div class="kpi-val" id="kFB" style="color:#1877F2">—</div><div class="kpi-lbl">📘 Facebook</div></div>
+    <div class="kpi"><div class="kpi-val" id="kIG" style="color:#E1306C">—</div><div class="kpi-lbl">📸 Instagram</div></div>
   </div>
+
   <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por nome, comentário, username...">
+
+  <div class="toolbar">
+    <div class="filters" id="filters">
+      <button class="active" data-filter="RELEVANTES">Relevantes</button>
+      <button data-filter="APOIO">Apoiadores</button>
+      <button data-filter="POTENCIAL">Potenciais</button>
+      <button data-filter="CONTRA">Contra</button>
+      <button data-filter="PENDENTE">Pendentes</button>
+      <button class="active-all" data-filter="TODOS">Todos</button>
+    </div>
+    <div class="plat-filters" id="platFilters">
+      <button class="active" data-plat="TODOS">Ambas</button>
+      <button data-plat="FACEBOOK">📘 FB</button>
+      <button data-plat="INSTAGRAM">📸 IG</button>
+    </div>
+  </div>
+
+  <div id="countInfo" style="font-size:.78rem; color:var(--muted); margin-bottom:8px;"></div>
+
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Data</th><th>Nome</th><th>Comentário</th><th>Plataforma</th><th>Classificação</th><th>Relevância</th><th>Ações</th></tr></thead>
+      <thead><tr>
+        <th>Data</th>
+        <th>Autor</th>
+        <th>Comentário</th>
+        <th>Plataforma</th>
+        <th>Classificação</th>
+        <th>Ações</th>
+      </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 </div>
-<div class="footer">Campanha Luciano da Luz 4090 · QG Redes · Auto-refresh 5 min</div>
+<div class="footer">Campanha Luciano da Luz 4090 · QG Redes · Foco: Apoiadores & Votos</div>
 
 <script>
 const SHEET_ID = '1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
 const SHEET_NAME = 'COMENTARIOS';
 let allRows = [];
-let currentFilter = 'TODOS';
+let currentFilter = 'RELEVANTES';
+let currentPlat = 'TODOS';
 
-function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.c[i].v) : ''; } catch(e) { return ''; } }
+function val(r,i) { try { return (r.c && r.c[i] && r.c[i].v != null) ? String(r.c[i].v).trim() : ''; } catch(e) { return ''; } }
 
-// Column mapping — merges OLD (A-L) and NEW (M-T) formats
-// A(0)=data_hora, B(1)=nome, C(2)=username, D(3)=comentario, E(4)=plataforma
-// F(5)=classificacao, G(6)=relevancia, J(9)=post_id, K(10)=comment_id, L(11)=data_captura
-// M(12)=autor_nome, N(13)=autor_id, O(14)=mensagem, P(15)=data_comentario, Q(16)=post_texto, S(18)=relevancia_score
-
-function getDate(r)    { return val(r,15) || val(r,0) || val(r,11) || ''; }
-function getName(r)    { return val(r,12) || val(r,1) || ''; }
-function getComment(r) { return val(r,14) || val(r,3) || ''; }
-function getPlatform(r){ return val(r,4) || ''; }
-function getCls(r)     { return val(r,5) || ''; }
-function getRel(r)     { return val(r,18) || val(r,6) || ''; }
-function getPostId(r)  { return val(r,9) || ''; }
+// Smart getters that handle both old (cols A-G) and new (cols M-T) formats
+function getDate(r)     { return val(r,15) || val(r,11) || val(r,0) || ''; }
+function getName(r)     { return val(r,12) || val(r,1) || val(r,2) || ''; }
+function getComment(r)  { return val(r,14) || val(r,3) || ''; }
+function getPlatform(r) { return val(r,4) || ''; }
+function getCls(r)      { return val(r,5) || ''; }
+function getRelevancia(r){ return val(r,18) || val(r,6) || ''; }
+function getPostId(r)   { return val(r,9) || ''; }
 function getCommentId(r){ return val(r,10) || ''; }
-function getAuthorId(r){ return val(r,13) || ''; }
-function getPostText(r){ return val(r,16) || ''; }
+function getAuthorId(r) { return val(r,13) || ''; }
 
 function fmtDate(d) {
   if(!d) return '—';
   try {
     const dt = new Date(d);
-    if(isNaN(dt)) return d.substring(0,16);
-    return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  } catch(e) { return d.substring(0,16); }
+    if(isNaN(dt)) return d.substring(0,16).replace('T',' ');
+    return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' + dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) { return d.substring(0,10); }
 }
 
+// Classification sets — exact match (avoids includes() JIT bug)
+const CLS_APOIO = ['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+const CLS_POT = ['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
+const CLS_CONTRA = ['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
+const CLS_NEUTRO = ['NEUTRO'];
+
+function isApoio(c) { return CLS_APOIO.indexOf(c) >= 0; }
+function isPot(c) { return CLS_POT.indexOf(c) >= 0; }
+function isContra(c) { return CLS_CONTRA.indexOf(c) >= 0; }
+function isNeutro(c) { return CLS_NEUTRO.indexOf(c) >= 0; }
+function isRelevante(c) { return isApoio(c) || isPot(c) || isContra(c) || !c; }
+
 function badgeClass(c) {
-  c = (c||'').toUpperCase();
-  const APOIO = ['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
-  const POT = ['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
-  const CONTRA = ['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
-  if(APOIO.indexOf(c) >= 0) return 'badge-apoio';
-  if(POT.indexOf(c) >= 0) return 'badge-potencial';
-  if(CONTRA.indexOf(c) >= 0) return 'badge-contra';
-  if(c === 'NEUTRO') return 'badge-neutro';
+  if(isApoio(c)) return 'badge-apoio';
+  if(isPot(c)) return 'badge-potencial';
+  if(isContra(c)) return 'badge-contra';
+  if(isNeutro(c)) return 'badge-neutro';
   return 'badge-pendente';
 }
 
-function matchFilter(cls, f) {
+function badgeLabel(c) {
+  if(!c) return 'PENDENTE';
+  return c.replace(/_/g,' ');
+}
+
+function matchFilter(c, f) {
   if(f === 'TODOS') return true;
-  const c = (cls||'').toUpperCase();
-  const APOIO = ['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
-  const POT = ['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
-  const CONTRA = ['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
-  if(f === 'APOIO') return APOIO.indexOf(c) >= 0;
-  if(f === 'POTENCIAL') return POT.indexOf(c) >= 0;
-  if(f === 'NEUTRO') return c === 'NEUTRO';
-  if(f === 'CONTRA') return CONTRA.indexOf(c) >= 0;
-  if(f === 'PENDENTE') return !c || c === '';
+  if(f === 'RELEVANTES') return isRelevante(c);
+  if(f === 'APOIO') return isApoio(c);
+  if(f === 'POTENCIAL') return isPot(c);
+  if(f === 'CONTRA') return isContra(c);
+  if(f === 'PENDENTE') return !c;
   return true;
 }
 
+function matchPlat(r, p) {
+  if(p === 'TODOS') return true;
+  return getPlatform(r).toUpperCase() === p;
+}
+
 function actBtns(r) {
-  const pid = getPostId(r), cid = getCommentId(r), p = getPlatform(r).toUpperCase(), aid = getAuthorId(r);
-  let h = '<div class="actions">';
-  const isFB = p.includes('FACEBOOK');
-  const isIG = p.includes('INSTAGRAM');
-
-  if(isFB) {
-    // FB comment URL: facebook.com/{post_id}?comment_id={actual_comment_id}
-    // post_id format: pageId_postId (e.g. 656539144216536_122190851306926835)
-    // comment_id format: postPart_commentPart — we need just the commentPart
-    if(pid && cid) {
-      const actualCommentId = cid.includes('_') ? cid.split('_').pop() : cid;
-      h += '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCommentId + '" target="_blank" title="Responder como Luciano — abre o comentário exato">✍️ Responder</a>';
-      h += '<a class="act-btn act-original" href="https://www.facebook.com/' + pid + '" target="_blank" title="Ver post original completo">📄 Original</a>';
-    } else if(pid) {
-      h += '<a class="act-btn act-original" href="https://www.facebook.com/' + pid + '" target="_blank" title="Ver post">📄 Original</a>';
-    } else if(cid) {
-      const actualCommentId = cid.includes('_') ? cid.split('_').pop() : cid;
-      h += '<a class="act-btn act-reply" href="https://www.facebook.com/' + cid + '" target="_blank" title="Ver comentário">✍️ Responder</a>';
-    }
-    if(aid) {
-      h += '<a class="act-btn act-profile" href="https://www.facebook.com/profile.php?id=' + aid + '" target="_blank" title="Ver perfil do autor">👤</a>';
-    }
+  const pid = getPostId(r), cid = getCommentId(r), p = getPlatform(r).toUpperCase();
+  if(p === 'FACEBOOK' && pid && cid) {
+    const actualCid = cid.indexOf('_') >= 0 ? cid.substring(cid.lastIndexOf('_')+1) : cid;
+    return '<a class="act-btn act-reply" href="https://www.facebook.com/' + pid + '?comment_id=' + actualCid + '" target="_blank" title="Abrir comentário no Facebook">✍️ Responder</a>';
   }
-
-  if(isIG) {
-    // IG não tem link direto para comentário — remover link quebrado
-    h += '<span style="color:var(--muted);font-size:.7rem">📸 Instagram</span>';
+  if(p === 'INSTAGRAM') {
+    return '<span style="color:var(--muted);font-size:.68rem">📸 IG</span>';
   }
-
-  if(!h.includes('act-btn')) {
-    h += '<span style="color:var(--muted);font-size:.7rem">—</span>';
-  }
-  return h + '</div>';
+  return '—';
 }
 
 function render() {
   const s = document.getElementById('searchBox').value.toLowerCase();
   const filtered = allRows.filter(r => {
-    if(!matchFilter(getCls(r), currentFilter)) return false;
+    const c = getCls(r).toUpperCase();
+    if(!matchFilter(c, currentFilter)) return false;
+    if(!matchPlat(r, currentPlat)) return false;
     if(s) {
-      const t = [getName(r), getComment(r), getPlatform(r), getPostText(r), getCls(r)].join(' ').toLowerCase();
-      if(!t.includes(s)) return false;
+      const t = [getName(r), getComment(r), getPlatform(r), getCls(r)].join(' ').toLowerCase();
+      if(t.indexOf(s) < 0) return false;
     }
     return true;
   });
 
+  document.getElementById('countInfo').textContent = 'Mostrando ' + Math.min(filtered.length, 500) + ' de ' + filtered.length + ' comentários';
+
   document.getElementById('tbody').innerHTML = filtered.slice(0,500).map(r => {
     const dt = fmtDate(getDate(r));
-    const nome = getName(r);
-    const comm = getComment(r);
-    const plat = getPlatform(r);
-    const cls = getCls(r);
-    const rel = getRel(r);
-    const pc = plat.toUpperCase().includes('FACEBOOK') ? 'platform-fb' : 'platform-ig';
-    const aid = getAuthorId(r);
-
-    let nH;
-    if(aid && plat.toUpperCase().includes('FACEBOOK')) {
-      nH = '<a class="nome-link" href="https://facebook.com/profile.php?id=' + aid + '" target="_blank">' + (nome||'Anônimo') + '</a>';
-    } else if(nome && nome !== 'Desconhecido' && nome !== 'Anônimo') {
-      nH = '<span style="font-weight:600">' + nome + '</span>';
-    } else {
-      nH = '<span style="color:var(--muted)">' + (nome||'—') + '</span>';
-    }
-
-    const rn = parseInt(rel);
-    const rH = (!isNaN(rn) && rn > 0) ? '⭐'.repeat(Math.min(rn,5)) : (rel||'—');
+    const nome = getName(r) || '—';
+    const comm = getComment(r) || '—';
+    const plat = getPlatform(r).toUpperCase();
+    const cls = getCls(r).toUpperCase();
+    const platClass = plat === 'FACEBOOK' ? 'plat-fb' : 'plat-ig';
+    const platIcon = plat === 'FACEBOOK' ? '📘' : '📸';
 
     return '<tr>' +
-      '<td style="white-space:nowrap;font-size:.72rem">' + dt + '</td>' +
-      '<td>' + nH + '</td>' +
-      '<td class="comment-text" title="' + (comm||'').replace(/"/g,'&quot;') + '">' + (comm||'<span style="color:var(--muted)">—</span>') + '</td>' +
-      '<td class="' + pc + '">' + (plat||'—') + '</td>' +
-      '<td><span class="badge ' + badgeClass(cls) + '">' + (cls||'PENDENTE') + '</span></td>' +
-      '<td style="text-align:center;font-size:.72rem">' + rH + '</td>' +
+      '<td style="white-space:nowrap;font-size:.75rem;color:var(--muted)">' + dt + '</td>' +
+      '<td style="font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + nome + '</td>' +
+      '<td class="comment-text">' + comm + '</td>' +
+      '<td><span class="plat ' + platClass + '">' + platIcon + ' ' + (plat === 'FACEBOOK' ? 'FB' : 'IG') + '</span></td>' +
+      '<td><span class="badge ' + badgeClass(cls) + '">' + badgeLabel(cls) + '</span></td>' +
       '<td>' + actBtns(r) + '</td>' +
       '</tr>';
   }).join('');
@@ -241,68 +246,65 @@ function render() {
 async function loadData() {
   try {
     const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
-    const resp = await fetch(url);
-    const text = await resp.text();
-
-    // Parse GVIZ response — find the JSON object
-    const startIdx = text.indexOf('{');
-    const endIdx = text.lastIndexOf('}');
-    if(startIdx < 0 || endIdx < 0) throw new Error('GVIZ parse failed');
-    const json = JSON.parse(text.substring(startIdx, endIdx + 1));
-
+    const text = await fetch(url).then(r => r.text());
+    const si = text.indexOf('{');
+    const ei = text.lastIndexOf('}');
+    if(si < 0 || ei < 0) throw new Error('GVIZ parse');
+    const json = JSON.parse(text.substring(si, ei+1));
     allRows = json.table.rows || [];
 
-    // Sort by date (newest first)
+    // Sort by date desc
     allRows.sort((a,b) => {
       const da = getDate(a), db = getDate(b);
-      if(!da && !db) return 0;
-      if(!da) return 1;
-      if(!db) return -1;
       return db.localeCompare(da);
     });
 
     const total = allRows.length;
     const clsArr = allRows.map(r => getCls(r).toUpperCase());
 
-    // Debug: log classification distribution to console
-    const clsDist = {};
-    clsArr.forEach(c => { clsDist[c||'VAZIO'] = (clsDist[c||'VAZIO']||0) + 1; });
-    console.log('Classification distribution:', clsDist);
+    const nApoio = clsArr.filter(c => isApoio(c)).length;
+    const nPot = clsArr.filter(c => isPot(c)).length;
+    const nContra = clsArr.filter(c => isContra(c)).length;
+    const nFB = allRows.filter(r => getPlatform(r).toUpperCase() === 'FACEBOOK').length;
+    const nIG = allRows.filter(r => getPlatform(r).toUpperCase() === 'INSTAGRAM').length;
 
-    document.getElementById('sTotal').textContent = total;
-    // Use exact match — includes() has a JIT bug in some browsers
-    const APOIO_SET = new Set(['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO']);
-    const POT_SET = new Set(['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE']);
-    const CONTRA_SET = new Set(['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA']);
-    document.getElementById('sApoio').textContent = clsArr.filter(c => APOIO_SET.has(c)).length;
-    document.getElementById('sPotencial').textContent = clsArr.filter(c => POT_SET.has(c)).length;
-    document.getElementById('sContra').textContent = clsArr.filter(c => CONTRA_SET.has(c)).length;
-    document.getElementById('sNeutro').textContent = clsArr.filter(c => c === 'NEUTRO').length;
-    document.getElementById('sFB').textContent = allRows.filter(r =>
-      getPlatform(r).toUpperCase().includes('FACEBOOK')
-    ).length;
-    document.getElementById('sIG').textContent = allRows.filter(r =>
-      getPlatform(r).toUpperCase().includes('INSTAGRAM')
-    ).length;
+    document.getElementById('kApoio').textContent = nApoio;
+    document.getElementById('kPotencial').textContent = nPot;
+    document.getElementById('kContra').textContent = nContra;
+    document.getElementById('kFB').textContent = nFB;
+    document.getElementById('kIG').textContent = nIG;
 
-    document.getElementById('lastUpdate').textContent = total + ' comentários · Atualizado: ' + new Date().toLocaleString('pt-BR');
+    const now = new Date();
+    document.getElementById('subtitle').textContent = total + ' comentários · Atualizado: ' + now.toLocaleDateString('pt-BR') + ', ' + now.toLocaleTimeString('pt-BR');
+
     render();
   } catch(e) {
     console.error('Load error:', e);
-    document.getElementById('lastUpdate').textContent = 'Erro ao carregar: ' + e.message;
+    document.getElementById('subtitle').textContent = 'Erro ao carregar dados';
   }
 }
 
+// Filter click handlers
 document.getElementById('filters').addEventListener('click', e => {
   if(e.target.tagName !== 'BUTTON') return;
-  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#filters button').forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   currentFilter = e.target.dataset.filter;
   render();
 });
+
+document.getElementById('platFilters').addEventListener('click', e => {
+  if(e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#platFilters button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentPlat = e.target.dataset.plat;
+  render();
+});
+
 document.getElementById('searchBox').addEventListener('input', render);
+
 loadData();
-setInterval(loadData, 300000);
+setInterval(loadData, 180000);
 </script>
 </body>
 </html>
