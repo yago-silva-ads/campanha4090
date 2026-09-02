@@ -90,7 +90,7 @@ nav { background:var(--primary); padding:0 16px; display:flex; align-items:cente
 <!-- AUTH GATE -->
 <div id="authGate" style="position:fixed;inset:0;z-index:99999;background:#0f0520;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;">
   <div style="text-align:center;max-width:360px;padding:32px;background:#1e0e3e;border-radius:20px;border:1px solid #4a2480;box-shadow:0 8px 32px rgba(0,0,0,.6);">
-    <div style="margin-bottom:8px;"><img src="https://raw.githubusercontent.com/yago-silva-ads/campanha4090/main/luciano.png" alt="Luciano da Luz" style="width:100px;height:100px;border-radius:50%;border:3px solid #F27C38;object-fit:cover;"></div>
+    <div style="margin-bottom:8px;"><img src="luciano.png" alt="Luciano da Luz" style="width:100px;height:100px;border-radius:50%;border:3px solid #F27C38;object-fit:cover;"></div>
     <div style="font-weight:800;font-size:1.2rem;color:#f0e6ff;margin-bottom:4px;">QG Campanha 4090</div>
     <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito &agrave; equipe</div>
     <input id="authPwd" type="password" placeholder="Senha de acesso" style="width:100%;padding:14px 16px;background:#0f0520;border:1px solid #4a2480;border-radius:10px;color:#f0e6ff;font-size:1rem;outline:none;text-align:center;margin-bottom:12px;" onkeydown="if(event.key==='Enter')checkAuth()">
@@ -122,9 +122,11 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
     <div class="kpi"><div class="kpi-value" id="kpiTotal">&mdash;</div><div class="kpi-label">Coment&aacute;rios</div></div>
     <div class="kpi"><div class="kpi-value" id="kpiApoiadores" style="color:var(--success)">&mdash;</div><div class="kpi-label">Apoiadores Reais</div></div>
     <div class="kpi"><div class="kpi-value" id="kpiPotenciais" style="color:#a78bfa">&mdash;</div><div class="kpi-label">Potenciais</div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiContra" style="color:var(--danger)">&mdash;</div><div class="kpi-label">Contra</div></div>
     <div class="kpi"><div class="kpi-value" id="kpiProps">&mdash;</div><div class="kpi-label">Proposi&ccedil;&otilde;es</div></div>
     <div class="kpi"><div class="kpi-value" id="kpiFB" style="color:#1877F2">&mdash;</div><div class="kpi-label">Facebook</div><div class="kpi-sub" id="kpiFBsub"></div></div>
     <div class="kpi"><div class="kpi-value" id="kpiIG" style="color:#E1306C">&mdash;</div><div class="kpi-label">Instagram</div><div class="kpi-sub" id="kpiIGsub"></div></div>
+    <div class="kpi"><div class="kpi-value" id="kpiUnicos" style="color:#06b6d4">&mdash;</div><div class="kpi-label">&Uacute;nicos</div><div class="kpi-sub" id="kpiUnicosSub">pessoas distintas</div></div>
   </div>
 
   <div class="progress-section">
@@ -142,6 +144,12 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
     <div class="chart-card"><h3>Classifica&ccedil;&atilde;o dos Coment&aacute;rios</h3><div id="chartClass" style="height:260px"></div></div>
     <div class="chart-card"><h3>Plataforma de Origem</h3><div id="chartPlat" style="height:260px"></div></div>
     <div class="chart-card full"><h3>Coment&aacute;rios por Dia</h3><div id="chartTimeline" style="height:240px"></div></div>
+  </div>
+
+  <div class="recent-section" style="border-color:rgba(16,185,129,.4);">
+    <h3>&#x1F5F3;&#xFE0F; Votos Declarados para Luciano da Luz 4090 &mdash; <span style="color:var(--success);font-weight:400;font-size:.8rem" id="votosCount">carregando...</span></h3>
+    <p style="color:var(--muted);font-size:.72rem;margin-bottom:10px;">Coment&aacute;rios com men&ccedil;&atilde;o EXPL&Iacute;CITA ao Luciano da Luz / 4090 / mandato participativo &mdash; evid&ecirc;ncias concretas de apoio</p>
+    <div id="votosList"><span style="color:var(--muted);font-size:.8rem">Carregando...</span></div>
   </div>
 
   <div class="recent-section">
@@ -194,7 +202,14 @@ function validateCls(cls, commentText){
   if(c==='VOTO_DECLARADO'||c==='QUER_PARTICIPAR') return cls;
   if(!isApoio(c)&&!isPot(c)) return cls;
   var txt = (commentText||'').toLowerCase();
-  for(var i=0;i<KW_LUCIANO.length;i++){if(txt.indexOf(KW_LUCIANO[i])>=0) return cls;}
+  var voto=['luciano da luz','luciano4090','4090','lucianodaluz','@lucianodaluz','mandato participativo','candidato 4090','deputado 4090','voto no luciano','votar no luciano','luciano luz'];
+  for(var i=0;i<voto.length;i++){if(txt.indexOf(voto[i])>=0) return cls;}
+  var apoio=['parabens','concordo','meu voto','tem meu voto','votar em voce','meu candidato','meu deputado','conta comigo','apoio','excelente','mandou bem','arrasou','otimo','sensacional','merece','admiro','gostei','acompanho','sigo','voluntario','quero ajudar','quero participar','material'];
+  for(var i=0;i<apoio.length;i++){if(txt.indexOf(apoio[i])>=0) return cls;}
+  if(txt.length>15){
+    var eng=['verdade','isso mesmo','correto','tem razao','exatamente','perfeito','show','top','demais'];
+    for(var i=0;i<eng.length;i++){if(txt.indexOf(eng[i])>=0) return 'POTENCIAL';}
+  }
   return 'NEUTRO';
 }
 
@@ -225,8 +240,10 @@ async function loadData(){
     var com = parseGviz(resp[0]);
     var props = parseGviz(resp[1]);
 
-    var total=com.length, nApoio=0, nPot=0, nContra=0, nFB=0, nIG=0;
+    var total=com.length, nApoio=0, nPot=0, nContra=0, nFB=0, nIG=0, nVotoDeclarado=0;
     var classMap={}, dateMap={};
+    var uniqueUsers={};
+    var votosDeclarados=[];
 
     for(var i=0;i<com.length;i++){
       var rawCls=(val(com[i],5)||'NEUTRO').toUpperCase();
@@ -241,17 +258,41 @@ async function loadData(){
 
       var dk=parseDateKey(val(com[i],15)||val(com[i],11)||val(com[i],0));
       if(dk) dateMap[dk]=(dateMap[dk]||0)+1;
+
+      // Unique users tracking
+      var uname=val(com[i],2)||val(com[i],1)||'';
+      if(uname && uname!=='Desconhecido' && uname!=='Anonimo' && uname!=='anonimo') {
+        uniqueUsers[uname.toLowerCase()]=true;
+      }
+
+      // Votos Declarados: only VOTO_DECLARADO or text explicitly mentions voting for Luciano
+      if(cls==='VOTO_DECLARADO'||cls==='QUER_PARTICIPAR'){
+        nVotoDeclarado++;
+        var vtxt=val(com[i],14)||val(com[i],3)||'';
+        var vnome=val(com[i],12)||val(com[i],1)||'';
+        if(!vnome||vnome==='Desconhecido'||vnome==='Anonimo'){
+          var vu=val(com[i],2);
+          if(vu&&vu!=='Desconhecido') vnome='@'+vu;
+        }
+        var vdate=fmtDateShort(val(com[i],15)||val(com[i],11)||val(com[i],0));
+        var vplat=(val(com[i],4)||'').toUpperCase();
+        votosDeclarados.push({text:vtxt,nome:vnome,plat:vplat,date:vdate,cls:cls});
+      }
     }
+
+    var nUnicos=Object.keys(uniqueUsers).length;
 
     // KPIs
     document.getElementById('kpiTotal').textContent=total.toLocaleString('pt-BR');
     document.getElementById('kpiApoiadores').textContent=nApoio;
     document.getElementById('kpiPotenciais').textContent=nPot;
+    document.getElementById('kpiContra').textContent=nContra;
     document.getElementById('kpiProps').textContent=props.length;
     document.getElementById('kpiFB').textContent=nFB;
     document.getElementById('kpiIG').textContent=nIG;
     document.getElementById('kpiFBsub').textContent=total>0?((nFB/total*100).toFixed(1)+'%'):'';
     document.getElementById('kpiIGsub').textContent=total>0?((nIG/total*100).toFixed(1)+'%'):'';
+    document.getElementById('kpiUnicos').textContent=nUnicos.toLocaleString('pt-BR');
 
     // Countdown
     var election=new Date(2026,9,4);
@@ -337,6 +378,29 @@ async function loadData(){
       rhtml+='<div class="recent-item"><span class="recent-badge" style="'+bc+'">'+recent[ri].cls.replace(/_/g,' ')+'</span><span class="recent-text">'+nomeTag+recent[ri].text+'</span><span class="recent-plat" style="'+pc+'">'+ps+'</span></div>';
     }
     document.getElementById('recentList').innerHTML=rhtml||'<span style="color:var(--muted)">Nenhuma captacao recente</span>';
+
+    // Votos Declarados rendering
+    document.getElementById('votosCount').textContent=votosDeclarados.length+' votos confirmados';
+    var vhtml='';
+    for(var vi=0;vi<votosDeclarados.length;vi++){
+      var vd=votosDeclarados[vi];
+      var vpc=vd.plat.indexOf('FACE')>=0?'color:#1877F2':'color:#E1306C';
+      var vps=vd.plat.indexOf('FACE')>=0?'FB':'IG';
+      var vbc=vd.cls==='VOTO_DECLARADO'?'background:rgba(16,185,129,.2);color:#10b981':'background:rgba(242,124,56,.15);color:#F27C38';
+      var vnTag=vd.nome?'<span style="color:var(--success);font-weight:600;margin-right:4px">'+vd.nome+'</span>':'';
+      vhtml+='<div class="recent-item">';
+      vhtml+=vnTag;
+      if(vd.date) vhtml+='<span style="color:var(--muted);font-size:.68rem;margin-right:6px">'+vd.date+'</span>';
+      vhtml+='<span class="recent-text">'+vd.text+'</span>';
+      vhtml+='<span class="recent-plat" style="'+vpc+'">'+vps+'</span>';
+      vhtml+='</div>';
+    }
+    document.getElementById('votosList').innerHTML=vhtml||'<span style="color:var(--muted)">Nenhum voto declarado encontrado</span>';
+
+    // Leads Quentes - only apoiadores with explicit Luciano mentions
+    var leadsCount=votosDeclarados.filter(function(v){return v.cls==='VOTO_DECLARADO';}).length;
+    var leadsEl=document.getElementById('leadsCount');
+    if(leadsEl) leadsEl.textContent=leadsCount+' leads';
 
         document.getElementById('lastUpdate').textContent='Atualizado: '+new Date().toLocaleString('pt-BR');
   } catch(e) {

@@ -119,7 +119,7 @@ tr:hover td { background:rgba(59,30,109,.3); }
 <!-- AUTH GATE -->
 <div id="authGate" style="position:fixed;inset:0;z-index:99999;background:#0f0520;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;">
   <div style="text-align:center;max-width:360px;padding:32px;background:#1e0e3e;border-radius:20px;border:1px solid #4a2480;box-shadow:0 8px 32px rgba(0,0,0,.6);">
-    <div style="margin-bottom:8px;"><img src="https://raw.githubusercontent.com/yago-silva-ads/campanha4090/main/luciano.png" alt="Luciano da Luz" style="width:100px;height:100px;border-radius:50%;border:3px solid #F27C38;object-fit:cover;"></div>
+    <div style="margin-bottom:8px;"><img src="luciano.png" alt="Luciano da Luz" style="width:100px;height:100px;border-radius:50%;border:3px solid #F27C38;object-fit:cover;"></div>
     <div style="font-weight:800;font-size:1.2rem;color:#f0e6ff;margin-bottom:4px;">QG Campanha 4090</div>
     <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito &agrave; equipe</div>
     <input id="authPwd" type="password" placeholder="Senha de acesso" style="width:100%;padding:14px 16px;background:#0f0520;border:1px solid #4a2480;border-radius:10px;color:#f0e6ff;font-size:1rem;outline:none;text-align:center;margin-bottom:12px;" onkeydown="if(event.key==='Enter')checkAuth()">
@@ -263,7 +263,7 @@ function fmtDate(d){
   }catch(e){return d.substring(0,10);}
 }
 
-var CLS_APOIO=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+var CLS_APOIO=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO','POTENCIAL'];
 var CLS_POT=['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
 var CLS_CONTRA=['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
 var CLS_NEUTRO=['NEUTRO'];
@@ -278,15 +278,22 @@ function isNeutro(c){return CLS_NEUTRO.indexOf(c)>=0;}
 // Valida se comentario REALMENTE e sobre o Luciano
 // Rebaixa APOIADOR generico (opiniao politica que nao cita Luciano) pra NEUTRO
 function validateCls(cls, commentText){
-  var c = cls.toUpperCase();
-  if(c==='VOTO_DECLARADO'||c==='QUER_PARTICIPAR') return cls; // estes ja sao rigorosos
-  if(!isApoio(c)&&!isPot(c)) return cls; // CONTRA/NEUTRO ficam como estao
-  // APOIADOR/POTENCIAL: precisa mencionar Luciano/4090/campanha
+  var c = (cls||'').toUpperCase();
+  if(c==='VOTO_DECLARADO'||c==='QUER_PARTICIPAR') return cls;
+  if(!isApoio(c)&&!isPot(c)) return cls;
   var txt = (commentText||'').toLowerCase();
-  for(var i=0;i<KW_LUCIANO.length;i++){
-    if(txt.indexOf(KW_LUCIANO[i])>=0) return cls; // OK, menciona Luciano
+  // VOTO: menciona Luciano/4090 diretamente
+  var voto=['luciano da luz','luciano4090','4090','lucianodaluz','@lucianodaluz','mandato participativo','candidato 4090','deputado 4090','voto no luciano','votar no luciano','luciano luz'];
+  for(var i=0;i<voto.length;i++){if(txt.indexOf(voto[i])>=0) return cls;}
+  // APOIO: elogios/apoio direto (comentarios nos posts DO Luciano = apoio a ele)
+  var apoio=['parabens','concordo','meu voto','tem meu voto','votar em voce','meu candidato','meu deputado','conta comigo','apoio','excelente','mandou bem','arrasou','otimo','sensacional','merece','admiro','gostei','acompanho','sigo','voluntario','quero ajudar','quero participar','material'];
+  for(var i=0;i<apoio.length;i++){if(txt.indexOf(apoio[i])>=0) return cls;}
+  // ENGAJAMENTO: concordancia positiva (texto >15 chars)
+  if(txt.length>15){
+    var eng=['verdade','isso mesmo','correto','tem razao','exatamente','perfeito','show','top','demais'];
+    for(var i=0;i<eng.length;i++){if(txt.indexOf(eng[i])>=0) return 'POTENCIAL';}
   }
-  return 'NEUTRO'; // Comentario generico sem menção ao Luciano
+  return 'NEUTRO';
 }
 
 function badgeClass(c){
