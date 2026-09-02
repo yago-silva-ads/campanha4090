@@ -85,7 +85,7 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
 
   <div class="charts-row">
     <div class="chart-card"><h3>Por Tipo</h3><div id="chartTipo" style="height:240px"></div></div>
-    <div class="chart-card"><h3>Temas Encontrados</h3><div id="chartTemas" style="height:240px"></div></div>
+    <div class="chart-card"><h3>Status Tramitacao</h3><div id="chartTemas" style="height:240px"></div></div>
   </div>
 
   <div class="filters" id="filters">
@@ -98,35 +98,45 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
   <input type="text" class="search-box" id="searchBox" placeholder="&#x1F50D; Buscar por tipo, numero, ementa, tema...">
   <div class="prop-list" id="propList"></div>
 </div>
-<div class="footer">Dados: dadosabertos.camara.leg.br &middot; v16 &middot; Auto-refresh 5 min</div>
+<div class="footer">Dados: dadosabertos.camara.leg.br &middot; v17 &middot; Auto-refresh 5 min</div>
 
 <script>
 var SHEET_ID='1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
 var SHEET_NAME='PROPOSICOES';
 var allProps=[];
 var currentFilter='TODOS';
+var KEYWORDS_RELEVANCIA=['educacao','educação','saude','saúde','periferia','agroecologia','infra','infraestrutura','fiscalizacao','fiscalização','escola','sus','moradia','saneamento','transporte','agricultura familiar','juventude','cultura'];
 
 function val(r,i){return r.c&&r.c[i]?(r.c[i].v||''):'';}
 function fmtDate(v){
   if(!v) return '--';
   var s=String(v),m=s.match(/^Date\((\d+),(\d+),(\d+)/);
   if(m){var dd=String(m[3]).padStart(2,'0'),mm=String(Number(m[2])+1).padStart(2,'0');return dd+'/'+mm+'/'+m[1];}
+  if(s.length>=10) return s.substring(8,10)+'/'+s.substring(5,7)+'/'+s.substring(0,4);
   return s.substring(0,10);
+}
+function checkRelevante(ementa){
+  if(!ementa) return false;
+  var low=ementa.toLowerCase();
+  for(var i=0;i<KEYWORDS_RELEVANCIA.length;i++){
+    if(low.indexOf(KEYWORDS_RELEVANCIA[i])>=0) return true;
+  }
+  return false;
 }
 
 function render(){
   var q=document.getElementById('searchBox').value.toLowerCase();
   var filtered=allProps.filter(function(p){
-    if(currentFilter==='RELEVANTE'&&(p.relevante||'').toUpperCase()!=='SIM') return false;
+    if(currentFilter==='RELEVANTE'&&!p.relevante) return false;
     if(['PL','PEC','PLP'].indexOf(currentFilter)>=0&&(p.tipo||'').toUpperCase()!==currentFilter) return false;
-    if(q) return [p.tipo,p.numero,p.ementa,p.temas].join(' ').toLowerCase().indexOf(q)>=0;
+    if(q) return [p.tipo,p.numero,p.ementa,p.status].join(' ').toLowerCase().indexOf(q)>=0;
     return true;
   });
   document.getElementById('propList').innerHTML=filtered.slice(0,100).map(function(p){
-    var tags=(p.temas||'').split(',').filter(function(t){return t.trim();}).map(function(t){return '<span class="tag">'+t.trim()+'</span>';}).join('');
-    var relevBadge=(p.relevante||'').toUpperCase()==='SIM'?'<span class="prop-relevante">&#x1F3AF; RELEVANTE</span>':'';
+    var statusTag=p.status?'<span class="tag">'+p.status+'</span>':'';
+    var relevBadge=p.relevante?'<span class="prop-relevante">\ud83d\udd25 RELEVANTE</span>':'';
     var link=p.id?'https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao='+p.id:'#';
-    return '<div class="prop"><div class="prop-header"><div><span class="prop-tipo">'+p.tipo+' '+p.numero+'/'+p.ano+'</span> '+relevBadge+'</div><span class="prop-data">'+p.data+'</span></div><div class="prop-ementa">'+p.ementa+'</div><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div class="prop-tags">'+tags+'</div><a class="prop-link" href="'+link+'" target="_blank">Ver na Camara &#x2192;</a></div></div>';
+    return '<div class="prop"><div class="prop-header"><div><span class="prop-tipo">'+p.tipo+' '+p.numero+'/'+p.ano+'</span> '+relevBadge+'</div><span class="prop-data">'+p.data+'</span></div><div class="prop-ementa">'+p.ementa+'</div><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div class="prop-tags">'+statusTag+'</div><a class="prop-link" href="'+link+'" target="_blank">Ver na Camara \u2192</a></div></div>';
   }).join('');
 }
 
@@ -135,20 +145,21 @@ function loadData(){
   fetch(url).then(function(r){return r.text();}).then(function(text){
     var rows=JSON.parse(text.substring(47).slice(0,-2)).table.rows||[];
     allProps=rows.map(function(r){
+      var ementa=String(val(r,4));
       return {
-        tipo:String(val(r,0)).toUpperCase(),
-        numero:val(r,1),
-        ano:val(r,2),
-        ementa:val(r,3),
-        temas:val(r,4),
-        relevante:val(r,5),
-        data:fmtDate(val(r,6)),
-        id:val(r,7)
+        id:val(r,0),
+        tipo:String(val(r,1)).toUpperCase(),
+        numero:val(r,2),
+        ano:val(r,3),
+        ementa:ementa,
+        data:fmtDate(val(r,5)),
+        status:String(val(r,7)),
+        relevante:checkRelevante(ementa)
       };
     }).filter(function(p){return p.tipo&&p.numero;});
 
     document.getElementById('sTotal').textContent=allProps.length;
-    document.getElementById('sRelevantes').textContent=allProps.filter(function(p){return(p.relevante||'').toUpperCase()==='SIM';}).length;
+    document.getElementById('sRelevantes').textContent=allProps.filter(function(p){return p.relevante;}).length;
     var tipoCount={};
     allProps.forEach(function(p){tipoCount[p.tipo]=(tipoCount[p.tipo]||0)+1;});
     document.getElementById('sPL').textContent=tipoCount['PL']||0;
@@ -167,7 +178,7 @@ function loadData(){
 
     var temaCount={};
     allProps.forEach(function(p){
-      (p.temas||'').split(',').forEach(function(t){t=t.trim();if(t) temaCount[t]=(temaCount[t]||0)+1;});
+      if(p.status&&p.status!=='undefined') temaCount[p.status]=(temaCount[p.status]||0)+1;
     });
     var temaArr=[];for(var tk in temaCount) temaArr.push([tk,temaCount[tk]]);
     temaArr.sort(function(a,b){return b[1]-a[1];});
@@ -179,7 +190,7 @@ function loadData(){
       legend:{enabled:false},credits:{enabled:false}
     });
 
-    document.getElementById('lastUpdate').textContent=allProps.length+' proposicoes carregadas &middot; '+new Date().toLocaleString('pt-BR');
+    document.getElementById('lastUpdate').textContent=allProps.length+' proposicoes carregadas \u00b7 '+new Date().toLocaleString('pt-BR');
     render();
   }).catch(function(e){
     document.getElementById('lastUpdate').textContent='Erro ao carregar: '+e.message;

@@ -72,37 +72,47 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
 
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Tipo</th><th>No/Ano</th><th>Ementa</th><th>Data</th><th>Temas</th><th>Relevante</th><th>Link</th></tr></thead>
+      <thead><tr><th>Tipo</th><th>No/Ano</th><th>Ementa</th><th>Data</th><th>Status</th><th>Relevante</th><th>Link</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 </div>
-<div class="footer">Dados: dadosabertos.camara.leg.br &middot; v16 &middot; Auto-refresh 5 min</div>
+<div class="footer">Dados: dadosabertos.camara.leg.br &middot; v17 &middot; Auto-refresh 5 min</div>
 
 <script>
 var SHEET_ID='1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
 var allProps=[],currentFilter='TODOS';
+var KEYWORDS_RELEVANCIA=['educacao','educação','saude','saúde','periferia','agroecologia','infra','infraestrutura','fiscalizacao','fiscalização','escola','sus','moradia','saneamento','transporte','agricultura familiar','juventude','cultura'];
 function val(r,i){return r.c&&r.c[i]?(r.c[i].v||''):'';}
 function fmtDate(v){
   if(!v) return '--';
   var s=String(v),m=s.match(/^Date\((\d+),(\d+),(\d+)/);
   if(m){var dd=String(m[3]).padStart(2,'0'),mm=String(Number(m[2])+1).padStart(2,'0');return dd+'/'+mm+'/'+m[1];}
+  if(s.length>=10) return s.substring(8,10)+'/'+s.substring(5,7)+'/'+s.substring(0,4);
   return s.substring(0,10);
+}
+function checkRelevante(ementa){
+  if(!ementa) return false;
+  var low=ementa.toLowerCase();
+  for(var i=0;i<KEYWORDS_RELEVANCIA.length;i++){
+    if(low.indexOf(KEYWORDS_RELEVANCIA[i])>=0) return true;
+  }
+  return false;
 }
 
 function render(){
   var q=document.getElementById('searchBox').value.toLowerCase();
   var filtered=allProps.filter(function(p){
-    if(currentFilter==='RELEVANTE'&&(p.relevante||'').toUpperCase()!=='SIM') return false;
+    if(currentFilter==='RELEVANTE'&&!p.relevante) return false;
     if(['PL','PEC','PLP'].indexOf(currentFilter)>=0&&(p.tipo||'').toUpperCase()!==currentFilter) return false;
-    if(q) return [p.tipo,p.numero,p.ano,p.ementa,p.temas].join(' ').toLowerCase().indexOf(q)>=0;
+    if(q) return [p.tipo,p.numero,p.ano,p.ementa,p.status].join(' ').toLowerCase().indexOf(q)>=0;
     return true;
   });
   document.getElementById('tbody').innerHTML=filtered.slice(0,200).map(function(p){
-    var tags=(p.temas||'').split(',').filter(function(t){return t.trim();}).map(function(t){return '<span class="tag">'+t.trim()+'</span>';}).join('');
-    var rel=(p.relevante||'').toUpperCase()==='SIM'?'<span class="badge-rel">&#x1F3AF; SIM</span>':'--';
+    var statusTag=p.status?'<span class="tag">'+p.status+'</span>':'';
+    var rel=p.relevante?'<span class="badge-rel">\ud83d\udd25 Relevante</span>':'--';
     var link=p.id?'https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao='+p.id:'#';
-    return '<tr><td style="font-weight:600">'+(p.tipo||'--')+'</td><td>'+p.numero+'/'+p.ano+'</td><td style="max-width:400px">'+(p.ementa||'--')+'</td><td style="white-space:nowrap">'+(p.data||'--')+'</td><td>'+tags+'</td><td style="text-align:center">'+rel+'</td><td><a class="link" href="'+link+'" target="_blank">Ver &#x2192;</a></td></tr>';
+    return '<tr><td style="font-weight:600">'+(p.tipo||'--')+'</td><td>'+p.numero+'/'+p.ano+'</td><td style="max-width:400px">'+(p.ementa||'--')+'</td><td style="white-space:nowrap">'+(p.data||'--')+'</td><td>'+statusTag+'</td><td style="text-align:center">'+rel+'</td><td><a class="link" href="'+link+'" target="_blank">Ver \u2192</a></td></tr>';
   }).join('');
 }
 
@@ -111,10 +121,11 @@ function loadData(){
   fetch(url).then(function(r){return r.text();}).then(function(text){
     var rows=JSON.parse(text.substring(47).slice(0,-2)).table.rows||[];
     allProps=rows.map(function(r){
-      return {tipo:String(val(r,0)).toUpperCase(),numero:val(r,1),ano:val(r,2),ementa:val(r,3),temas:val(r,4),relevante:val(r,5),data:fmtDate(val(r,6)),id:val(r,7)};
+      var ementa=String(val(r,4));
+      return {id:val(r,0),tipo:String(val(r,1)).toUpperCase(),numero:val(r,2),ano:val(r,3),ementa:ementa,data:fmtDate(val(r,5)),status:String(val(r,7)),relevante:checkRelevante(ementa)};
     }).filter(function(p){return p.tipo&&p.numero;});
 
-    document.getElementById('lastUpdate').textContent=allProps.length+' proposicoes carregadas &middot; '+new Date().toLocaleString('pt-BR');
+    document.getElementById('lastUpdate').textContent=allProps.length+' proposicoes carregadas \u00b7 '+new Date().toLocaleString('pt-BR');
     render();
   }).catch(function(e){
     document.getElementById('lastUpdate').textContent='Erro: '+e.message;

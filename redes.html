@@ -92,6 +92,27 @@ tr:hover td { background:rgba(59,30,109,.3); }
   .comment-text { max-width:200px; } .act-btn { padding:6px 10px; font-size:.68rem; }
 }
 @media(max-width:480px) { .kpis { grid-template-columns:repeat(2,1fr); } .nav-brand { font-size:.78rem; } .nav-brand .num { font-size:.95rem; } }
+
+/* LEADS SECTION */
+.leads-section { background:linear-gradient(135deg,rgba(242,124,56,.08),rgba(16,185,129,.06)); border:1px solid rgba(242,124,56,.3); border-radius:14px; padding:18px; margin-bottom:18px; }
+.leads-section h2 { font-size:1rem; margin-bottom:4px; color:var(--accent); }
+.leads-section .leads-sub { font-size:.72rem; color:var(--muted); margin-bottom:12px; }
+.leads-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; }
+.lead-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:12px; transition:border-color .2s; }
+.lead-card:hover { border-color:var(--accent); }
+.lead-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:4px; }
+.lead-name { font-weight:700; font-size:.82rem; }
+.lead-badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.6rem; font-weight:700; }
+.lead-badge-voto { background:rgba(16,185,129,.25); color:#10b981; }
+.lead-badge-participar { background:rgba(167,139,250,.25); color:#a78bfa; }
+.lead-badge-apoiador { background:rgba(242,124,56,.2); color:var(--accent); }
+.lead-comment { font-size:.78rem; color:var(--muted); line-height:1.4; margin-bottom:8px; max-height:60px; overflow:hidden; }
+.lead-footer { display:flex; justify-content:space-between; align-items:center; }
+.lead-plat { font-size:.68rem; font-weight:600; }
+.lead-action { font-size:.7rem; font-weight:600; color:var(--accent); text-decoration:none; padding:4px 10px; border:1px solid var(--accent); border-radius:6px; transition:all .2s; min-height:32px; display:inline-flex; align-items:center; }
+.lead-action:hover { background:var(--accent); color:#fff; }
+.leads-empty { text-align:center; padding:20px; color:var(--muted); font-size:.82rem; }
+.leads-count { font-size:.72rem; color:var(--success); font-weight:600; margin-left:8px; }
 </style>
 </head>
 <body>
@@ -129,6 +150,16 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
     <div class="kpi"><div class="kpi-val" id="kFB" style="color:#1877F2">&mdash;</div><div class="kpi-lbl">&#x1F4D8; Facebook</div></div>
     <div class="kpi"><div class="kpi-val" id="kIG" style="color:#E1306C">&mdash;</div><div class="kpi-lbl">&#x1F4F8; Instagram</div></div>
     <div class="kpi"><div class="kpi-val" id="kUnique" style="color:var(--accent)">&mdash;</div><div class="kpi-lbl">&#x1F464; Unicos</div></div>
+  </div>
+
+
+  <!-- LEADS QUENTES -->
+  <div class="leads-section" id="leadsSection">
+    <h2>&#x1F3AF; Leads Quentes &mdash; Apoiadores Reais <span class="leads-count" id="leadsCount"></span></h2>
+    <div class="leads-sub">Votos declarados, voluntarios e apoiadores confirmados &mdash; contate AGORA pelo QG!</div>
+    <div class="leads-grid" id="leadsGrid">
+      <div class="leads-empty">Carregando leads...</div>
+    </div>
   </div>
 
   <input type="text" class="search-box" id="searchBox" placeholder="&#x1F50D; Buscar por nome, comentario, username...">
@@ -185,7 +216,7 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
   </div>
 </div>
 
-<div class="footer">Campanha Luciano da Luz 4090 &middot; QG Redes &middot; v16 &middot; Foco: Apoiadores & Votos</div>
+<div class="footer">Campanha Luciano da Luz 4090 &middot; QG Redes &middot; v17 &middot; Foco: Apoiadores & Votos</div>
 
 <script>
 var SHEET_ID='1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
@@ -224,15 +255,31 @@ function fmtDate(d){
   }catch(e){return d.substring(0,10);}
 }
 
-var CLS_APOIO=['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+var CLS_APOIO=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
 var CLS_POT=['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
 var CLS_CONTRA=['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
 var CLS_NEUTRO=['NEUTRO'];
+// Keywords que o comentario DEVE conter pra ser considerado REAL apoio ao Luciano
+var KW_LUCIANO=['luciano da luz','luciano4090','4090','deputado federal','meu candidato','meu deputado','mandato participativo','votar no luciano','voto no luciano','candidato 4090','luciano luz'];
 
 function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
 function isPot(c){return CLS_POT.indexOf(c)>=0;}
 function isContra(c){return CLS_CONTRA.indexOf(c)>=0;}
 function isNeutro(c){return CLS_NEUTRO.indexOf(c)>=0;}
+
+// Valida se comentario REALMENTE e sobre o Luciano
+// Rebaixa APOIADOR generico (opiniao politica que nao cita Luciano) pra NEUTRO
+function validateCls(cls, commentText){
+  var c = cls.toUpperCase();
+  if(c==='VOTO_DECLARADO'||c==='QUER_PARTICIPAR') return cls; // estes ja sao rigorosos
+  if(!isApoio(c)&&!isPot(c)) return cls; // CONTRA/NEUTRO ficam como estao
+  // APOIADOR/POTENCIAL: precisa mencionar Luciano/4090/campanha
+  var txt = (commentText||'').toLowerCase();
+  for(var i=0;i<KW_LUCIANO.length;i++){
+    if(txt.indexOf(KW_LUCIANO[i])>=0) return cls; // OK, menciona Luciano
+  }
+  return 'NEUTRO'; // Comentario generico sem menção ao Luciano
+}
 
 function badgeClass(c){
   if(isApoio(c)) return 'badge-apoio';
@@ -277,6 +324,54 @@ function actBtns(r){
     btns+='<a class="act-btn act-reply" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" rel="noopener" title="Abrir perfil Luciano no IG">&#x270D;&#xFE0F; Responder no IG</a>';
   }
   return btns||'--';
+}
+
+var CLS_LEAD=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_DIRETO','EMBAIXADOR'];
+function renderLeads(){
+  var leads=allRows.filter(function(r){
+    var c=getCls(r).toUpperCase();
+    var relStr=val(r,6);
+    var rel=relStr?Number(relStr):0;
+    if(CLS_LEAD.indexOf(c)>=0) return true;
+    if(isApoio(c)&&rel>=5) return true;
+    return false;
+  });
+  var count=leads.length;
+  document.getElementById('leadsCount').textContent='('+count+' leads)';
+  if(count===0){
+    document.getElementById('leadsGrid').innerHTML='<div class="leads-empty">Nenhum lead quente encontrado ainda. Leads aparecem com classificacao VOTO_DECLARADO, QUER_PARTICIPAR ou APOIADOR.</div>';
+    return;
+  }
+  var html='';
+  var showing=Math.min(count,30);
+  for(var i=0;i<showing;i++){
+    var r=leads[i];
+    var nome=getName(r);
+    var comm=getComment(r)||'--';
+    var plat=getPlatform(r).toUpperCase();
+    var cls=getCls(r).toUpperCase();
+    var platClass=plat==='FACEBOOK'?'plat-fb':'plat-ig';
+    var platShort=plat==='FACEBOOK'?'FB':'IG';
+    var badgeCls='lead-badge-apoiador';
+    var badgeTxt=cls.replace(/_/g,' ');
+    if(cls==='VOTO_DECLARADO'){badgeCls='lead-badge-voto';badgeTxt='\u2705 VOTO DECLARADO';}
+    else if(cls==='QUER_PARTICIPAR'){badgeCls='lead-badge-participar';badgeTxt='\u270B QUER PARTICIPAR';}
+    else{badgeTxt='\uD83D\uDD25 '+badgeTxt;}
+    var actionLink='#';
+    var actionLabel='Contatar';
+    if(plat==='FACEBOOK'){
+      var pid2=getPostId(r),cid2=getCommentId(r);
+      if(pid2&&cid2){var ac=cid2.indexOf('_')>=0?cid2.substring(cid2.lastIndexOf('_')+1):cid2;actionLink='https://www.facebook.com/'+pid2+'?comment_id='+ac;actionLabel='Responder FB';}
+    } else if(plat==='INSTAGRAM'){
+      var uname=val(r,2)||'';
+      if(uname&&uname!=='Desconhecido') actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
+      actionLabel='Ver Perfil IG';
+    }
+    var safeComm=comm.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    html+='<div class="lead-card"><div class="lead-header"><span class="lead-name">'+nome+'</span><span class="lead-badge '+badgeCls+'">'+badgeTxt+'</span></div><div class="lead-comment">'+safeComm+'</div><div class="lead-footer"><span class="lead-plat '+platClass+'">'+platShort+'</span><a class="lead-action" href="'+actionLink+'" target="_blank">'+actionLabel+' \u2192</a></div></div>';
+  }
+  if(count>30) html+='<div class="leads-empty">+ '+(count-30)+' leads adicionais na tabela abaixo</div>';
+  document.getElementById('leadsGrid').innerHTML=html;
 }
 
 function render(){
@@ -342,6 +437,7 @@ function loadData(){
     document.getElementById('subtitle').textContent=total+' comentarios &middot; Atualizado: '+now.toLocaleDateString('pt-BR')+', '+now.toLocaleTimeString('pt-BR');
     document.getElementById('uniqueInfo').innerHTML='<b>'+Object.keys(uniqueNames).length+'</b> autores unicos de <b>'+total+'</b> comentarios';
 
+    renderLeads();
     render();
   }).catch(function(e){
     console.error('Load error:',e);

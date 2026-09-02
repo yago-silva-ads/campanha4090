@@ -144,7 +144,7 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
   </div>
 
   <div class="recent-section">
-    <h3>&#x1F4E1; &Uacute;ltimas Capta&ccedil;&otilde;es</h3>
+    <h3>&#x1F4E1; &Uacute;ltimas Capta&ccedil;&otilde;es &mdash; <span style="color:var(--accent);font-weight:400;font-size:.8rem">Apenas apoiadores, votos e oposi&ccedil;&atilde;o</span></h3>
     <div id="recentList"><span style="color:var(--muted);font-size:.8rem">Carregando...</span></div>
   </div>
 
@@ -167,7 +167,7 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
     <div class="wf"><div class="wf-dot"></div><div class="wf-name">&#x1F504; Enriquecimento Perfis</div><div class="wf-schedule">12h</div></div>
   </div>
 </div>
-<div class="footer">Campanha Luciano da Luz &mdash; Deputado Federal 4090 &middot; PSB-SP &middot; v16 &middot; Auto-refresh 5 min</div>
+<div class="footer">Campanha Luciano da Luz &mdash; Deputado Federal 4090 &middot; PSB-SP &middot; v17 &middot; Auto-refresh 5 min</div>
 
 <script>
 var SHEETS = {
@@ -283,38 +283,47 @@ async function loadData(){
       tooltip:{headerFormat:'{point.x:%d/%m/%Y}<br>',pointFormat:'<b>{point.y}</b> comentarios'}
     });
 
-    // Recent captures (last 5 non-NEUTRO)
+    // Recent captures — ONLY actionable (non-NEUTRO, non-empty classification)
+    var CLS_ACTIONABLE=['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO','VOTO_DECLARADO','QUER_PARTICIPAR','COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE','CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
+    var recentSorted=com.slice().sort(function(a,b){
+      var da=val(a,15)||val(a,11)||val(a,0)||'';
+      var db=val(b,15)||val(b,11)||val(b,0)||'';
+      if(da>db) return -1;
+      if(da<db) return 1;
+      return 0;
+    });
     var recent=[];
-    for(var j=com.length-1;j>=0&&recent.length<5;j--){
-      var c2=val(com[j],5).toUpperCase();
-      if(c2==='NEUTRO') continue;
-      recent.push({
-        text:val(com[j],14)||val(com[j],3)||'(sem texto)',
-        cls:c2||'PENDENTE',
-        plat:(val(com[j],4)||'').toUpperCase()
-      });
-    }
-    // Also try from start (sorted by date desc might be at beginning)
-    if(recent.length<5){
-      for(var j2=0;j2<Math.min(com.length,50)&&recent.length<5;j2++){
-        var c3=val(com[j2],5).toUpperCase();
-        if(c3==='NEUTRO') continue;
-        var txt3=val(com[j2],14)||val(com[j2],3)||'';
-        var already=false;
-        for(var k2=0;k2<recent.length;k2++){if(recent[k2].text===txt3){already=true;break;}}
-        if(!already&&txt3) recent.push({text:txt3,cls:c3||'PENDENTE',plat:(val(com[j2],4)||'').toUpperCase()});
+    var seenTexts={};
+    for(var j=0;j<recentSorted.length&&recent.length<8;j++){
+      var c2=val(recentSorted[j],5).toUpperCase();
+      if(!c2||c2==='NEUTRO') continue;
+      if(CLS_ACTIONABLE.indexOf(c2)<0) continue;
+      var txt2=val(recentSorted[j],14)||val(recentSorted[j],3)||'';
+      if(!txt2||seenTexts[txt2]) continue;
+      seenTexts[txt2]=true;
+      var nome2=val(recentSorted[j],12)||val(recentSorted[j],1)||'';
+      if(!nome2||nome2==='Desconhecido'||nome2==='Anonimo'){
+        var u2=val(recentSorted[j],2);
+        if(u2&&u2!=='Desconhecido') nome2='@'+u2;
       }
+      recent.push({
+        text:txt2,
+        cls:c2,
+        plat:(val(recentSorted[j],4)||'').toUpperCase(),
+        nome:nome2||''
+      });
     }
     var rhtml='';
     for(var ri=0;ri<recent.length;ri++){
       var bc=isApoio(recent[ri].cls)?'background:rgba(16,185,129,.2);color:#10b981':isPot(recent[ri].cls)?'background:rgba(168,139,250,.2);color:#a78bfa':isContra(recent[ri].cls)?'background:rgba(239,68,68,.2);color:#ef4444':'background:rgba(242,124,56,.15);color:#F27C38';
       var pc=recent[ri].plat.indexOf('FACE')>=0?'color:#1877F2':'color:#E1306C';
       var ps=recent[ri].plat.indexOf('FACE')>=0?'FB':'IG';
-      rhtml+='<div class="recent-item"><span class="recent-badge" style="'+bc+'">'+recent[ri].cls.replace(/_/g,' ')+'</span><span class="recent-text">'+recent[ri].text+'</span><span class="recent-plat" style="'+pc+'">'+ps+'</span></div>';
+      var nomeTag=recent[ri].nome?'<span style="color:var(--text);font-weight:600;margin-right:4px">'+recent[ri].nome+':</span>':'';
+      rhtml+='<div class="recent-item"><span class="recent-badge" style="'+bc+'">'+recent[ri].cls.replace(/_/g,' ')+'</span><span class="recent-text">'+nomeTag+recent[ri].text+'</span><span class="recent-plat" style="'+pc+'">'+ps+'</span></div>';
     }
     document.getElementById('recentList').innerHTML=rhtml||'<span style="color:var(--muted)">Nenhuma captacao recente</span>';
 
-    document.getElementById('lastUpdate').textContent='Atualizado: '+new Date().toLocaleString('pt-BR');
+        document.getElementById('lastUpdate').textContent='Atualizado: '+new Date().toLocaleString('pt-BR');
   } catch(e) {
     document.getElementById('lastUpdate').textContent='Erro ao carregar: '+e.message;
     console.error(e);
