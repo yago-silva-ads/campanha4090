@@ -231,8 +231,8 @@ function getName(r){
   var n=val(r,12)||val(r,1)||'';
   if(n==='Desconhecido'||n==='Anonimo'||n==='Unknown') n='';
   if(!n){var u=val(r,2);if(u&&u!=='Desconhecido') n='@'+u;}
-  if(!n&&getPlatform(r).toUpperCase()==='INSTAGRAM'){var aid=val(r,13);if(aid&&aid.length>=4) n='IG #'+aid.substring(aid.length-4);}
-  if(!n){var c=val(r,14)||val(r,3)||'';if(c) n=c.substring(0,25)+(c.length>25?'...':'');}
+  if(!n&&getPlatform(r).toUpperCase()==='INSTAGRAM') n='@anônimo_ig';
+  if(!n&&getPlatform(r).toUpperCase()==='FACEBOOK') n='Anônimo FB';
   return n||'--';
 }
 function getComment(r){return val(r,14)||val(r,3)||'';}
