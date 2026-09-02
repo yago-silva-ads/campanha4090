@@ -3,32 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏛️ Congresso — Luciano da Luz 4090</title>
+<title>&#x1F3DB;&#xFE0F; Congresso &mdash; Luciano da Luz 4090</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGElEQVR4nLWXy3JcNRCGv5Z0LnOL7XIcEgdSbIAdUMWKHfAibHgfXoBnYQ8LWGTjgsoiiySOYzuemvucI4lqnZnxbcaxk9DlqSPr6Kj//rvV3ZKff/o1+qoiDF5z2LcgwkWR5f8xrubOR++QGMnKkt1ijOB567ex0nwdQsBai3vdf4ava/zgmOOxUZXn34dAVdcNCJsRY0z4MiO3BuCqnMl0hsTAmFMMMRmge1trkIJPoqhSycjsBStDpGy3eLy/z3g8xg4OyZ1hUsOrUbgA8yYRYgz4qKsFg7/0LgFs5Z2lyhXLamUgUGQtnM0pczDtHQoL05HSWbOJBJ0OF3kUi1u51V1fv5V9vtalSlRmCuqQYUxM/qqDgVDhRK0ymORPXanjQIiSrM1MM9Z5YY4P80uuvShukx2idkibbx9t0596DoeBxz3LsIKZj3x2z/BqqIpgqzCcTgK9Qvi0Jzw9CjzsQC+3/HvSx8cTEI2v67aa9QAWLEToVxmzYDEixKwDxqZ3c9NaWRVtmdzmsQxCK0V6Tc6UFiJN0G0S2eSCECNbZQtj2kyqgBVlxKWgami36WgtgcY01qAziNSNbWIJfkIVponTW7vAGhjOI79849judvjtr5Je5lNwGWMIPhCCR4whyxzPXxzA4nxfs1DjINF/JwYkKdju7dAp7zGZeYxR6yLV/OJRaqRh5dosIpZ5PWRWDxcg4m2DkOTTWSXkLseZqqFX85FZWnNOqSy2ljUAKj+5MXe6tcqBOtbc7z5kr/MVo8mIXq/DbDqn22slJvpno5TJdKzPre0Ok/GcVqfg7HRIILJ3f5eD538wPjvGiV0LQzYFoaJ2tsSKpuCQfN+kYkkBer5bBJMRsi4FY2xRMjzr46ykb2o/p/bTu+YBFUkJpApKoR7jcwCax5OPEoiIFUM7jPDG86jtcGXFm1HAaTQnxZsTt+NG0QzXjDSI9PAlAMvUusBgRcj0oIlwz0VmuePN2GP0m9UR3aThRml4bgxt0q4+F6NLq3S2xnBcZfSnIW2sc+8q3YbbypJF2byRF8tRlfN2EjYWq/cHEK8817zW8pNLxJnbNy2G95R1BkYN3Ej6yf8NIK5RnsWKz8sp+z2bQHwEALL8uxQDegjSQbhippaDXAJO03aC9G5xN73Uc6/NoyozwRCijk2qE03PoN1PTOlZa+NULC/nOf3xuCnfHwIgakfkHHle4r1PYJpsCM7ZBGxZAIKPjHwgimFQZ4zmysLtItFtNl8VObrdHrPZNCksi5LZfEar1cInAA3Nk1nN23HNlgnkIotW7UKV+hAX1L5u6r92t75ObMznVaoPWhOUap236oxVibjtGeBmACnOUsQtPC5NutUG9ejoZJEVI8bliNMWLdz16sLNDGzYS5uTBw/2VremybSiP55D0y5+PAZUVtl8cWlQd5yenqbnysfGYSTXZMxdxSUrrlqZLi3NNWzVTC7ob2KhCcAVRbrWXLF8kSjSI92MNgCovXaw1yUFWar7DQeqWEEt3/mwLLeL3JCCslmje2r/szRO5y/YlsAt93L3ew+aicsEpAVZllPYnMxNCWLJXEbeaVMXVbq0qhusM1TRQnSUWY3LC/a2DKI3FmtX4JbAE3Gh6bD053784Ut+//vPlMmuSh0C3uVsff0du6PXKcanU7U8R6Sgu7PDm6cHfP/Q8M9um8HLfbrHLzj8ok148oTZswP88QnWueSmoizIs4JWp81gMCBzOf8BEn6N9d6wnugAAAAASUVORK5CYII=">
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
 <style>
 :root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
-nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-.nav-left { display:flex; align-items:center; gap:12px; }
-.nav-avatar { width:40px; height:40px; border-radius:50%; border:2px solid var(--accent); object-fit:cover; }
-.nav-brand { font-weight:800; font-size:1.1rem; } .nav-brand span { color:var(--accent); font-size:1.3rem; }
-.nav-links { display:flex; gap:4px; }
-.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
+nav { background:var(--primary); padding:0 16px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-brand { font-weight:800; font-size:.95rem; } .nav-brand .num { color:var(--accent); font-size:1.15rem; }
+.nav-links { display:flex; gap:2px; overflow-x:auto; }
+.nav-links a { color:var(--text); text-decoration:none; padding:8px 10px; border-radius:8px; font-size:.78rem; font-weight:500; transition:all .2s; white-space:nowrap; min-height:44px; display:flex; align-items:center; }
 .nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
-.container { max-width:1200px; margin:0 auto; padding:24px 16px; }
-h1 { font-size:1.5rem; margin-bottom:8px; } h1 span { color:var(--accent); }
-.subtitle { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
-.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:24px; }
-.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:16px; text-align:center; }
+.container { max-width:1200px; margin:0 auto; padding:20px 14px; }
+h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
+.subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
+
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px; }
+.stat { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
 .stat-val { font-size:1.8rem; font-weight:800; color:var(--accent); }
-.stat-lbl { font-size:.75rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
-.charts-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
-.chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; }
-.chart-card h3 { font-size:.95rem; margin-bottom:12px; }
-.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.9rem; margin-bottom:16px; outline:none; }
+.stat-lbl { font-size:.72rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
+
+.charts-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+.chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; }
+.chart-card h3 { font-size:.9rem; margin-bottom:10px; }
+
+.filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.filters button { background:var(--card-bg); border:1px solid var(--card-border); color:var(--text); padding:8px 16px; border-radius:8px; cursor:pointer; font-size:.82rem; transition:all .2s; min-height:44px; }
+.filters button:hover,.filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.search-box { width:100%; padding:10px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--text); font-size:.9rem; margin-bottom:14px; outline:none; }
 .search-box:focus { border-color:var(--accent); }
+
 .prop-list { display:flex; flex-direction:column; gap:10px; }
 .prop { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:16px; transition:border-color .2s; }
 .prop:hover { border-color:var(--accent); }
@@ -41,17 +46,17 @@ h1 { font-size:1.5rem; margin-bottom:8px; } h1 span { color:var(--accent); }
 .tag { background:rgba(59,30,109,.5); color:var(--muted); padding:2px 8px; border-radius:4px; font-size:.7rem; }
 .prop-link { color:var(--accent); text-decoration:none; font-size:.8rem; font-weight:600; }
 .prop-link:hover { text-decoration:underline; }
-.footer { text-align:center; padding:24px; color:var(--muted); font-size:.75rem; margin-top:32px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links{display:none;} .charts-row{grid-template-columns:1fr;} }
+.footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
+@media(max-width:768px) { .nav-links a{padding:6px 8px;font-size:.68rem;} .charts-row{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <!-- AUTH GATE -->
 <div id="authGate" style="position:fixed;inset:0;z-index:99999;background:#0f0520;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;">
   <div style="text-align:center;max-width:360px;padding:32px;background:#1e0e3e;border-radius:20px;border:1px solid #4a2480;box-shadow:0 8px 32px rgba(0,0,0,.6);">
-    <div style="font-size:2.5rem;margin-bottom:8px;">🔒</div>
+    <div style="font-size:2.5rem;margin-bottom:8px;">&#x1F512;</div>
     <div style="font-weight:800;font-size:1.2rem;color:#f0e6ff;margin-bottom:4px;">QG Campanha 4090</div>
-    <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito à equipe</div>
+    <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito &agrave; equipe</div>
     <input id="authPwd" type="password" placeholder="Senha de acesso" style="width:100%;padding:14px 16px;background:#0f0520;border:1px solid #4a2480;border-radius:10px;color:#f0e6ff;font-size:1rem;outline:none;text-align:center;margin-bottom:12px;" onkeydown="if(event.key==='Enter')checkAuth()">
     <button onclick="checkAuth()" style="width:100%;padding:14px;background:#F27C38;color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;">Entrar</button>
     <div id="authErr" style="color:#ef4444;font-size:.78rem;margin-top:10px;display:none;">Senha incorreta</div>
@@ -62,24 +67,20 @@ function checkAuth(){var p=document.getElementById('authPwd').value;if(p==='luci
 if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('authGate').style.display='none';}
 </script>
 <!-- /AUTH GATE -->
-
 <nav>
-  <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
-  <div class="nav-links">
-    <a href="index.html">Central</a><a href="redes.html">QG Redes</a>
-    <a href="congresso.html" class="active">Congresso</a><a href="votar.html">Proposições</a>
-    <a href="votos.html">Controle</a><a href="analytics.html">Analytics</a>
-  </div>
+  <div class="nav-brand">LUCIANO DA LUZ <span class="num">4090</span></div>
+  <div class="nav-links"><a href="index.html">Central</a><a href="redes.html">QG Redes</a><a href="congresso.html" class="active">Congresso</a><a href="votar.html">Proposições</a><a href="votos.html">Controle</a><a href="analytics.html">Analytics</a></div>
 </nav>
 <div class="container">
-  <h1>🏛️ Congresso — <span>Proposições em Tramitação</span></h1>
-  <p class="subtitle" id="lastUpdate">Carregando proposições da Câmara dos Deputados...</p>
+  <h1>&#x1F3DB;&#xFE0F; Congresso &mdash; <span>Proposicoes em Tramitacao</span></h1>
+  <p class="subtitle" id="lastUpdate">Carregando proposicoes da Camara dos Deputados...</p>
 
   <div class="stats">
-    <div class="stat"><div class="stat-val" id="sTotal">—</div><div class="stat-lbl">Total</div></div>
-    <div class="stat"><div class="stat-val" id="sRelevantes">—</div><div class="stat-lbl">Relevantes</div></div>
-    <div class="stat"><div class="stat-val" id="sPL">—</div><div class="stat-lbl">PL</div></div>
-    <div class="stat"><div class="stat-val" id="sPEC">—</div><div class="stat-lbl">PEC</div></div>
+    <div class="stat"><div class="stat-val" id="sTotal">&mdash;</div><div class="stat-lbl">Total</div></div>
+    <div class="stat"><div class="stat-val" id="sRelevantes">&mdash;</div><div class="stat-lbl">Relevantes</div></div>
+    <div class="stat"><div class="stat-val" id="sPL">&mdash;</div><div class="stat-lbl">PL</div></div>
+    <div class="stat"><div class="stat-val" id="sPEC">&mdash;</div><div class="stat-lbl">PEC</div></div>
+    <div class="stat"><div class="stat-val" id="sPLP">&mdash;</div><div class="stat-lbl">PLP</div></div>
   </div>
 
   <div class="charts-row">
@@ -87,95 +88,113 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
     <div class="chart-card"><h3>Temas Encontrados</h3><div id="chartTemas" style="height:240px"></div></div>
   </div>
 
-  <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar por tipo, número, ementa, tema...">
+  <div class="filters" id="filters">
+    <button class="active" data-filter="TODOS">Todos</button>
+    <button data-filter="RELEVANTE">&#x1F3AF; Relevantes</button>
+    <button data-filter="PL">PL</button>
+    <button data-filter="PEC">PEC</button>
+    <button data-filter="PLP">PLP</button>
+  </div>
+  <input type="text" class="search-box" id="searchBox" placeholder="&#x1F50D; Buscar por tipo, numero, ementa, tema...">
   <div class="prop-list" id="propList"></div>
 </div>
-<div class="footer">Dados: dadosabertos.camara.leg.br · Auto-refresh 5 min</div>
+<div class="footer">Dados: dadosabertos.camara.leg.br &middot; v16 &middot; Auto-refresh 5 min</div>
 
 <script>
-const SHEET_ID = '1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
-const SHEET_NAME = 'PROPOSICOES';
-let allProps = [];
+var SHEET_ID='1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI';
+var SHEET_NAME='PROPOSICOES';
+var allProps=[];
+var currentFilter='TODOS';
 
-function val(r,i) { return r.c&&r.c[i]?(r.c[i].v||''):''; }
+function val(r,i){return r.c&&r.c[i]?(r.c[i].v||''):'';}
+function fmtDate(v){
+  if(!v) return '--';
+  var s=String(v),m=s.match(/^Date\((\d+),(\d+),(\d+)/);
+  if(m){var dd=String(m[3]).padStart(2,'0'),mm=String(Number(m[2])+1).padStart(2,'0');return dd+'/'+mm+'/'+m[1];}
+  return s.substring(0,10);
+}
 
-function render() {
-  const q = document.getElementById('searchBox').value.toLowerCase();
-  const filtered = allProps.filter(p => {
-    if(!q) return true;
-    return [p.tipo,p.numero,p.ementa,p.temas].join(' ').toLowerCase().includes(q);
+function render(){
+  var q=document.getElementById('searchBox').value.toLowerCase();
+  var filtered=allProps.filter(function(p){
+    if(currentFilter==='RELEVANTE'&&(p.relevante||'').toUpperCase()!=='SIM') return false;
+    if(['PL','PEC','PLP'].indexOf(currentFilter)>=0&&(p.tipo||'').toUpperCase()!==currentFilter) return false;
+    if(q) return [p.tipo,p.numero,p.ementa,p.temas].join(' ').toLowerCase().indexOf(q)>=0;
+    return true;
   });
-  document.getElementById('propList').innerHTML = filtered.slice(0,100).map(p => {
-    const tags = (p.temas||'').split(',').filter(t=>t.trim()).map(t=>`<span class="tag">${t.trim()}</span>`).join('');
-    const relevBadge = (p.relevante||'').toUpperCase()==='SIM' ? '<span class="prop-relevante">🎯 RELEVANTE</span>' : '';
-    const link = p.id ? `https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=${p.id}` : '#';
-    return `<div class="prop">
-      <div class="prop-header">
-        <div><span class="prop-tipo">${p.tipo} ${p.numero}/${p.ano}</span> ${relevBadge}</div>
-        <span class="prop-data">${p.data}</span>
-      </div>
-      <div class="prop-ementa">${p.ementa}</div>
-      <div class="prop-tags">${tags}</div>
-      <a class="prop-link" href="${link}" target="_blank">Ver na Câmara →</a>
-    </div>`;
+  document.getElementById('propList').innerHTML=filtered.slice(0,100).map(function(p){
+    var tags=(p.temas||'').split(',').filter(function(t){return t.trim();}).map(function(t){return '<span class="tag">'+t.trim()+'</span>';}).join('');
+    var relevBadge=(p.relevante||'').toUpperCase()==='SIM'?'<span class="prop-relevante">&#x1F3AF; RELEVANTE</span>':'';
+    var link=p.id?'https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao='+p.id:'#';
+    return '<div class="prop"><div class="prop-header"><div><span class="prop-tipo">'+p.tipo+' '+p.numero+'/'+p.ano+'</span> '+relevBadge+'</div><span class="prop-data">'+p.data+'</span></div><div class="prop-ementa">'+p.ementa+'</div><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div class="prop-tags">'+tags+'</div><a class="prop-link" href="'+link+'" target="_blank">Ver na Camara &#x2192;</a></div></div>';
   }).join('');
 }
 
-async function loadData() {
-  try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const text = await fetch(url).then(r=>r.text());
-    const json = JSON.parse(text.substring(47).slice(0,-2));
-    const rows = json.table.rows||[];
+function loadData(){
+  var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(SHEET_NAME);
+  fetch(url).then(function(r){return r.text();}).then(function(text){
+    var rows=JSON.parse(text.substring(47).slice(0,-2)).table.rows||[];
+    allProps=rows.map(function(r){
+      return {
+        tipo:String(val(r,0)).toUpperCase(),
+        numero:val(r,1),
+        ano:val(r,2),
+        ementa:val(r,3),
+        temas:val(r,4),
+        relevante:val(r,5),
+        data:fmtDate(val(r,6)),
+        id:val(r,7)
+      };
+    }).filter(function(p){return p.tipo&&p.numero;});
 
-    allProps = rows.map(r => ({
-      id: val(r,0), tipo: val(r,1), numero: val(r,2), ano: val(r,3),
-      ementa: val(r,4), data: val(r,5), autores: val(r,6), status: val(r,7),
-      relevante: val(r,8), temas: val(r,9)
-    }));
+    document.getElementById('sTotal').textContent=allProps.length;
+    document.getElementById('sRelevantes').textContent=allProps.filter(function(p){return(p.relevante||'').toUpperCase()==='SIM';}).length;
+    var tipoCount={};
+    allProps.forEach(function(p){tipoCount[p.tipo]=(tipoCount[p.tipo]||0)+1;});
+    document.getElementById('sPL').textContent=tipoCount['PL']||0;
+    document.getElementById('sPEC').textContent=tipoCount['PEC']||0;
+    document.getElementById('sPLP').textContent=tipoCount['PLP']||0;
 
-    const total = allProps.length;
-    const relevantes = allProps.filter(p=>(p.relevante||'').toUpperCase()==='SIM').length;
-    const pl = allProps.filter(p=>(p.tipo||'').toUpperCase()==='PL').length;
-    const pec = allProps.filter(p=>(p.tipo||'').toUpperCase()==='PEC').length;
-
-    document.getElementById('sTotal').textContent = total;
-    document.getElementById('sRelevantes').textContent = relevantes;
-    document.getElementById('sPL').textContent = pl;
-    document.getElementById('sPEC').textContent = pec;
-    document.getElementById('lastUpdate').textContent = `${total} proposições · Atualizado: ${new Date().toLocaleString('pt-BR')}`;
-
-    // Tipo chart
-    const tipoMap = {};
-    allProps.forEach(p=>{ const t=p.tipo||'Outro'; tipoMap[t]=(tipoMap[t]||0)+1; });
-    Highcharts.chart('chartTipo', {
-      chart:{type:'bar',backgroundColor:'transparent'},title:{text:null},
-      xAxis:{categories:Object.keys(tipoMap),labels:{style:{color:'#9b8ab8'}}},
-      yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.3)'},
-      series:[{name:'Proposições',data:Object.values(tipoMap),color:'#F27C38'}],
-      legend:{enabled:false},credits:{enabled:false},
-      plotOptions:{bar:{borderRadius:4,borderWidth:0}}
+    // Charts
+    var tipoData=[];
+    var tipoColors={'PL':'#F27C38','PEC':'#a78bfa','PLP':'#10b981','PDL':'#1877F2','MPV':'#f59e0b'};
+    for(var t in tipoCount) tipoData.push({name:t,y:tipoCount[t],color:tipoColors[t]||'#4a2480'});
+    Highcharts.chart('chartTipo',{
+      chart:{type:'pie',backgroundColor:'transparent'},title:{text:null},
+      plotOptions:{pie:{dataLabels:{enabled:true,format:'{point.name}: {point.y}',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}},borderWidth:0}},
+      series:[{data:tipoData}],credits:{enabled:false}
     });
 
-    // Temas chart
-    const temaMap = {};
-    allProps.forEach(p=>{ (p.temas||'').split(',').forEach(t=>{ t=t.trim(); if(t) temaMap[t]=(temaMap[t]||0)+1; }); });
-    const temaEntries = Object.entries(temaMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
-    if(temaEntries.length) {
-      Highcharts.chart('chartTemas', {
-        chart:{type:'bar',backgroundColor:'transparent'},title:{text:null},
-        xAxis:{categories:temaEntries.map(e=>e[0]),labels:{style:{color:'#9b8ab8',fontSize:'11px'}}},
-        yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.3)'},
-        series:[{name:'Ocorrências',data:temaEntries.map(e=>e[1]),color:'#3B1E6D'}],
-        legend:{enabled:false},credits:{enabled:false},
-        plotOptions:{bar:{borderRadius:4,borderWidth:0}}
-      });
-    }
+    var temaCount={};
+    allProps.forEach(function(p){
+      (p.temas||'').split(',').forEach(function(t){t=t.trim();if(t) temaCount[t]=(temaCount[t]||0)+1;});
+    });
+    var temaArr=[];for(var tk in temaCount) temaArr.push([tk,temaCount[tk]]);
+    temaArr.sort(function(a,b){return b[1]-a[1];});
+    Highcharts.chart('chartTemas',{
+      chart:{type:'bar',backgroundColor:'transparent'},title:{text:null},
+      xAxis:{categories:temaArr.slice(0,8).map(function(t){return t[0];}),labels:{style:{color:'#9b8ab8',fontSize:'11px'}}},
+      yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.3)'},
+      series:[{name:'Proposicoes',data:temaArr.slice(0,8).map(function(t){return t[1];}),color:'var(--accent)',borderRadius:3}],
+      legend:{enabled:false},credits:{enabled:false}
+    });
+
+    document.getElementById('lastUpdate').textContent=allProps.length+' proposicoes carregadas &middot; '+new Date().toLocaleString('pt-BR');
     render();
-  } catch(e) { document.getElementById('lastUpdate').textContent='Erro: '+e.message; }
+  }).catch(function(e){
+    document.getElementById('lastUpdate').textContent='Erro ao carregar: '+e.message;
+  });
 }
 
-document.getElementById('searchBox').addEventListener('input', render);
+document.getElementById('filters').addEventListener('click',function(e){
+  if(e.target.tagName!=='BUTTON') return;
+  var btns=document.querySelectorAll('.filters button');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+  e.target.classList.add('active');
+  currentFilter=e.target.getAttribute('data-filter');
+  render();
+});
+document.getElementById('searchBox').addEventListener('input',render);
 loadData();
 setInterval(loadData,300000);
 </script>

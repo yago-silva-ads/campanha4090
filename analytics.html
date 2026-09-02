@@ -3,48 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📈 Analytics — Luciano da Luz 4090</title>
+<title>&#x1F4C8; Analytics &mdash; Luciano da Luz 4090</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGElEQVR4nLWXy3JcNRCGv5Z0LnOL7XIcEgdSbIAdUMWKHfAibHgfXoBnYQ8LWGTjgsoiiySOYzuemvucI4lqnZnxbcaxk9DlqSPr6Kj//rvV3ZKff/o1+qoiDF5z2LcgwkWR5f8xrubOR++QGMnKkt1ijOB567ex0nwdQsBai3vdf4ava/zgmOOxUZXn34dAVdcNCJsRY0z4MiO3BuCqnMl0hsTAmFMMMRmge1trkIJPoqhSycjsBStDpGy3eLy/z3g8xg4OyZ1hUsOrUbgA8yYRYgz4qKsFg7/0LgFs5Z2lyhXLamUgUGQtnM0pczDtHQoL05HSWbOJBJ0OF3kUi1u51V1fv5V9vtalSlRmCuqQYUxM/qqDgVDhRK0ymORPXanjQIiSrM1MM9Z5YY4P80uuvShukx2idkibbx9t0596DoeBxz3LsIKZj3x2z/BqqIpgqzCcTgK9Qvi0Jzw9CjzsQC+3/HvSx8cTEI2v67aa9QAWLEToVxmzYDEixKwDxqZ3c9NaWRVtmdzmsQxCK0V6Tc6UFiJN0G0S2eSCECNbZQtj2kyqgBVlxKWgami36WgtgcY01qAziNSNbWIJfkIVponTW7vAGhjOI79849judvjtr5Je5lNwGWMIPhCCR4whyxzPXxzA4nxfs1DjINF/JwYkKdju7dAp7zGZeYxR6yLV/OJRaqRh5dosIpZ5PWRWDxcg4m2DkOTTWSXkLseZqqFX85FZWnNOqSy2ljUAKj+5MXe6tcqBOtbc7z5kr/MVo8mIXq/DbDqn22slJvpno5TJdKzPre0Ok/GcVqfg7HRIILJ3f5eD538wPjvGiV0LQzYFoaJ2tsSKpuCQfN+kYkkBer5bBJMRsi4FY2xRMjzr46ykb2o/p/bTu+YBFUkJpApKoR7jcwCax5OPEoiIFUM7jPDG86jtcGXFm1HAaTQnxZsTt+NG0QzXjDSI9PAlAMvUusBgRcj0oIlwz0VmuePN2GP0m9UR3aThRml4bgxt0q4+F6NLq3S2xnBcZfSnIW2sc+8q3YbbypJF2byRF8tRlfN2EjYWq/cHEK8817zW8pNLxJnbNy2G95R1BkYN3Ej6yf8NIK5RnsWKz8sp+z2bQHwEALL8uxQDegjSQbhippaDXAJO03aC9G5xN73Uc6/NoyozwRCijk2qE03PoN1PTOlZa+NULC/nOf3xuCnfHwIgakfkHHle4r1PYJpsCM7ZBGxZAIKPjHwgimFQZ4zmysLtItFtNl8VObrdHrPZNCksi5LZfEar1cInAA3Nk1nN23HNlgnkIotW7UKV+hAX1L5u6r92t75ObMznVaoPWhOUap236oxVibjtGeBmACnOUsQtPC5NutUG9ejoZJEVI8bliNMWLdz16sLNDGzYS5uTBw/2VremybSiP55D0y5+PAZUVtl8cWlQd5yenqbnysfGYSTXZMxdxSUrrlqZLi3NNWzVTC7ob2KhCcAVRbrWXLF8kSjSI92MNgCovXaw1yUFWar7DQeqWEEt3/mwLLeL3JCCslmje2r/szRO5y/YlsAt93L3ew+aicsEpAVZllPYnMxNCWLJXEbeaVMXVbq0qhusM1TRQnSUWY3LC/a2DKI3FmtX4JbAE3Gh6bD053784Ut+//vPlMmuSh0C3uVsff0du6PXKcanU7U8R6Sgu7PDm6cHfP/Q8M9um8HLfbrHLzj8ok148oTZswP88QnWueSmoizIs4JWp81gMCBzOf8BEn6N9d6wnugAAAAASUVORK5CYII=">
 <script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/funnel.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
 <style>
-:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; }
+:root { --primary:#3B1E6D; --accent:#F27C38; --dark-bg:#0f0520; --card-bg:#1e0e3e; --card-border:#4a2480; --text:#f0e6ff; --muted:#9b8ab8; --success:#10b981; --danger:#ef4444; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--dark-bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
-nav { background:var(--primary); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-.nav-left { display:flex; align-items:center; gap:12px; }
-.nav-avatar { width:40px; height:40px; border-radius:50%; border:2px solid var(--accent); object-fit:cover; }
-.nav-brand { font-weight:800; font-size:1.1rem; } .nav-brand span { color:var(--accent); font-size:1.3rem; }
-.nav-links { display:flex; gap:4px; }
-.nav-links a { color:var(--text); text-decoration:none; padding:8px 14px; border-radius:8px; font-size:.85rem; font-weight:500; transition:all .2s; }
+nav { background:var(--primary); padding:0 16px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.4); }
+.nav-brand { font-weight:800; font-size:.95rem; } .nav-brand .num { color:var(--accent); font-size:1.15rem; }
+.nav-links { display:flex; gap:2px; overflow-x:auto; }
+.nav-links a { color:var(--text); text-decoration:none; padding:8px 10px; border-radius:8px; font-size:.78rem; font-weight:500; transition:all .2s; white-space:nowrap; min-height:44px; display:flex; align-items:center; }
 .nav-links a:hover,.nav-links a.active { background:rgba(242,124,56,.2); color:var(--accent); }
-.container { max-width:1200px; margin:0 auto; padding:24px 16px; }
-h1 { font-size:1.5rem; margin-bottom:8px; } h1 span { color:var(--accent); }
-.subtitle { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
-.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:28px; }
-.kpi { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:16px; text-align:center; }
-.kpi-val { font-size:1.8rem; font-weight:800; color:var(--accent); }
-.kpi-lbl { font-size:.72rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
-.charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
-.chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; }
-.chart-card h3 { font-size:.95rem; margin-bottom:12px; }
+.container { max-width:1300px; margin:0 auto; padding:20px 14px; }
+h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
+.subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
+
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:24px; }
+.kpi { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
+.kpi-val { font-size:1.6rem; font-weight:800; color:var(--accent); }
+.kpi-lbl { font-size:.68rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
+
+.charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+.chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; }
+.chart-card h3 { font-size:.9rem; margin-bottom:10px; }
 .chart-card.full { grid-column:1/-1; }
-.top-table { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; }
-.top-table h3 { font-size:.95rem; margin-bottom:12px; }
+
+.top-table { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px; }
+.top-table h3 { font-size:.9rem; margin-bottom:10px; }
 table { width:100%; border-collapse:collapse; font-size:.82rem; }
 thead { background:var(--primary); }
-th { padding:10px; text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; }
+th { padding:10px 8px; text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; }
 td { padding:8px 10px; border-bottom:1px solid rgba(74,36,128,.3); }
-.footer { text-align:center; padding:24px; color:var(--muted); font-size:.75rem; margin-top:32px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links{display:none;} .charts-grid{grid-template-columns:1fr;} }
+tr:hover td { background:rgba(59,30,109,.3); }
+.badge { display:inline-block; padding:3px 8px; border-radius:8px; font-size:.65rem; font-weight:700; }
+.footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
+@media(max-width:768px) { .nav-links a{padding:6px 8px;font-size:.68rem;} .charts-grid{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <!-- AUTH GATE -->
 <div id="authGate" style="position:fixed;inset:0;z-index:99999;background:#0f0520;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;">
   <div style="text-align:center;max-width:360px;padding:32px;background:#1e0e3e;border-radius:20px;border:1px solid #4a2480;box-shadow:0 8px 32px rgba(0,0,0,.6);">
-    <div style="font-size:2.5rem;margin-bottom:8px;">🔒</div>
+    <div style="font-size:2.5rem;margin-bottom:8px;">&#x1F512;</div>
     <div style="font-weight:800;font-size:1.2rem;color:#f0e6ff;margin-bottom:4px;">QG Campanha 4090</div>
-    <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito à equipe</div>
+    <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito &agrave; equipe</div>
     <input id="authPwd" type="password" placeholder="Senha de acesso" style="width:100%;padding:14px 16px;background:#0f0520;border:1px solid #4a2480;border-radius:10px;color:#f0e6ff;font-size:1rem;outline:none;text-align:center;margin-bottom:12px;" onkeydown="if(event.key==='Enter')checkAuth()">
     <button onclick="checkAuth()" style="width:100%;padding:14px;background:#F27C38;color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;">Entrar</button>
     <div id="authErr" style="color:#ef4444;font-size:.78rem;margin-top:10px;display:none;">Senha incorreta</div>
@@ -55,142 +60,207 @@ function checkAuth(){var p=document.getElementById('authPwd').value;if(p==='luci
 if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('authGate').style.display='none';}
 </script>
 <!-- /AUTH GATE -->
-
 <nav>
-  <div class="nav-brand">LUCIANO DA LUZ <span>4090</span></div>
-  <div class="nav-links">
-    <a href="index.html">Central</a><a href="redes.html">QG Redes</a>
-    <a href="congresso.html">Congresso</a><a href="votar.html">Proposições</a>
-    <a href="votos.html">Controle</a><a href="analytics.html" class="active">Analytics</a>
-  </div>
+  <div class="nav-brand">LUCIANO DA LUZ <span class="num">4090</span></div>
+  <div class="nav-links"><a href="index.html">Central</a><a href="redes.html">QG Redes</a><a href="congresso.html">Congresso</a><a href="votar.html">Proposições</a><a href="votos.html">Controle</a><a href="analytics.html" class="active">Analytics</a></div>
 </nav>
 <div class="container">
-  <h1>📈 Analytics — <span>Inteligência da Campanha</span></h1>
-  <p class="subtitle" id="lastUpdate">Carregando métricas...</p>
+  <h1>&#x1F4C8; Analytics &mdash; <span>Inteligencia da Campanha</span></h1>
+  <p class="subtitle" id="lastUpdate">Carregando metricas...</p>
 
   <div class="kpis">
-    <div class="kpi"><div class="kpi-val" id="kTotal">—</div><div class="kpi-lbl">Comentários</div></div>
-    <div class="kpi"><div class="kpi-val" id="kApoio">—</div><div class="kpi-lbl">Apoiadores</div></div>
-    <div class="kpi"><div class="kpi-val" id="kContra">—</div><div class="kpi-lbl">Contra</div></div>
-    <div class="kpi"><div class="kpi-val" id="kContatos">—</div><div class="kpi-lbl">Contatos</div></div>
-    <div class="kpi"><div class="kpi-val" id="kProps">—</div><div class="kpi-lbl">Proposições</div></div>
-    <div class="kpi"><div class="kpi-val" id="kTaxa">—</div><div class="kpi-lbl">Taxa Apoio</div></div>
+    <div class="kpi"><div class="kpi-val" id="kTotal">&mdash;</div><div class="kpi-lbl">Comentarios</div></div>
+    <div class="kpi"><div class="kpi-val" id="kApoio" style="color:var(--success)">&mdash;</div><div class="kpi-lbl">Apoiadores</div></div>
+    <div class="kpi"><div class="kpi-val" id="kContra" style="color:var(--danger)">&mdash;</div><div class="kpi-lbl">Contra</div></div>
+    <div class="kpi"><div class="kpi-val" id="kContatos">&mdash;</div><div class="kpi-lbl">Votos Captados</div></div>
+    <div class="kpi"><div class="kpi-val" id="kProps">&mdash;</div><div class="kpi-lbl">Proposicoes</div></div>
+    <div class="kpi"><div class="kpi-val" id="kTaxa">&mdash;</div><div class="kpi-lbl">Taxa Apoio</div></div>
   </div>
 
   <div class="charts-grid">
-    <div class="chart-card"><h3>Sentimento dos Comentários</h3><div id="chartSentimento" style="height:260px"></div></div>
+    <div class="chart-card"><h3>Sentimento dos Comentarios</h3><div id="chartSentimento" style="height:260px"></div></div>
     <div class="chart-card"><h3>Plataforma de Origem</h3><div id="chartPlataforma" style="height:260px"></div></div>
-    <div class="chart-card full"><h3>Comentários por Dia</h3><div id="chartTimeline" style="height:280px"></div></div>
+    <div class="chart-card full"><h3>Comentarios por Dia</h3><div id="chartTimeline" style="height:260px"></div></div>
+    <div class="chart-card"><h3>&#x1F4CA; Funil de Conversao</h3><div id="chartFunnel" style="height:300px"></div></div>
+    <div class="chart-card"><h3>&#x1F4CA; FB vs IG &mdash; Efetividade</h3><div id="chartComparison" style="height:300px"></div></div>
   </div>
 
   <div class="top-table">
-    <h3>🏆 Top 10 Engajadores</h3>
+    <h3>&#x1F3C6; Top 10 Engajadores</h3>
     <table>
-      <thead><tr><th>#</th><th>Nome</th><th>Comentários</th><th>Classificação Predominante</th><th>Plataforma</th></tr></thead>
+      <thead><tr><th>#</th><th>Nome</th><th>Comentarios</th><th>Classificacao Predominante</th><th>Plataforma</th></tr></thead>
       <tbody id="topBody"></tbody>
     </table>
   </div>
 </div>
-<div class="footer">Campanha Luciano da Luz 4090 · Analytics · Auto-refresh 5 min</div>
+<div class="footer">Campanha Luciano da Luz 4090 &middot; Analytics &middot; v16 &middot; Auto-refresh 5 min</div>
 
 <script>
-const SHEETS = {
-  comentarios: { id:'1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME', sheet:'COMENTARIOS' },
-  proposicoes: { id:'1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI', sheet:'PROPOSICOES' },
-  controle: { id:'16nEZG1Asgz-61JbDtluYQxvc4k_CWJrLya36zwrKtEo', sheet:'PLANILHA DE CONTROLE' }
+var SHEETS={
+  comentarios:{id:'1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME',sheet:'COMENTARIOS'},
+  proposicoes:{id:'1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI',sheet:'PROPOSICOES'},
+  votos:{id:'16nEZG1Asgz-61JbDtluYQxvc4k_CWJrLya36zwrKtEo'}
 };
-function gvizUrl(s){return `https://docs.google.com/spreadsheets/d/${s.id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(s.sheet)}`;}
+var TABS=['ALICE','DANIEL','LEONILDA','LOSE'];
+function gvizUrl(s){return 'https://docs.google.com/spreadsheets/d/'+s.id+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(s.sheet);}
 function parseGviz(t){try{return JSON.parse(t.substring(47).slice(0,-2)).table.rows||[];}catch(e){return[];}}
-function val(r,i){return r.c&&r.c[i]?(r.c[i].v||''):'';}
+function val(r,i){try{return(r.c&&r.c[i]&&r.c[i].v!=null)?String(r.c[i].v).trim():'';}catch(e){return '';}}
+
+var CLS_APOIO=['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+var CLS_POT=['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
+var CLS_CONTRA=['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
+function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
+function isPot(c){return CLS_POT.indexOf(c)>=0;}
+function isContra(c){return CLS_CONTRA.indexOf(c)>=0;}
+
+function parseDateKey(d){
+  if(!d) return '';
+  var s=String(d);
+  var m=s.match(/^Date\((\d+),(\d+),(\d+)/);
+  if(m) return m[1]+'-'+String(Number(m[2])+1).padStart(2,'0')+'-'+String(Number(m[3])).padStart(2,'0');
+  if(s.length>=10) return s.substring(0,10);
+  return '';
+}
+
+function loadVotosTab(tab){
+  var url='https://docs.google.com/spreadsheets/d/'+SHEETS.votos.id+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(tab);
+  return fetch(url).then(function(r){return r.text();}).then(function(text){
+    var rows=parseGviz(text);
+    var count=0;
+    for(var i=3;i<rows.length;i++){
+      var nome=val(rows[i],1),rede=val(rows[i],2);
+      if(nome||rede) count++;
+    }
+    return count;
+  });
+}
 
 async function loadData(){
-  try {
-    const [cT,pT,vT] = await Promise.all([
-      fetch(gvizUrl(SHEETS.comentarios)).then(r=>r.text()),
-      fetch(gvizUrl(SHEETS.proposicoes)).then(r=>r.text()),
-      fetch(gvizUrl(SHEETS.controle)).then(r=>r.text())
+  try{
+    var resp=await Promise.all([
+      fetch(gvizUrl(SHEETS.comentarios)).then(function(r){return r.text();}),
+      fetch(gvizUrl(SHEETS.proposicoes)).then(function(r){return r.text();}),
+      Promise.all(TABS.map(function(t){return loadVotosTab(t);}))
     ]);
-    const com = parseGviz(cT), props = parseGviz(pT), contatos = parseGviz(vT);
+    var com=parseGviz(resp[0]),props=parseGviz(resp[1]);
+    var totalVotos=0;for(var vi=0;vi<resp[2].length;vi++) totalVotos+=resp[2][vi];
 
-    const total = com.length;
-    const apoio = com.filter(r=>{const c=val(r,5).toUpperCase();return c.includes('APOIO')||c.includes('EMBAIXADOR')||c.includes('ENGAJADO');}).length;
-    const contra = com.filter(r=>{const c=val(r,5).toUpperCase();return c.includes('CONTRA')||c.includes('ATAQUE');}).length;
-    const taxa = total>0 ? ((apoio/total)*100).toFixed(1)+'%' : '0%';
+    var total=com.length,nApoio=0,nPot=0,nContra=0,nNeutro=0,nFB=0,nIG=0;
+    var classMap={},dateMap={},nameMap={};
+    var fbApoio=0,igApoio=0,fbTotal=0,igTotal=0;
 
-    document.getElementById('kTotal').textContent = total;
-    document.getElementById('kApoio').textContent = apoio;
-    document.getElementById('kContra').textContent = contra;
-    document.getElementById('kContatos').textContent = contatos.filter(r=>val(r,0)).length;
-    document.getElementById('kProps').textContent = props.length;
-    document.getElementById('kTaxa').textContent = taxa;
-    document.getElementById('lastUpdate').textContent = `Atualizado: ${new Date().toLocaleString('pt-BR')}`;
+    for(var i=0;i<com.length;i++){
+      var cls=(val(com[i],5)||'NEUTRO').toUpperCase();
+      var plat=(val(com[i],4)||'').toUpperCase();
+      if(isApoio(cls)) nApoio++;
+      if(isPot(cls)) nPot++;
+      if(isContra(cls)) nContra++;
+      if(cls==='NEUTRO') nNeutro++;
+      if(plat.indexOf('FACEBOOK')>=0){nFB++;fbTotal++;if(isApoio(cls)||isPot(cls))fbApoio++;}
+      if(plat.indexOf('INSTAGRAM')>=0){nIG++;igTotal++;if(isApoio(cls)||isPot(cls))igApoio++;}
+      classMap[cls]=(classMap[cls]||0)+1;
 
-    // Sentimento pie
-    const sentMap = {};
-    com.forEach(r=>{ let c=val(r,5).toUpperCase()||'PENDENTE'; sentMap[c]=(sentMap[c]||0)+1; });
-    const sentColors = {'APOIO_DIRETO':'#10b981','APOIO_FORTE':'#10b981','APOIO_MODERADO':'#34d399',
-      'MENCAO_CANDIDATO':'#F27C38','POTENCIAL':'#f59e0b','POTENCIAL_APOIO':'#f59e0b','NEUTRO':'#9b8ab8',
-      'CONTRA':'#ef4444','ATAQUE':'#dc2626','PENDENTE':'#6b7280','SPAM':'#374151','IRRELEVANTE':'#4b5563'};
+      var dk=parseDateKey(val(com[i],15)||val(com[i],11)||val(com[i],0));
+      if(dk) dateMap[dk]=(dateMap[dk]||0)+1;
+
+      var nm=val(com[i],12)||val(com[i],1)||val(com[i],2)||'';
+      if(nm&&nm!=='Desconhecido'){
+        if(!nameMap[nm]) nameMap[nm]={count:0,cls:{},plat:plat};
+        nameMap[nm].count++;
+        nameMap[nm].cls[cls]=(nameMap[nm].cls[cls]||0)+1;
+      }
+    }
+
+    var taxa=total>0?((nApoio/total)*100).toFixed(1)+'%':'0%';
+    document.getElementById('kTotal').textContent=total;
+    document.getElementById('kApoio').textContent=nApoio;
+    document.getElementById('kContra').textContent=nContra;
+    document.getElementById('kContatos').textContent=totalVotos;
+    document.getElementById('kProps').textContent=props.length;
+    document.getElementById('kTaxa').textContent=taxa;
+
+    // Sentiment pie
+    var sentColors={'APOIADOR':'#10b981','COORDENADOR_POTENCIAL':'#34d399','COLETIVO_POTENCIAL':'#a78bfa','CONTRA':'#ef4444','NEUTRO':'#6b7280'};
+    var sentData=[];for(var sk in classMap) sentData.push({name:sk.replace(/_/g,' '),y:classMap[sk],color:sentColors[sk]||'#4a2480'});
+    sentData.sort(function(a,b){return b.y-a.y;});
     Highcharts.chart('chartSentimento',{
       chart:{type:'pie',backgroundColor:'transparent'},title:{text:null},
       plotOptions:{pie:{dataLabels:{enabled:true,format:'{point.name}: {point.y}',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}},borderWidth:0}},
-      series:[{data:Object.entries(sentMap).map(([k,v])=>({name:k,y:v,color:sentColors[k]||'#4a2480'}))}],
-      credits:{enabled:false}
+      series:[{data:sentData}],credits:{enabled:false}
     });
 
-    // Plataforma
-    const fb = com.filter(r=>(val(r,4)||'').toLowerCase().includes('facebook')).length;
-    const ig = com.filter(r=>(val(r,4)||'').toLowerCase().includes('instagram')).length;
+    // Platform donut
     Highcharts.chart('chartPlataforma',{
       chart:{type:'pie',backgroundColor:'transparent'},title:{text:null},
-      plotOptions:{pie:{dataLabels:{enabled:true,format:'{point.name}: {point.y}',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}},borderWidth:0,innerSize:'50%'}},
-      series:[{data:[{name:'Facebook',y:fb,color:'#1877F2'},{name:'Instagram',y:ig,color:'#E4405F'},{name:'Outros',y:Math.max(0,total-fb-ig),color:'#4a2480'}]}],
+      plotOptions:{pie:{innerSize:'55%',borderWidth:0,dataLabels:{enabled:true,format:'{point.name}: {point.y} ({point.percentage:.1f}%)',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}}}},
+      series:[{data:[{name:'Facebook',y:nFB,color:'#1877F2'},{name:'Instagram',y:nIG,color:'#E4405F'}]}],
       credits:{enabled:false}
     });
 
     // Timeline
-    const dayMap = {};
-    com.forEach(r=>{
-      let d = val(r,0)||val(r,11);
-      if(!d) return;
-      if(typeof d==='string') d = d.substring(0,10);
-      else if(d instanceof Date) d = d.toISOString().substring(0,10);
-      else { try{d=new Date(d).toISOString().substring(0,10);}catch(e){return;} }
-      dayMap[d]=(dayMap[d]||0)+1;
+    var dateKeys=Object.keys(dateMap).sort();
+    var timeData=dateKeys.map(function(d){return[Date.parse(d+'T00:00:00'),dateMap[d]];});
+    Highcharts.chart('chartTimeline',{
+      chart:{type:'areaspline',backgroundColor:'transparent'},title:{text:null},
+      xAxis:{type:'datetime',labels:{style:{color:'#9b8ab8'},format:'{value:%d/%m}'},gridLineColor:'rgba(74,36,128,.2)'},
+      yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.2)'},
+      series:[{name:'Comentarios',data:timeData,color:'#F27C38',fillColor:{linearGradient:{x1:0,y1:0,x2:0,y2:1},stops:[[0,'rgba(242,124,56,.3)'],[1,'rgba(242,124,56,0)']]},marker:{enabled:false}}],
+      legend:{enabled:false},credits:{enabled:false},
+      tooltip:{headerFormat:'{point.x:%d/%m/%Y}<br>',pointFormat:'<b>{point.y}</b> comentarios'}
     });
-    const days = Object.keys(dayMap).sort();
-    if(days.length) {
-      Highcharts.chart('chartTimeline',{
-        chart:{type:'areaspline',backgroundColor:'transparent'},title:{text:null},
-        xAxis:{categories:days,labels:{style:{color:'#9b8ab8'},rotation:-45,step:Math.max(1,Math.floor(days.length/10))}},
-        yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.3)'},
-        series:[{name:'Comentários',data:days.map(d=>dayMap[d]),color:'#F27C38',fillColor:{linearGradient:{x1:0,y1:0,x2:0,y2:1},stops:[[0,'rgba(242,124,56,.4)'],[1,'rgba(242,124,56,0)']]}}],
-        legend:{enabled:false},credits:{enabled:false},
-        plotOptions:{areaspline:{marker:{enabled:false}}}
-      });
+
+    // Funnel
+    var relevantes=nApoio+nPot+nContra;
+    Highcharts.chart('chartFunnel',{
+      chart:{type:'funnel',backgroundColor:'transparent'},title:{text:null},
+      plotOptions:{series:{neckWidth:'30%',neckHeight:'25%',width:'70%',dataLabels:{enabled:true,format:'<b>{point.name}</b>: {point.y}',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}}}},
+      series:[{name:'Funil',data:[
+        {name:'Total Comentarios',y:total,color:'#4a2480'},
+        {name:'Relevantes (nao-neutro)',y:relevantes,color:'#a78bfa'},
+        {name:'Apoiadores Identificados',y:nApoio,color:'#10b981'},
+        {name:'Votos Captados',y:totalVotos,color:'#F27C38'}
+      ]}],
+      credits:{enabled:false}
+    });
+
+    // FB vs IG comparison
+    var fbRate=fbTotal>0?((fbApoio/fbTotal)*100).toFixed(1):0;
+    var igRate=igTotal>0?((igApoio/igTotal)*100).toFixed(1):0;
+    Highcharts.chart('chartComparison',{
+      chart:{type:'column',backgroundColor:'transparent'},title:{text:null},
+      xAxis:{categories:['Total Comentarios','Apoiadores+Potenciais','Taxa Conversao (%)'],labels:{style:{color:'#9b8ab8'}}},
+      yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.3)'},
+      series:[
+        {name:'Facebook',data:[fbTotal,fbApoio,parseFloat(fbRate)],color:'#1877F2'},
+        {name:'Instagram',data:[igTotal,igApoio,parseFloat(igRate)],color:'#E4405F'}
+      ],
+      plotOptions:{column:{borderRadius:4,borderWidth:0}},
+      legend:{itemStyle:{color:'#9b8ab8'}},credits:{enabled:false},
+      tooltip:{valueSuffix:''}
+    });
+
+    // Top 10 engajadores
+    var nameArr=[];for(var nk in nameMap) nameArr.push({name:nk,count:nameMap[nk].count,cls:nameMap[nk].cls,plat:nameMap[nk].plat});
+    nameArr.sort(function(a,b){return b.count-a.count;});
+    var topHtml='';
+    for(var ti=0;ti<Math.min(10,nameArr.length);ti++){
+      var t=nameArr[ti];
+      var topCls='';var topC=0;for(var ck in t.cls){if(t.cls[ck]>topC){topC=t.cls[ck];topCls=ck;}}
+      var bc=isApoio(topCls)?'background:rgba(16,185,129,.2);color:#10b981':isPot(topCls)?'background:rgba(168,139,250,.2);color:#a78bfa':isContra(topCls)?'background:rgba(239,68,68,.2);color:#ef4444':'background:rgba(100,100,120,.2);color:#888';
+      var pc=t.plat.indexOf('FACE')>=0?'#1877F2':'#E1306C';
+      var ps=t.plat.indexOf('FACE')>=0?'Facebook':'Instagram';
+      topHtml+='<tr><td style="color:var(--muted)">'+(ti+1)+'</td><td style="font-weight:600">'+t.name+'</td><td style="text-align:center">'+t.count+'</td><td><span class="badge" style="'+bc+'">'+topCls.replace(/_/g,' ')+'</span></td><td style="color:'+pc+'">'+ps+'</td></tr>';
     }
+    document.getElementById('topBody').innerHTML=topHtml;
 
-    // Top engajadores
-    const authorMap = {};
-    com.forEach(r=>{
-      const nome = val(r,1)||val(r,2)||'Anônimo';
-      if(!authorMap[nome]) authorMap[nome]={count:0,classes:{},plats:{}};
-      authorMap[nome].count++;
-      const cls = val(r,5)||'PENDENTE';
-      authorMap[nome].classes[cls]=(authorMap[nome].classes[cls]||0)+1;
-      const plat = val(r,4)||'—';
-      authorMap[nome].plats[plat]=(authorMap[nome].plats[plat]||0)+1;
-    });
-    const top10 = Object.entries(authorMap).sort((a,b)=>b[1].count-a[1].count).slice(0,10);
-    document.getElementById('topBody').innerHTML = top10.map(([nome,d],i)=>{
-      const topCls = Object.entries(d.classes).sort((a,b)=>b[1]-a[1])[0][0];
-      const topPlat = Object.entries(d.plats).sort((a,b)=>b[1]-a[1])[0][0];
-      return `<tr><td style="color:var(--accent);font-weight:700">${i+1}</td><td style="font-weight:600">${nome}</td><td style="text-align:center">${d.count}</td><td>${topCls}</td><td>${topPlat}</td></tr>`;
-    }).join('');
-
-  } catch(e) { document.getElementById('lastUpdate').textContent='Erro: '+e.message; }
+    document.getElementById('lastUpdate').textContent='Atualizado: '+new Date().toLocaleString('pt-BR')+' &middot; '+total+' comentarios analisados';
+  }catch(e){
+    document.getElementById('lastUpdate').textContent='Erro ao carregar: '+e.message;
+    console.error(e);
+  }
 }
-loadData(); setInterval(loadData,300000);
+loadData();
+setInterval(loadData,300000);
 </script>
 </body>
 </html>
