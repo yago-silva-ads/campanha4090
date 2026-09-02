@@ -260,7 +260,7 @@ var CLS_POT=['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL
 var CLS_CONTRA=['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
 var CLS_NEUTRO=['NEUTRO'];
 // Keywords que o comentario DEVE conter pra ser considerado REAL apoio ao Luciano
-var KW_LUCIANO=['luciano da luz','luciano4090','4090','deputado federal','meu candidato','meu deputado','mandato participativo','votar no luciano','voto no luciano','candidato 4090','luciano luz'];
+KW_LUCIANO=['luciano da luz','luciano4090','#luciano4090','#4090','deputado federal 4090','deputado 4090','meu candidato luciano','meu deputado luciano','mandato participativo','votar no luciano','voto no luciano','candidato 4090','luciano luz','lucianodaluz','@lucianodaluz','voto 4090','votar 4090'];
 
 function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
 function isPot(c){return CLS_POT.indexOf(c)>=0;}
@@ -312,26 +312,48 @@ function actBtns(r){
       var actualCid=cid.indexOf('_')>=0?cid.substring(cid.lastIndexOf('_')+1):cid;
       btns+='<a class="act-btn act-view" href="https://www.facebook.com/'+pid+'" target="_blank" rel="noopener" title="Ver post original">&#x1F441; Ver Post</a> ';
       btns+='<a class="act-btn act-reply" href="https://www.facebook.com/'+pid+'?comment_id='+actualCid+'" target="_blank" rel="noopener" title="Responder como Lucianodaluz">&#x270D;&#xFE0F; Responder</a>';
-    } else {
-      btns+='';
     }
   }
   if(p==='INSTAGRAM'){
     var username=val(r,2)||'';
-    if(username&&username!=='Desconhecido'&&username!=='Anonimo'&&username.length>1){
-      btns+='<a class="act-btn act-ig" href="https://www.instagram.com/'+username.replace('@','')+'/" target="_blank" rel="noopener" title="Ver perfil do apoiador">&#x1F464; Perfil</a> ';
-      btns+='<a class="act-btn act-reply" href="https://www.instagram.com/'+username.replace('@','')+'/" target="_blank" rel="noopener" title="Responder no perfil">&#x270D;&#xFE0F; Responder no IG</a>';
+    var cleanUser=username.replace('@','');
+    var hasUser=cleanUser&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo'&&cleanUser.length>1;
+    // Ver Post: abre posts do Luciano no IG (onde o comentario esta)
+    btns+='<a class="act-btn act-view" href="https://www.instagram.com/lucianodaluz/" target="_blank" rel="noopener" title="Ver posts do Luciano no IG">&#x1F441; Ver Post</a> ';
+    // Responder: se tem comment_id, responde via API; senao link pro perfil
+    if(cid&&hasUser){
+      btns+='<a class="act-btn act-reply" href="javascript:void(0)" onclick="replyIG(\''+cid+'\',\''+cleanUser+'\')" title="Responder como @lucianodaluz via API">&#x270D;&#xFE0F; Responder</a>';
+    } else if(hasUser){
+      btns+='<a class="act-btn act-reply" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" rel="noopener" title="Ver perfil pra DM">&#x270D;&#xFE0F; Responder</a>';
     } else {
-      btns+='<a class="act-btn act-reply" href="https://www.instagram.com/lucianodaluz/" target="_blank" rel="noopener" title="Abrir perfil Luciano no IG">&#x270D;&#xFE0F; Responder no IG</a>';
+      btns+='<span style="color:var(--muted);font-size:.65rem">sem @</span>';
     }
   }
   return btns||'--';
 }
 
+// Responder comentario IG via API como @lucianodaluz
+function replyIG(commentId, username) {
+  var msg = prompt('Responder como @lucianodaluz para @' + username + ':\n\nDigite a mensagem:');
+  if (!msg) return;
+  fetch('https://graph.facebook.com/v19.0/' + commentId + '/replies', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({message: msg, access_token: window._IGT})
+  }).then(function(r){return r.json();}).then(function(d){
+    if(d.id) { alert('Respondido como @lucianodaluz! ID: ' + d.id); }
+    else { alert('Erro: ' + (d.error ? d.error.message : JSON.stringify(d))); }
+  });
+}
+// Token IG (carregado no init)
+window._IGT='EAAT5JVEIV18BSZAU1lK1VTnZCLcPNPW6m2PqN6npyOGk8tLGPSAwf50GJUW1o7ay9CocF9vLxLKfFii0x1rUW4RU7XOKawWaq7ZABbjRGE1dJxPNGPmkZB8I6F5mY2hcNoSYc4fYYnA3ZCxSwpAvzjdNkpn2LQ7scF1t4vXSDKihIk4pGEbnDtDpzTTC7pnWKRgZDZD';
+// Token FB
+window._FBT='EAAT5JVEIV18BSfxA9BdOSYZCXSL9ehRkIZAB4MTLNgUPdBUJ71UsC0Mjww97pnIxTKIJWwqKW6a5vWPNeN69eZBdGgm1o4KTnso8v45TZAyhYQknJdfV35weZCsZCfy8u2icHPy5Fe7M08CuYRUouQY2cDhoDU5m1UZCxt2c5P0kr7EnYdKXZCvModQKbgvTlQXt6eYhhZCK0';
+
 var CLS_LEAD=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_DIRETO','EMBAIXADOR'];
 function renderLeads(){
   var leads=allRows.filter(function(r){
-    var c=getCls(r).toUpperCase();
+    var c=validateCls(getCls(r),getComment(r)).toUpperCase();
     var relStr=val(r,6);
     var rel=relStr?Number(relStr):0;
     if(CLS_LEAD.indexOf(c)>=0) return true;
@@ -368,8 +390,8 @@ function renderLeads(){
       var uname=val(r,2)||'';
       if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname.length>1){
         actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
-        actionLabel='Ver Perfil IG';
-      } else { actionLink='https://www.instagram.com/lucianodaluz/'; actionLabel='Responder no IG'; }
+        actionLabel='Perfil IG';
+      } else { actionLink=''; actionLabel='Sem @'; }
     }
     var safeComm=comm.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     html+='<div class="lead-card"><div class="lead-header"><span class="lead-name">'+nome+'</span><span class="lead-badge '+badgeCls+'">'+badgeTxt+'</span></div><div class="lead-comment">'+safeComm+'</div><div class="lead-footer"><span class="lead-plat '+platClass+'">'+platShort+'</span><a class="lead-action" href="'+actionLink+'" target="_blank">'+actionLabel+' \u2192</a></div></div>';
