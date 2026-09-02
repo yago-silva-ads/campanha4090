@@ -313,15 +313,17 @@ function actBtns(r){
       btns+='<a class="act-btn act-view" href="https://www.facebook.com/'+pid+'" target="_blank" rel="noopener" title="Ver post original">&#x1F441; Ver Post</a> ';
       btns+='<a class="act-btn act-reply" href="https://www.facebook.com/'+pid+'?comment_id='+actualCid+'" target="_blank" rel="noopener" title="Responder como Lucianodaluz">&#x270D;&#xFE0F; Responder</a>';
     } else {
-      btns+='<span style="color:var(--muted);font-size:.68rem">FB (sem link)</span>';
+      btns+='';
     }
   }
   if(p==='INSTAGRAM'){
     var username=val(r,2)||'';
-    if(username&&username!=='Desconhecido'){
+    if(username&&username!=='Desconhecido'&&username!=='Anonimo'&&username.length>1){
       btns+='<a class="act-btn act-ig" href="https://www.instagram.com/'+username.replace('@','')+'/" target="_blank" rel="noopener" title="Ver perfil do apoiador">&#x1F464; Perfil</a> ';
+      btns+='<a class="act-btn act-reply" href="https://www.instagram.com/'+username.replace('@','')+'/" target="_blank" rel="noopener" title="Responder no perfil">&#x270D;&#xFE0F; Responder no IG</a>';
+    } else {
+      btns+='<a class="act-btn act-reply" href="https://www.instagram.com/lucianodaluz/" target="_blank" rel="noopener" title="Abrir perfil Luciano no IG">&#x270D;&#xFE0F; Responder no IG</a>';
     }
-    btns+='<a class="act-btn act-reply" href="https://www.instagram.com/lucianodaluz4090/" target="_blank" rel="noopener" title="Abrir perfil Luciano no IG">&#x270D;&#xFE0F; Responder no IG</a>';
   }
   return btns||'--';
 }
@@ -364,8 +366,10 @@ function renderLeads(){
       if(pid2&&cid2){var ac=cid2.indexOf('_')>=0?cid2.substring(cid2.lastIndexOf('_')+1):cid2;actionLink='https://www.facebook.com/'+pid2+'?comment_id='+ac;actionLabel='Responder FB';}
     } else if(plat==='INSTAGRAM'){
       var uname=val(r,2)||'';
-      if(uname&&uname!=='Desconhecido') actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
-      actionLabel='Ver Perfil IG';
+      if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname.length>1){
+        actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
+        actionLabel='Ver Perfil IG';
+      } else { actionLink='https://www.instagram.com/lucianodaluz/'; actionLabel='Responder no IG'; }
     }
     var safeComm=comm.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     html+='<div class="lead-card"><div class="lead-header"><span class="lead-name">'+nome+'</span><span class="lead-badge '+badgeCls+'">'+badgeTxt+'</span></div><div class="lead-comment">'+safeComm+'</div><div class="lead-footer"><span class="lead-plat '+platClass+'">'+platShort+'</span><a class="lead-action" href="'+actionLink+'" target="_blank">'+actionLabel+' \u2192</a></div></div>';
