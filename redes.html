@@ -153,6 +153,14 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
   </div>
 
 
+  
+  <!-- VOTOS DECLARADOS -->
+  <div id="votosSection" style="background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(16,185,129,.05));border:2px solid rgba(16,185,129,.4);border-radius:16px;padding:16px;margin-bottom:16px;">
+    <h3 style="color:#10b981;font-size:1rem;margin-bottom:4px;">&#x1F5F3;&#xFE0F; Votos Declarados para Luciano da Luz 4090 <span id="votosCount" style="color:var(--accent);font-weight:400;font-size:.8rem;">(carregando...)</span></h3>
+    <p style="color:var(--muted);font-size:.72rem;margin-bottom:12px;">Comentarios com mencao EXPLICITA ao Luciano da Luz / 4090 / mandato participativo &mdash; evidencias concretas de apoio</p>
+    <div id="votosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;"></div>
+  </div>
+
   <!-- LEADS QUENTES -->
   <div class="leads-section" id="leadsSection">
     <h2>&#x1F3AF; Leads Quentes &mdash; Apoiadores Reais <span class="leads-count" id="leadsCount"></span></h2>
@@ -351,6 +359,52 @@ window._IGT='EAAT5JVEIV18BSZAU1lK1VTnZCLcPNPW6m2PqN6npyOGk8tLGPSAwf50GJUW1o7ay9C
 window._FBT='EAAT5JVEIV18BSfxA9BdOSYZCXSL9ehRkIZAB4MTLNgUPdBUJ71UsC0Mjww97pnIxTKIJWwqKW6a5vWPNeN69eZBdGgm1o4KTnso8v45TZAyhYQknJdfV35weZCsZCfy8u2icHPy5Fe7M08CuYRUouQY2cDhoDU5m1UZCxt2c5P0kr7EnYdKXZCvModQKbgvTlQXt6eYhhZCK0';
 
 var CLS_LEAD=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_DIRETO','EMBAIXADOR'];
+
+function renderVotos(){
+  var KW_VOTO=['luciano da luz','luciano4090','4090','candidato 4090','voto no luciano','votar no luciano','meu candidato luciano','mandato participativo','lucianodaluz','@lucianodaluz','deputado federal 4090','deputado 4090','luciano luz'];
+  var votos=[];
+  var seenTexts={};
+  for(var i=0;i<allRows.length;i++){
+    var txt=(getComment(allRows[i])||'').toLowerCase();
+    if(!txt||txt.length<5) continue;
+    var key=txt.substring(0,80);
+    if(seenTexts[key]) continue;
+    var found=false;
+    for(var k=0;k<KW_VOTO.length;k++){if(txt.indexOf(KW_VOTO[k])>=0){found=true;break;}}
+    if(!found) continue;
+    seenTexts[key]=true;
+    votos.push(allRows[i]);
+  }
+  document.getElementById('votosCount').textContent='('+votos.length+' votos confirmados)';
+  if(votos.length===0){
+    document.getElementById('votosGrid').innerHTML='<div style="color:var(--muted);font-size:.78rem;padding:10px;">Nenhum voto declarado encontrado ainda. Votos aparecem quando comentarios mencionam explicitamente Luciano da Luz, 4090, mandato participativo, etc.</div>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<votos.length;i++){
+    var r=votos[i];
+    var nome=getName(r);
+    var comm=getComment(r)||'';
+    var plat=getPlatform(r).toUpperCase();
+    var dt=fmtDate(getDate(r));
+    var platClass=plat==='FACEBOOK'?'plat-fb':'plat-ig';
+    var platShort=plat==='FACEBOOK'?'FB':'IG';
+    var username=val(r,2)||'';
+    var cleanUser=username.replace('@','');
+    var hasUser=cleanUser&&cleanUser.length>1&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo';
+    var actionHtml='';
+    if(plat==='FACEBOOK'){
+      var pid=getPostId(r),cid=getCommentId(r);
+      if(pid&&cid){var ac=cid.indexOf('_')>=0?cid.split('_').pop():cid;actionHtml='<a class="act-btn act-reply" href="https://www.facebook.com/'+pid+'?comment_id='+ac+'" target="_blank" style="background:rgba(16,185,129,.2);color:#10b981;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none">Responder FB</a>';}
+    } else if(hasUser){
+      actionHtml='<a class="act-btn" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" style="background:rgba(225,48,108,.12);color:#E1306C;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none">Perfil IG</a>';
+    }
+    var safeComm=comm.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    html+='<div style="background:var(--card-bg);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="color:#10b981;font-weight:700;font-size:.82rem;">'+nome+'</span><span style="font-size:.6rem;color:var(--muted)">'+dt+'</span></div><div style="font-size:.8rem;color:var(--text);margin-bottom:8px;line-height:1.4;">'+safeComm+'</div><div style="display:flex;justify-content:space-between;align-items:center;"><span class="plat '+platClass+'" style="font-size:.68rem;font-weight:600;">'+platShort+'</span>'+actionHtml+'</div></div>';
+  }
+  document.getElementById('votosGrid').innerHTML=html;
+}
+
 function renderLeads(){
   var leads=allRows.filter(function(r){
     var c=validateCls(getCls(r),getComment(r)).toUpperCase();
@@ -373,7 +427,7 @@ function renderLeads(){
     var nome=getName(r);
     var comm=getComment(r)||'--';
     var plat=getPlatform(r).toUpperCase();
-    var cls=getCls(r).toUpperCase();
+    var cls=validateCls(getCls(r),getComment(r)).toUpperCase();
     var platClass=plat==='FACEBOOK'?'plat-fb':'plat-ig';
     var platShort=plat==='FACEBOOK'?'FB':'IG';
     var badgeCls='lead-badge-apoiador';
@@ -441,7 +495,8 @@ function loadData(){
     var nApoio=0,nPot=0,nContra=0,nFB=0,nIG=0;
     var uniqueNames={};
     for(var i=0;i<total;i++){
-      var c=getCls(allRows[i]).toUpperCase();
+      var rawC=getCls(allRows[i]).toUpperCase();
+      var c=validateCls(rawC,getComment(allRows[i])).toUpperCase();
       var p=getPlatform(allRows[i]).toUpperCase();
       if(isApoio(c)) nApoio++;
       if(isPot(c)) nPot++;
@@ -460,9 +515,10 @@ function loadData(){
     document.getElementById('kUnique').textContent=Object.keys(uniqueNames).length;
 
     var now=new Date();
-    document.getElementById('subtitle').textContent=total+' comentarios &middot; Atualizado: '+now.toLocaleDateString('pt-BR')+', '+now.toLocaleTimeString('pt-BR');
+    document.getElementById('subtitle').textContent=total+' comentarios · Atualizado: '+now.toLocaleDateString('pt-BR')+', '+now.toLocaleTimeString('pt-BR');
     document.getElementById('uniqueInfo').innerHTML='<b>'+Object.keys(uniqueNames).length+'</b> autores unicos de <b>'+total+'</b> comentarios';
 
+    renderVotos();
     renderLeads();
     render();
   }).catch(function(e){
