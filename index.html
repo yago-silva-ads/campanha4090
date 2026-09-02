@@ -181,9 +181,21 @@ function val(r,i){try{return(r.c&&r.c[i]&&r.c[i].v!=null)?String(r.c[i].v).trim(
 var CLS_APOIO = ['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
 var CLS_POT = ['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
 var CLS_CONTRA = ['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
-function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
+var KW_LUCIANO=['luciano da luz','luciano4090','4090','deputado federal','meu candidato','meu deputado','mandato participativo','votar no luciano','voto no luciano','candidato 4090','luciano luz'];
+
 function isPot(c){return CLS_POT.indexOf(c)>=0;}
 function isContra(c){return CLS_CONTRA.indexOf(c)>=0;}
+function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
+function isNeutro(c){return c==='NEUTRO';}
+
+function validateCls(cls, commentText){
+  var c = (cls||'').toUpperCase();
+  if(c==='VOTO_DECLARADO'||c==='QUER_PARTICIPAR') return cls;
+  if(!isApoio(c)&&!isPot(c)) return cls;
+  var txt = (commentText||'').toLowerCase();
+  for(var i=0;i<KW_LUCIANO.length;i++){if(txt.indexOf(KW_LUCIANO[i])>=0) return cls;}
+  return 'NEUTRO';
+}
 
 function fmtDateShort(d){
   if(!d) return '';
@@ -216,7 +228,8 @@ async function loadData(){
     var classMap={}, dateMap={};
 
     for(var i=0;i<com.length;i++){
-      var cls=(val(com[i],5)||'NEUTRO').toUpperCase();
+      var rawCls=(val(com[i],5)||'NEUTRO').toUpperCase();
+      var cls=validateCls(rawCls, val(com[i],14)||val(com[i],3)||'').toUpperCase();
       var plat=(val(com[i],4)||'').toUpperCase();
       if(isApoio(cls)) nApoio++;
       if(isPot(cls)) nPot++;
@@ -295,7 +308,8 @@ async function loadData(){
     var recent=[];
     var seenTexts={};
     for(var j=0;j<recentSorted.length&&recent.length<8;j++){
-      var c2=val(recentSorted[j],5).toUpperCase();
+      var rawC2=val(recentSorted[j],5).toUpperCase();
+      var c2=validateCls(rawC2, val(recentSorted[j],14)||val(recentSorted[j],3)||'').toUpperCase();
       if(!c2||c2==='NEUTRO') continue;
       if(CLS_ACTIONABLE.indexOf(c2)<0) continue;
       var txt2=val(recentSorted[j],14)||val(recentSorted[j],3)||'';
