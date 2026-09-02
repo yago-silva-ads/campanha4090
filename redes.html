@@ -119,7 +119,7 @@ tr:hover td { background:rgba(59,30,109,.3); }
 <!-- AUTH GATE -->
 <div id="authGate" style="position:fixed;inset:0;z-index:99999;background:#0f0520;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;">
   <div style="text-align:center;max-width:360px;padding:32px;background:#1e0e3e;border-radius:20px;border:1px solid #4a2480;box-shadow:0 8px 32px rgba(0,0,0,.6);">
-    <div style="margin-bottom:8px;"><img src="luciano.png" alt="Luciano da Luz" style="width:100px;height:100px;border-radius:50%;border:3px solid #F27C38;object-fit:cover;"></div>
+    <div style="margin-bottom:8px;"><img src="https://raw.githubusercontent.com/yago-silva-ads/campanha4090/main/luciano.png" alt="Luciano da Luz" style="width:100px;height:100px;border-radius:50%;border:3px solid #F27C38;object-fit:cover;"></div>
     <div style="font-weight:800;font-size:1.2rem;color:#f0e6ff;margin-bottom:4px;">QG Campanha 4090</div>
     <div style="font-size:.78rem;color:#9b8ab8;margin-bottom:20px;">Acesso restrito &agrave; equipe</div>
     <input id="authPwd" type="password" placeholder="Senha de acesso" style="width:100%;padding:14px 16px;background:#0f0520;border:1px solid #4a2480;border-radius:10px;color:#f0e6ff;font-size:1rem;outline:none;text-align:center;margin-bottom:12px;" onkeydown="if(event.key==='Enter')checkAuth()">
@@ -298,9 +298,9 @@ function badgeClass(c){
 }
 function badgeLabel(c){return c?c.replace(/_/g,' '):'PENDENTE';}
 
-function matchFilter(c,f){
+function matchFilter(c,f,hasUser){
   if(f==='TODOS') return true;
-  if(f==='RELEVANTES') return !isNeutro(c);
+  if(f==='RELEVANTES') return !isNeutro(c)&&hasUser!==false;
   if(f==='APOIO') return isApoio(c);
   if(f==='POTENCIAL') return isPot(c);
   if(f==='CONTRA') return isContra(c);
@@ -328,11 +328,11 @@ function actBtns(r){
     var hasUser=cleanUser&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo'&&cleanUser.length>1;
     // Ver Post: busca permalink via API (abre o Reel correto)
     if(pid){
-      btns+='<a class="act-btn act-view" href="javascript:void(0)" onclick="openIGPost(\''+pid+'\')" title="Abrir o Reel/Post no Instagram">&#x1F441; Ver Post</a> ';
+      btns+='<a class="act-btn act-view" href="#" onclick="openIGPost(\''+pid+'\')" title="Abrir o Reel/Post no Instagram">&#x1F441; Ver Post</a> ';
     }
     // Responder: se tem comment_id, responde via API
     if(cid&&hasUser){
-      btns+='<a class="act-btn act-reply" href="javascript:void(0)" onclick="replyIG(\''+cid+'\',\''+cleanUser+'\')" title="Responder como @lucianodaluz via API">&#x270D;&#xFE0F; Responder</a>';
+      btns+='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+cid+'\',\''+cleanUser+'\')" title="Responder como @lucianodaluz via API">&#x270D;&#xFE0F; Responder</a>';
     } else if(hasUser){
       btns+='<a class="act-btn act-reply" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" rel="noopener" title="Ver perfil pra DM">&#x270D;&#xFE0F; Responder</a>';
     } else {
@@ -470,8 +470,11 @@ function renderLeads(){
 function render(){
   var s=document.getElementById('searchBox').value.toLowerCase();
   var filtered=allRows.filter(function(r){
-    var c=getCls(r).toUpperCase();
-    if(!matchFilter(c,currentFilter)) return false;
+    var rawC=getCls(r).toUpperCase();
+    var c=validateCls(rawC,getComment(r)).toUpperCase();
+    var hasUser=(val(r,2)||'');
+    var isReal=hasUser&&hasUser!=='Desconhecido'&&hasUser!=='Anonimo'&&hasUser.length>1;
+    if(!matchFilter(c,currentFilter,isReal)) return false;
     if(!matchPlat(r,currentPlat)) return false;
     if(s){var t=[getName(r),getComment(r),getPlatform(r),getCls(r)].join(' ').toLowerCase();if(t.indexOf(s)<0) return false;}
     return true;
@@ -480,8 +483,14 @@ function render(){
   document.getElementById('countInfo').textContent='Mostrando '+showing+' de '+filtered.length+' comentarios';
 
   var html='';
-  for(var i=0;i<showing;i++){
+  var seenComments={};
+  var rendered=0;
+  for(var i=0;i<filtered.length&&rendered<500;i++){
     var r=filtered[i];
+    var commKey=(getComment(r)||'').substring(0,80);
+    if(seenComments[commKey]) continue;
+    seenComments[commKey]=true;
+    rendered++;
     var dt=fmtDate(getDate(r));
     var nome=getName(r);
     var comm=getComment(r)||'--';
