@@ -515,17 +515,43 @@ function loadData(){
   var url="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=responseHandler:"+cb+"&sheet="+encodeURIComponent(SHEET_NAME);
   window[cb]=function(resp){
     try{
-      allRows=(resp.table.rows||[]).filter(function(r){return val(r,5)||val(r,14)||val(r,3)});
-      allRows.sort(function(a,b){var da=getDate(a),db=getDate(b);return da>db?-1:da<db?1:0});
-      processData();
-    }catch(e){console.error("Parse:",e)}
+      allRows=(resp.table.rows||[]).filter(function(r){return val(r,5)||val(r,14)||val(r,3);});
+      allRows.sort(function(a,b){var da=getDate(a),db=getDate(b);if(da>db) return -1;if(da<db) return 1;return 0;});
+      var total=allRows.length;
+      var nApoio=0,nPot=0,nContra=0,nFB=0,nIG=0;
+      var uniqueNames={};
+      for(var i=0;i<total;i++){
+        var rawC=getCls(allRows[i]).toUpperCase();
+        var cc=validateCls(rawC,getComment(allRows[i])).toUpperCase();
+        var p=getPlatform(allRows[i]).toUpperCase();
+        if(isApoio(cc)) nApoio++;
+        if(isPot(cc)) nPot++;
+        if(isContra(cc)) nContra++;
+        if(p==='FACEBOOK') nFB++;
+        if(p==='INSTAGRAM') nIG++;
+        var nm=getName(allRows[i]);
+        if(nm&&nm!=='--') uniqueNames[nm]=1;
+      }
+      document.getElementById('kApoio').textContent=nApoio;
+      document.getElementById('kPotencial').textContent=nPot;
+      document.getElementById('kContra').textContent=nContra;
+      document.getElementById('kFB').textContent=nFB;
+      document.getElementById('kIG').textContent=nIG;
+      document.getElementById('kUnique').textContent=Object.keys(uniqueNames).length;
+      var now=new Date();
+      document.getElementById('subtitle').textContent=total+' comentarios \u00b7 Atualizado: '+now.toLocaleDateString('pt-BR')+', '+now.toLocaleTimeString('pt-BR');
+      document.getElementById('uniqueInfo').innerHTML='<b>'+Object.keys(uniqueNames).length+'</b> autores unicos de <b>'+total+'</b> comentarios';
+      renderVotos();
+      renderLeads();
+      render();
+    }catch(e){console.error("Parse:",e);}
     delete window[cb];
     var s=document.getElementById("gvL");if(s)s.parentNode.removeChild(s);
   };
-  setTimeout(function(){if(window[cb]){delete window[cb];allRows=[];processData();}},8000);
+  setTimeout(function(){if(window[cb]){delete window[cb];}},10000);
   var old=document.getElementById("gvL");if(old)old.parentNode.removeChild(old);
   var s=document.createElement("script");s.id="gvL";s.src=url;
-  s.onerror=function(){allRows=[];processData();};
+  s.onerror=function(){document.getElementById('subtitle').textContent='Erro ao carregar dados. Recarregue a pagina.';};
   document.head.appendChild(s);
 }
 
