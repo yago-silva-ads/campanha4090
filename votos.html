@@ -178,7 +178,7 @@ function loadTab(tabName){
       var cat=val(rows[i],3);
       // Filter: must have name OR contact (no phantoms)
       if(!nome&&!rede) continue;
-      contatos.push({nome:nome||'Sem nome',rede:rede,status:normCat(cat),obs:val(rows[i],4),captador:tabName});
+      contatos.push({nome:nome||'Sem nome',rede:rede,status:normCat(cat),obs:val(rows[i],4),captador:displayCaptador(tabName)});
     }
     return contatos;
   });
