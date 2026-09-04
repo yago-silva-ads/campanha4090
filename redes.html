@@ -327,29 +327,30 @@ function actBtns(r){
       var actualCid=cid.indexOf('_')>=0?cid.substring(cid.lastIndexOf('_')+1):cid;
       btns+='<a class="act-btn act-view" href="https://www.facebook.com/'+pid+'" target="_blank" rel="noopener" title="Ver post original">&#x1F441; Ver Post</a> ';
       btns+='<a class="act-btn act-reply" href="https://www.facebook.com/'+pid+'?comment_id='+actualCid+'" target="_blank" rel="noopener" title="Responder como Lucianodaluz">&#x270D;&#xFE0F; Responder</a>';
+    } else if(pid){
+      btns+='<a class="act-btn act-view" href="https://www.facebook.com/'+pid+'" target="_blank" rel="noopener">&#x1F441; Ver Post</a>';
     }
   }
   if(p==='INSTAGRAM'){
     var username=val(r,2)||'';
     var cleanUser=username.replace('@','');
     var hasUser=cleanUser&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo'&&cleanUser.length>1;
-    // Ver Post: busca permalink via API (abre o Reel correto)
+    // Ver Post: always show if has post_id
     if(pid){
       btns+='<a class="act-btn act-view" href="#" onclick="openIGPost(\''+pid+'\')" title="Abrir o Reel/Post no Instagram">&#x1F441; Ver Post</a> ';
     }
-    // Responder: se tem comment_id, responde via API
+    // Responder: with comment_id use API, else use profile link
     if(cid&&hasUser){
       btns+='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+cid+'\',\''+cleanUser+'\')" title="Responder como @lucianodaluz via API">&#x270D;&#xFE0F; Responder</a>';
     } else if(hasUser){
-      btns+='<a class="act-btn act-reply" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" rel="noopener" title="Ver perfil pra DM">&#x270D;&#xFE0F; Responder</a>';
-    } else {
-      btns+='<span style="color:var(--muted);font-size:.65rem">sem @</span>';
+      btns+='<a class="act-btn act-ig" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" rel="noopener" title="Ver perfil">&#x1F464; Perfil IG</a>';
+    } else if(pid){
+      // No username but has post - show "Ver Comentario" with post link
+      btns+='<a class="act-btn act-view" href="#" onclick="openIGPost(\''+pid+'\')" title="Ver post com este comentario" style="opacity:.7">&#x1F4AC; Ver no Post</a>';
     }
   }
   return btns||'--';
 }
-
-// Abrir post do IG pelo permalink (busca via API)
 function openIGPost(mediaId) {
   var token = window._IGT;
   fetch('https://graph.facebook.com/v19.0/' + mediaId + '?fields=permalink&access_token=' + token)
@@ -465,7 +466,7 @@ function renderLeads(){
       if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname.length>1){
         actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
         actionLabel='Perfil IG';
-      } else { actionLink=''; actionLabel='Sem @'; }
+      } else { var pid2=getPostId(allRows[i])||getPostId(r)||''; actionLink=pid2?'javascript:openIGPost("'+pid2+'")':''; actionLabel=pid2?'\u{1F4AC} Ver Post':'--'; }
     }
     var safeComm=comm.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     html+='<div class="lead-card"><div class="lead-header"><span class="lead-name">'+nome+'</span><span class="lead-badge '+badgeCls+'">'+badgeTxt+'</span></div><div class="lead-comment">'+safeComm+'</div><div class="lead-footer"><span class="lead-plat '+platClass+'">'+platShort+'</span><a class="lead-action" href="'+actionLink+'" target="_blank">'+actionLabel+' \u2192</a></div></div>';
