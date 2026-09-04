@@ -272,5 +272,143 @@ async function loadData(){
 loadData();
 setInterval(loadData,300000);
 </script>
+
+<script>
+var SHEET_ID='1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME';
+var SHEET_NAME='COMENTARIOS';
+var CLS_APOIO=['VOTO_DECLARADO','QUER_PARTICIPAR','APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO','POTENCIAL'];
+var CLS_CONTRA=['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
+
+function val(r,i){try{return(r.c&&r.c[i]&&r.c[i].v!=null)?String(r.c[i].v).trim():'';}catch(e){return '';}}
+function getDate(r){return val(r,15)||val(r,11)||val(r,0)||'';}
+function getName(r){var n=val(r,12)||val(r,1)||'';if(!n||n==='Desconhecido'||n==='Anonimo'){var u=val(r,2);if(u&&u!=='Desconhecido')n='@'+u;}return n||'--';}
+function getComment(r){return val(r,14)||val(r,3)||'';}
+function getPlatform(r){return val(r,4)||'';}
+function getCls(r){return val(r,5)||'';}
+function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
+function isContra(c){return CLS_CONTRA.indexOf(c)>=0;}
+
+function barChart(el,data,max){
+  var h='';
+  for(var i=0;i<data.length;i++){
+    var pct=max>0?Math.round((data[i].v/max)*100):0;
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
+    h+='<div style="width:80px;font-size:.7rem;color:#9b8ab8;text-align:right">'+data[i].l+'</div>';
+    h+='<div style="flex:1;height:20px;background:rgba(255,255,255,.06);border-radius:10px;overflow:hidden">';
+    h+='<div style="height:100%;width:'+pct+'%;background:'+(data[i].c||'#F27C38')+';border-radius:10px;transition:width .8s"></div></div>';
+    h+='<div style="width:40px;font-size:.7rem;font-weight:700;color:'+(data[i].c||'#F27C38')+'">'+data[i].v+'</div></div>';
+  }
+  el.innerHTML=h;
+}
+
+function loadAnalytics(){
+  var cb='_anCb'+Date.now();
+  window[cb]=function(resp){
+    try{
+      var rows=(resp.table.rows||[]).filter(function(r){return val(r,5)||val(r,14)||val(r,3);});
+      var total=rows.length,nApoio=0,nContra=0,nIG=0,nFB=0,nVoto=0,nNeutro=0,nPot=0;
+      var byDay={},topAuthors={};
+      var dayNames=['Dom','Seg','Ter','Qua','Qui','Sex','Sab'];
+
+      for(var i=0;i<total;i++){
+        var c=getCls(rows[i]).toUpperCase();
+        var p=getPlatform(rows[i]).toUpperCase();
+        if(isApoio(c))nApoio++;
+        if(isContra(c))nContra++;
+        if(c==='NEUTRO')nNeutro++;
+        if(c==='POTENCIAL'||c==='POTENCIAL_APOIO'||c==='LEAD_QUENTE')nPot++;
+        if(c==='VOTO_DECLARADO')nVoto++;
+        if(p==='FACEBOOK')nFB++;
+        if(p==='INSTAGRAM')nIG++;
+        var nm=getName(rows[i]);
+        if(nm&&nm!=='--'){topAuthors[nm]=(topAuthors[nm]||0)+1;}
+        var d=getDate(rows[i]);
+        if(d){try{var dt=new Date(d);if(!isNaN(dt.getTime())){var key=dt.toISOString().substring(0,10);byDay[key]=(byDay[key]||0)+1;}}catch(e){}}
+      }
+
+      // KPIs
+      document.getElementById('kTotal').textContent=total;
+      document.getElementById('kApoio').textContent=nApoio;
+      document.getElementById('kContra').textContent=nContra;
+      document.getElementById('kContatos').textContent=nVoto;
+      document.getElementById('kProps').textContent=nPot;
+      document.getElementById('kTaxa').textContent=total>0?Math.round((nApoio/total)*100)+'%':'0%';
+      var now=new Date();
+      document.getElementById('lastUpdate').textContent=total+' comentarios | Atualizado: '+now.toLocaleDateString('pt-BR')+', '+now.toLocaleTimeString('pt-BR');
+
+      // Chart: Sentimento
+      var maxSent=Math.max(nApoio,nContra,nNeutro,nPot,1);
+      barChart(document.getElementById('chartSentimento'),[
+        {l:'Apoiadores',v:nApoio,c:'#10b981'},
+        {l:'Potenciais',v:nPot,c:'#a78bfa'},
+        {l:'Neutros',v:nNeutro,c:'#666'},
+        {l:'Contra',v:nContra,c:'#ef4444'}
+      ],maxSent);
+
+      // Chart: Plataforma
+      var maxPlat=Math.max(nIG,nFB,1);
+      barChart(document.getElementById('chartPlataforma'),[
+        {l:'Instagram',v:nIG,c:'#E1306C'},
+        {l:'Facebook',v:nFB,c:'#1877F2'}
+      ],maxPlat);
+
+      // Chart: Timeline (last 7 days)
+      var dayData=[];var maxDay=1;
+      for(var d=6;d>=0;d--){
+        var dt=new Date(Date.now()-d*86400000);
+        var key=dt.toISOString().substring(0,10);
+        var count=byDay[key]||0;
+        if(count>maxDay)maxDay=count;
+        dayData.push({l:dayNames[dt.getDay()]+' '+dt.getDate(),v:count,c:'#F27C38'});
+      }
+      barChart(document.getElementById('chartTimeline'),dayData,maxDay);
+
+      // Chart: Funnel
+      var maxFun=Math.max(total,1);
+      barChart(document.getElementById('chartFunnel'),[
+        {l:'Total Captados',v:total,c:'#F27C38'},
+        {l:'Apoiadores',v:nApoio,c:'#10b981'},
+        {l:'Votos Declarados',v:nVoto,c:'#a78bfa'},
+        {l:'Contra',v:nContra,c:'#ef4444'}
+      ],maxFun);
+
+      // Chart: Comparison IG vs FB by sentiment
+      var igApoio=0,fbApoio=0;
+      for(var i=0;i<total;i++){
+        var cc=getCls(rows[i]).toUpperCase();
+        var pp=getPlatform(rows[i]).toUpperCase();
+        if(isApoio(cc)){if(pp==='INSTAGRAM')igApoio++;if(pp==='FACEBOOK')fbApoio++;}
+      }
+      barChart(document.getElementById('chartComparison'),[
+        {l:'Apoio IG',v:igApoio,c:'#E1306C'},
+        {l:'Apoio FB',v:fbApoio,c:'#1877F2'},
+        {l:'Total IG',v:nIG,c:'rgba(225,48,108,.4)'},
+        {l:'Total FB',v:nFB,c:'rgba(24,119,242,.4)'}
+      ],Math.max(nIG,nFB,1));
+
+      // Top 10 comentaristas
+      var sorted=Object.keys(topAuthors).sort(function(a,b){return topAuthors[b]-topAuthors[a];}).slice(0,10);
+      var tbody=document.getElementById('topBody');
+      var th='';
+      for(var i=0;i<sorted.length;i++){
+        th+='<tr><td style="font-weight:600">'+(i+1)+'</td><td>'+sorted[i]+'</td><td style="color:#F27C38;font-weight:700">'+topAuthors[sorted[i]]+'</td></tr>';
+      }
+      tbody.innerHTML=th||'<tr><td colspan="3" style="color:#9b8ab8">Nenhum dado</td></tr>';
+
+    }catch(e){
+      document.getElementById('lastUpdate').textContent='Erro ao processar: '+e.message;
+    }
+    delete window[cb];
+    var s=document.getElementById('anScript');if(s)s.parentNode.removeChild(s);
+  };
+  setTimeout(function(){if(window[cb])delete window[cb];},10000);
+  var old=document.getElementById('anScript');if(old)old.parentNode.removeChild(old);
+  var s=document.createElement('script');s.id='anScript';
+  s.src='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=responseHandler:'+cb+'&sheet='+encodeURIComponent(SHEET_NAME);
+  document.head.appendChild(s);
+}
+loadAnalytics();
+setInterval(loadAnalytics,180000);
+</script>
 </body>
 </html>
