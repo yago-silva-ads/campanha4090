@@ -477,17 +477,19 @@ function val(r,i){try{return(r.c&&r.c[i]&&r.c[i].v!=null)?String(r.c[i].v).trim(
 function getDate(r){return val(r,15)||val(r,11)||val(r,0)||'';}
 
 function getName(r){
+  var cid=getCommentId(r);
+  if(cid && window._NAME_CACHE && window._NAME_CACHE[cid]) return window._NAME_CACHE[cid];
   var n=val(r,12)||'';
-  if(n && n!=='Desconhecido' && n!=='Anonimo' && n!=='An\u00f4nimo' && n!=='Unknown' && n!=='--') return n;
+  if(n && n!=='Desconhecido' && n!=='Anonimo' && n!=='Anônimo' && n!=='Unknown' && n!=='--') return n;
   n=val(r,1)||'';
-  if(n && n!=='Desconhecido' && n!=='Anonimo' && n!=='An\u00f4nimo' && n!=='Unknown' && n!=='--') return n;
+  if(n && n!=='Desconhecido' && n!=='Anonimo' && n!=='Anônimo' && n!=='Unknown' && n!=='--') return n;
   var u=val(r,2);
   if(u && u!=='Desconhecido' && u!=='Anonimo') return '@'+u;
   var authorId=val(r,13);
   if(authorId) return 'User #'+authorId.substring(authorId.length-4);
   var plat=getPlatform(r).toUpperCase();
-  if(plat==='INSTAGRAM') return 'IG user';
-  if(plat==='FACEBOOK') return 'FB user';
+  if(plat==='INSTAGRAM') return '@anônimo_ig';
+  if(plat==='FACEBOOK') return 'Anônimo FB';
   return '--';
 }
 
@@ -1152,6 +1154,78 @@ document.getElementById('searchBox').addEventListener('input',render);
 loadData();
 
 setInterval(loadData,180000);
+
+
+
+// === NAME ENRICHMENT FROM GRAPH API ===
+window._NAME_CACHE={};
+try{window._NAME_CACHE=JSON.parse(localStorage.getItem('nc4090')||'{}');}catch(e){}
+
+function enrichAnonymous(){
+  if(!allRows||!allRows.length) return;
+  var token=window._FBT||window._IGT;
+  if(!token) return;
+  
+  var queue=[];
+  for(var i=0;i<allRows.length;i++){
+    var r=allRows[i];
+    var cid=getCommentId(r);
+    if(!cid) continue;
+    if(window._NAME_CACHE[cid]) continue;
+    if(window._NAME_CACHE[cid]===false) continue;
+    var nm=val(r,1)||'';
+    var u=val(r,2)||'';
+    var isAnon=(!nm||nm==='Anonimo'||nm==='Anônimo'||nm==='Desconhecido'||nm==='Unknown'||nm==='--')&&(!u||u==='Desconhecido'||u==='Anonimo');
+    if(!isAnon) continue;
+    queue.push({cid:cid,plat:getPlatform(r).toUpperCase()});
+  }
+  
+  if(!queue.length) return;
+  
+  // Process in batches of 50 with delays
+  var batchSize=50;
+  var idx=0;
+  
+  function processBatch(){
+    var batch=queue.slice(idx,idx+batchSize);
+    if(!batch.length){
+      // Done - re-render
+      try{localStorage.setItem('nc4090',JSON.stringify(window._NAME_CACHE));}catch(e){}
+      renderVotos();renderLeads();render();
+      return;
+    }
+    
+    var promises=[];
+    for(var b=0;b<batch.length;b++){
+      (function(item){
+        var fields=item.plat==='INSTAGRAM'?'username,from':'from';
+        var url='https://graph.facebook.com/v21.0/'+item.cid+'?fields='+fields+'&access_token='+token;
+        promises.push(
+          fetch(url).then(function(r){return r.json();}).then(function(d){
+            var name='';
+            if(d.from&&d.from.name) name=d.from.name;
+            else if(d.from&&d.from.username) name='@'+d.from.username;
+            else if(d.username) name='@'+d.username;
+            if(name){window._NAME_CACHE[item.cid]=name;}
+            else{window._NAME_CACHE[item.cid]=false;}
+          }).catch(function(){window._NAME_CACHE[item.cid]=false;})
+        );
+      })(batch[b]);
+    }
+    
+    Promise.all(promises).then(function(){
+      idx+=batchSize;
+      try{localStorage.setItem('nc4090',JSON.stringify(window._NAME_CACHE));}catch(e){}
+      // Update progress
+      var cached=Object.keys(window._NAME_CACHE).filter(function(k){return window._NAME_CACHE[k];}).length;
+      if(cached>0){renderVotos();renderLeads();render();}
+      setTimeout(processBatch,2000);
+    });
+  }
+  
+  processBatch();
+}
+
 
 </script>
 
