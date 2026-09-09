@@ -454,7 +454,7 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
 
 
 
-<div class="footer">Campanha Luciano da Luz 4090 &middot; QG Redes &middot; v17 &middot; Foco: Apoiadores & Votos</div>
+<div class="footer">Campanha Luciano da Luz 4090 &middot; QG Redes &middot; v18 &middot; Fix: nomes de autores + fallback por ID</div>
 
 
 
@@ -477,17 +477,33 @@ function val(r,i){try{return(r.c&&r.c[i]&&r.c[i].v!=null)?String(r.c[i].v).trim(
 function getDate(r){return val(r,15)||val(r,11)||val(r,0)||'';}
 
 function getName(r){
-  var n=val(r,12)||'';
-  if(n && n!=='Desconhecido' && n!=='Anonimo' && n!=='Anônimo' && n!=='Unknown' && n!=='--') return n;
-  n=val(r,1)||'';
-  if(n && n!=='Desconhecido' && n!=='Anonimo' && n!=='Anônimo' && n!=='Unknown' && n!=='--') return n;
-  var u=val(r,2);
-  if(u && u!=='Desconhecido' && u!=='Anonimo') return '@'+u;
-  var authorId=val(r,13);
-  if(authorId) return 'User #'+authorId.substring(authorId.length-4);
+  var ANON=['desconhecido','anonimo','anônimo','unknown','--',''];
+  function isAnon(v){return !v||ANON.indexOf(v.toLowerCase().replace(/^@/,''))>=0;}
+  // 1. Try nome columns (col 12 = nome_completo, col 1 = nome)
+  var n=val(r,12)||''; if(!isAnon(n)) return n;
+  n=val(r,1)||''; if(!isAnon(n)) return n;
+  // 2. Try username column (col 2) — strip leading @ if already prefixed
+  var u=val(r,2)||'';
+  var uClean=u.replace(/^@/,'');
+  if(!isAnon(uClean)&&uClean.length>1) return '@'+uClean;
+  // 3. Try subscriber_id / author_id (col 13)
+  var authorId=val(r,13)||'';
+  if(authorId&&!isAnon(authorId)){
+    var plat0=getPlatform(r).toUpperCase();
+    if(plat0==='INSTAGRAM') return '@user_'+authorId.substring(authorId.length-5);
+    return 'User #'+authorId.substring(authorId.length-4);
+  }
+  // 4. Platform-aware fallback using comment ID for traceability
+  var cid=getCommentId(r)||'';
   var plat=getPlatform(r).toUpperCase();
-  if(plat==='INSTAGRAM') return '@anônimo_ig';
-  if(plat==='FACEBOOK') return 'Anônimo FB';
+  if(plat==='INSTAGRAM'){
+    if(cid) return '@ig_'+cid.substring(cid.length-6);
+    return '@anônimo_ig';
+  }
+  if(plat==='FACEBOOK'){
+    if(cid) return 'FB #'+cid.substring(cid.length-5);
+    return 'Anônimo FB';
+  }
   return '--';
 }
 
@@ -673,7 +689,7 @@ function actBtns(r){
 
     var cleanUser=username.replace('@','');
 
-    var hasUser=cleanUser&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo'&&cleanUser.length>1;
+    var hasUser=cleanUser&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo'&&cleanUser!=='Anônimo'&&cleanUser.toLowerCase()!=='anonimo'&&cleanUser.length>1;
 
     if(pid){
 
@@ -815,7 +831,7 @@ function renderVotos(){
 
     var cleanUser=username.replace('@','');
 
-    var hasUser=cleanUser&&cleanUser.length>1&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo';
+    var hasUser=cleanUser&&cleanUser.length>1&&cleanUser!=='Desconhecido'&&cleanUser!=='Anonimo'&&cleanUser!=='Anônimo'&&cleanUser.toLowerCase()!=='anonimo';
 
     var actionHtml='';
 
@@ -917,7 +933,7 @@ function renderLeads(){
 
       var uname=val(r,2)||'';
 
-      if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname.length>1){
+      if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname!=='Anônimo'&&uname.replace('@','').toLowerCase()!=='anonimo'&&uname.length>1){
 
         actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
 
@@ -953,7 +969,7 @@ function render(){
 
     var hasUser=(val(r,2)||'');
 
-    var isReal=hasUser&&hasUser!=='Desconhecido'&&hasUser!=='Anonimo'&&hasUser.length>1;
+    var isReal=hasUser&&hasUser!=='Desconhecido'&&hasUser!=='Anonimo'&&hasUser!=='Anônimo'&&hasUser.replace('@','').toLowerCase()!=='anonimo'&&hasUser.length>1;
 
     if(!matchFilter(c,currentFilter,isReal)) return false;
 

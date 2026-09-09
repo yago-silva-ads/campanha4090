@@ -115,7 +115,7 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
 
 <script>
 var SHEET_ID='16nEZG1Asgz-61JbDtluYQxvc4k_CWJrLya36zwrKtEo';
-var TABS=['ALICE','DANIEL','MONICA','THIAGO'];
+var TABS=['ALICE','DANIEL','LEONILDA','LOSE'];
 var allContatos=[];
 var currentFilter='TODOS';
 
@@ -178,7 +178,7 @@ function loadTab(tabName){
       var cat=val(rows[i],3);
       // Filter: must have name OR contact (no phantoms)
       if(!nome&&!rede) continue;
-      contatos.push({nome:nome||'Sem nome',rede:rede,status:normCat(cat),obs:val(rows[i],4),captador:displayCaptador(tabName)});
+      contatos.push({nome:nome||'Sem nome',rede:rede,status:normCat(cat),obs:val(rows[i],4),captador:tabName});
     }
     return contatos;
   });
