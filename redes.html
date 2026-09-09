@@ -715,7 +715,7 @@ function actBtns(r){
 
 
 
-function openIGPost(mediaId) {
+function openIGPost(mediaId, commentId) {
   try {
     var token = window._IGT;
     if(!token){ alert('Token nao configurado'); return false; }
@@ -724,7 +724,11 @@ function openIGPost(mediaId) {
     xhr.open('GET', url, false);
     xhr.send();
     var d = JSON.parse(xhr.responseText);
-    if(d.permalink) { window.open(d.permalink, '_blank'); }
+    if(d.permalink) {
+      var link = d.permalink;
+      if(commentId) { link = link.replace(/\/$/, '') + '/c/' + commentId + '/'; }
+      window.open(link, '_blank');
+    }
     else { alert('Erro: ' + (d.error ? d.error.message : 'Post nao encontrado')); }
   } catch(e) { alert('Erro: ' + e.message); }
   return false;
@@ -733,7 +737,7 @@ function openIGPost(mediaId) {
 
 
 function replyIG(commentId, username, postId) {
-  if (postId) { return openIGPost(postId); }
+  if (postId) { return openIGPost(postId, commentId); }
   window.open('https://www.instagram.com/lucianodaluz/','_blank');
 }
 
@@ -921,7 +925,7 @@ function renderLeads(){
 
       if(igCid3){
 
-        var igPid3=getPostId(r)||''; actionLink=igPid3?'javascript:void(openIGPost("'+igPid3+'"))':'https://www.instagram.com/lucianodaluz/'; actionLabel='Responder IG';
+        var igPid3=getPostId(r)||''; actionLink=igPid3?'javascript:void(openIGPost("'+igPid3+'","'+igCid3+'"))':'https://www.instagram.com/lucianodaluz/'; actionLabel='Responder IG';
 
       } else if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname!=='Anônimo'&&uname.replace('@','').toLowerCase()!=='anonimo'&&uname.length>1){ actionLink='https://www.instagram.com/'+uname.replace('@','')+'/'; actionLabel='Perfil IG'; } else { var pid2=getPostId(allRows[i])||getPostId(r)||''; actionLink=pid2?'javascript:void(openIGPost("'+pid2+'"))':''; actionLabel=pid2?'\u{1F4AC} Ver Post':'--'; }
 
