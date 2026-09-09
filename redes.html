@@ -699,7 +699,7 @@ function actBtns(r){
 
     if(cid){
 
-      btns+='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+cid+'\',\''+(cleanUser||'seguidor')+'\')" title="Responder">&#x270D;&#xFE0F; Responder</a>';
+      btns+='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+cid+'\',\''+(cleanUser||'seguidor')+'\',\''+pid+'\')" title="Responder">&#x270D;&#xFE0F; Responder</a>';
 
     } else if(hasUser){
 
@@ -731,29 +731,21 @@ function openIGPost(mediaId) {
 
 
 
-function replyIG(commentId, username) {
-
-  var displayName = (username && username !== 'seguidor') ? '@' + username : 'este seguidor';
-  var msg = prompt('Responder como @lucianodaluz para ' + displayName + ':\n\nDigite a mensagem:');
-
-  if (!msg) return;
-
-  fetch('https://graph.facebook.com/v21.0/' + commentId + '/replies', {
-
-    method: 'POST',
-
-    headers: {'Content-Type': 'application/json'},
-
-    body: JSON.stringify({message: msg, access_token: window._IGT})
-
-  }).then(function(r){return r.json();}).then(function(d){
-
-    if(d.id) { alert('Respondido como @lucianodaluz! ID: ' + d.id); }
-
-    else { alert('Erro: ' + (d.error ? d.error.message : JSON.stringify(d))); }
-
-  });
-
+function replyIG(commentId, username, postId) {
+  // Abre o post no Instagram para responder manualmente
+  // (API reply precisa App Review que ainda não foi aprovado)
+  if (postId) {
+    try {
+      var token = window._IGT;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://graph.facebook.com/v21.0/' + postId + '?fields=permalink&access_token=' + token, false);
+      xhr.send();
+      var d = JSON.parse(xhr.responseText);
+      if(d.permalink) { window.open(d.permalink, '_blank'); return; }
+    } catch(e) {}
+  }
+  // Fallback: abre o perfil do Luciano
+  window.open('https://www.instagram.com/lucianodaluz/', '_blank');
 }
 
 // Token IG (carregado no init)
@@ -845,7 +837,7 @@ function renderVotos(){
     } else {
 
       var igPid=getPostId(r),igCid=getCommentId(r);
-      if(igCid){actionHtml='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+igCid+'\',\''+(cleanUser||'seguidor')+'\')" style="background:rgba(16,185,129,.2);color:#10b981;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none;cursor:pointer">Responder IG</a>';}
+      if(igCid){actionHtml='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+igCid+'\',\''+(cleanUser||'seguidor')+'\',\''+igPid+'\')" style="background:rgba(16,185,129,.2);color:#10b981;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none;cursor:pointer">Responder IG</a>';}
       else if(hasUser){actionHtml='<a class="act-btn" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" style="background:rgba(225,48,108,.12);color:#E1306C;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none">Perfil IG</a>';}
 
     }
