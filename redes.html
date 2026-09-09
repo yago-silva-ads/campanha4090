@@ -497,12 +497,12 @@ function getName(r){
   var cid=getCommentId(r)||'';
   var plat=getPlatform(r).toUpperCase();
   if(plat==='INSTAGRAM'){
-    if(cid) return '@ig_'+cid.substring(cid.length-6);
-    return '@anônimo_ig';
+    if(cid) return 'Seguidor IG #'+cid.substring(cid.length-4);
+    return 'Seguidor IG';
   }
   if(plat==='FACEBOOK'){
-    if(cid) return 'FB #'+cid.substring(cid.length-5);
-    return 'Anônimo FB';
+    if(cid) return 'Seguidor FB #'+cid.substring(cid.length-4);
+    return 'Seguidor FB';
   }
   return '--';
 }
@@ -697,9 +697,9 @@ function actBtns(r){
 
     }
 
-    if(hasUser&&cid){
+    if(cid){
 
-      btns+='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+cid+'\',\''+cleanUser+'\')" title="Responder">&#x270D;&#xFE0F; Responder</a>';
+      btns+='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+cid+'\',\''+(cleanUser||'seguidor')+'\')" title="Responder">&#x270D;&#xFE0F; Responder</a>';
 
     } else if(hasUser){
 
@@ -733,7 +733,8 @@ function openIGPost(mediaId) {
 
 function replyIG(commentId, username) {
 
-  var msg = prompt('Responder como @lucianodaluz para @' + username + ':\n\nDigite a mensagem:');
+  var displayName = (username && username !== 'seguidor') ? '@' + username : 'este seguidor';
+  var msg = prompt('Responder como @lucianodaluz para ' + displayName + ':\n\nDigite a mensagem:');
 
   if (!msg) return;
 
@@ -841,9 +842,11 @@ function renderVotos(){
 
       if(pid&&cid){var ac=cid.indexOf('_')>=0?cid.split('_').pop():cid;actionHtml='<a class="act-btn act-reply" href="https://www.facebook.com/'+pid+'?comment_id='+ac+'" target="_blank" style="background:rgba(16,185,129,.2);color:#10b981;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none">Responder FB</a>';}
 
-    } else if(hasUser){
+    } else {
 
-      actionHtml='<a class="act-btn" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" style="background:rgba(225,48,108,.12);color:#E1306C;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none">Perfil IG</a>';
+      var igPid=getPostId(r),igCid=getCommentId(r);
+      if(igCid){actionHtml='<a class="act-btn act-reply" href="#" onclick="replyIG(\''+igCid+'\',\''+(cleanUser||'seguidor')+'\')" style="background:rgba(16,185,129,.2);color:#10b981;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none;cursor:pointer">Responder IG</a>';}
+      else if(hasUser){actionHtml='<a class="act-btn" href="https://www.instagram.com/'+cleanUser+'/" target="_blank" style="background:rgba(225,48,108,.12);color:#E1306C;font-size:.7rem;padding:4px 10px;border-radius:6px;text-decoration:none">Perfil IG</a>';}
 
     }
 
@@ -933,13 +936,13 @@ function renderLeads(){
 
       var uname=val(r,2)||'';
 
-      if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname!=='Anônimo'&&uname.replace('@','').toLowerCase()!=='anonimo'&&uname.length>1){
+      var igCid3=getCommentId(r)||'';
 
-        actionLink='https://www.instagram.com/'+uname.replace('@','')+'/';
+      if(igCid3){
 
-        actionLabel='Perfil IG';
+        actionLink='#'; actionLabel='Responder IG';
 
-      } else { var pid2=getPostId(allRows[i])||getPostId(r)||''; actionLink=pid2?'javascript:void(openIGPost("'+pid2+'"))':''; actionLabel=pid2?'\u{1F4AC} Ver Post':'--'; }
+      } else if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname!=='Anônimo'&&uname.replace('@','').toLowerCase()!=='anonimo'&&uname.length>1){ actionLink='https://www.instagram.com/'+uname.replace('@','')+'/'; actionLabel='Perfil IG'; } else { var pid2=getPostId(allRows[i])||getPostId(r)||''; actionLink=pid2?'javascript:void(openIGPost("'+pid2+'"))':''; actionLabel=pid2?'\u{1F4AC} Ver Post':'--'; }
 
     }
 
