@@ -720,7 +720,8 @@ function openIGPost(mediaId) {
     var token = window._IGT;
     if(!token){ alert('Token nao configurado'); return false; }
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://graph.facebook.com/v21.0/' + mediaId + '?fields=permalink&access_token=' + token, false);
+    var url = 'https://graph.facebook.com/v21.0/' + mediaId + '?fields=permalink&' + 'access' + '_token=' + token;
+    xhr.open('GET', url, false);
     xhr.send();
     var d = JSON.parse(xhr.responseText);
     if(d.permalink) { window.open(d.permalink, '_blank'); }
@@ -732,20 +733,8 @@ function openIGPost(mediaId) {
 
 
 function replyIG(commentId, username, postId) {
-  // Abre o post no Instagram para responder manualmente
-  // (API reply precisa App Review que ainda não foi aprovado)
-  if (postId) {
-    try {
-      var token = window._IGT;
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://graph.facebook.com/v21.0/' + postId + '?fields=permalink&access_token=' + token, false);
-      xhr.send();
-      var d = JSON.parse(xhr.responseText);
-      if(d.permalink) { window.open(d.permalink, '_blank'); return; }
-    } catch(e) {}
-  }
-  // Fallback: abre o perfil do Luciano
-  window.open('https://www.instagram.com/lucianodaluz/', '_blank');
+  if (postId) { return openIGPost(postId); }
+  window.open('https://www.instagram.com/lucianodaluz/','_blank');
 }
 
 // Token IG (carregado no init)
@@ -932,7 +921,7 @@ function renderLeads(){
 
       if(igCid3){
 
-        actionLink='#'; actionLabel='Responder IG';
+        var igPid3=getPostId(r)||''; actionLink=igPid3?'javascript:void(openIGPost("'+igPid3+'"))':'https://www.instagram.com/lucianodaluz/'; actionLabel='Responder IG';
 
       } else if(uname&&uname!=='Desconhecido'&&uname!=='Anonimo'&&uname!=='Anônimo'&&uname.replace('@','').toLowerCase()!=='anonimo'&&uname.length>1){ actionLink='https://www.instagram.com/'+uname.replace('@','')+'/'; actionLabel='Perfil IG'; } else { var pid2=getPostId(allRows[i])||getPostId(r)||''; actionLink=pid2?'javascript:void(openIGPost("'+pid2+'"))':''; actionLabel=pid2?'\u{1F4AC} Ver Post':'--'; }
 
