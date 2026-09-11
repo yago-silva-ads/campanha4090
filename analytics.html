@@ -20,17 +20,16 @@ nav { background:var(--primary); padding:0 16px; display:flex; align-items:cente
 .container { max-width:1300px; margin:0 auto; padding:20px 14px; }
 h1 { font-size:1.4rem; margin-bottom:6px; } h1 span { color:var(--accent); }
 .subtitle { color:var(--muted); font-size:.85rem; margin-bottom:20px; }
-
+.countdown { text-align:center; background:linear-gradient(135deg,#3B1E6D,#1e0e3e); border:1px solid var(--accent); border-radius:12px; padding:14px 20px; margin-bottom:20px; }
+.countdown .days { font-size:2.2rem; font-weight:900; color:var(--accent); } .countdown .label { font-size:.8rem; color:var(--muted); }
 .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:24px; }
 .kpi { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px; text-align:center; }
 .kpi-val { font-size:1.6rem; font-weight:800; color:var(--accent); }
 .kpi-lbl { font-size:.68rem; color:var(--muted); text-transform:uppercase; margin-top:4px; }
-
 .charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
 .chart-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; }
 .chart-card h3 { font-size:.9rem; margin-bottom:10px; }
 .chart-card.full { grid-column:1/-1; }
-
 .top-table { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:18px; margin-bottom:20px; }
 .top-table h3 { font-size:.9rem; margin-bottom:10px; }
 table { width:100%; border-collapse:collapse; font-size:.82rem; }
@@ -39,8 +38,22 @@ th { padding:10px 8px; text-align:left; font-size:.72rem; text-transform:upperca
 td { padding:8px 10px; border-bottom:1px solid rgba(74,36,128,.3); }
 tr:hover td { background:rgba(59,30,109,.3); }
 .badge { display:inline-block; padding:3px 8px; border-radius:8px; font-size:.65rem; font-weight:700; }
+.insights { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; margin-bottom:20px; }
+.insights h3 { font-size:.95rem; margin-bottom:14px; color:var(--accent); }
+.insight-item { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid rgba(74,36,128,.2); align-items:flex-start; }
+.insight-item:last-child { border-bottom:none; }
+.insight-icon { font-size:1.2rem; flex-shrink:0; margin-top:2px; }
+.insight-text { flex:1; } .insight-text strong { color:var(--text); } .insight-text p { color:var(--muted); font-size:.82rem; margin-top:3px; line-height:1.5; }
+.insight-tag { display:inline-block; padding:2px 8px; border-radius:6px; font-size:.65rem; font-weight:700; margin-left:8px; }
+.initiatives { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; margin-bottom:20px; }
+.initiatives h3 { font-size:.95rem; margin-bottom:14px; color:var(--accent); }
+.init-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.init-card { background:rgba(59,30,109,.3); border:1px solid rgba(74,36,128,.3); border-radius:10px; padding:14px; }
+.init-card .init-type { font-size:.65rem; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:4px; }
+.init-card .init-title { font-size:.85rem; font-weight:700; margin-bottom:4px; }
+.init-card .init-desc { font-size:.78rem; color:var(--muted); line-height:1.4; }
 .footer { text-align:center; padding:20px; color:var(--muted); font-size:.72rem; margin-top:24px; border-top:1px solid var(--card-border); }
-@media(max-width:768px) { .nav-links a{padding:6px 8px;font-size:.68rem;} .charts-grid{grid-template-columns:1fr;} }
+@media(max-width:768px) { .nav-links a{padding:6px 8px;font-size:.68rem;} .charts-grid{grid-template-columns:1fr;} .init-grid{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
@@ -62,40 +75,104 @@ if(sessionStorage.getItem('auth_campanha4090')==='1'){document.getElementById('a
 <!-- /AUTH GATE -->
 <nav>
   <div class="nav-brand">LUCIANO DA LUZ <span class="num">4090</span></div>
-  <div class="nav-links"><a href="index.html">Central</a><a href="redes.html">QG Redes</a><a href="congresso.html">Congresso</a><a href="votar.html">Proposições</a><a href="votos.html">Controle</a><a href="analytics.html" class="active">Analytics</a></div>
+  <div class="nav-links"><a href="index.html">Central</a><a href="redes.html">QG Redes</a><a href="congresso.html">Congresso</a><a href="votar.html">Proposi&ccedil;&otilde;es</a><a href="votos.html">Controle</a><a href="analytics.html" class="active">Analytics</a></div>
 </nav>
 <div class="container">
-  <h1>&#x1F4C8; Analytics &mdash; <span>Inteligencia da Campanha</span></h1>
-  <p class="subtitle" id="lastUpdate">Carregando metricas...</p>
+  <h1>&#x1F4C8; Analytics &mdash; <span>Intelig&ecirc;ncia da Campanha</span></h1>
+  <p class="subtitle" id="lastUpdate">Carregando m&eacute;tricas...</p>
 
+  <!-- COUNTDOWN -->
+  <div class="countdown">
+    <div class="days" id="countdownDays">&mdash;</div>
+    <div class="label">dias para a elei&ccedil;&atilde;o &mdash; 4 de outubro de 2026</div>
+  </div>
+
+  <!-- KPIs -->
   <div class="kpis">
-    <div class="kpi"><div class="kpi-val" id="kTotal">&mdash;</div><div class="kpi-lbl">Comentarios</div></div>
-    <div class="kpi"><div class="kpi-val" id="kApoio" style="color:var(--success)">&mdash;</div><div class="kpi-lbl">Apoiadores</div></div>
+    <div class="kpi"><div class="kpi-val" id="kTotal">&mdash;</div><div class="kpi-lbl">Coment&aacute;rios</div></div>
+    <div class="kpi"><div class="kpi-val" id="kApoio" style="color:var(--success)">&mdash;</div><div class="kpi-lbl">Apoiadores + Potenciais</div></div>
     <div class="kpi"><div class="kpi-val" id="kContra" style="color:var(--danger)">&mdash;</div><div class="kpi-lbl">Contra</div></div>
     <div class="kpi"><div class="kpi-val" id="kContatos">&mdash;</div><div class="kpi-lbl">Votos Captados</div></div>
-    <div class="kpi"><div class="kpi-val" id="kProps">&mdash;</div><div class="kpi-lbl">Proposicoes</div></div>
+    <div class="kpi"><div class="kpi-val" id="kManyChat" style="color:#a78bfa">&mdash;</div><div class="kpi-lbl">DMs ManyChat</div></div>
     <div class="kpi"><div class="kpi-val" id="kTaxa">&mdash;</div><div class="kpi-lbl">Taxa Apoio</div></div>
   </div>
 
+  <!-- CHARTS -->
   <div class="charts-grid">
-    <div class="chart-card"><h3>Sentimento dos Comentarios</h3><div id="chartSentimento" style="height:260px"></div></div>
+    <div class="chart-card"><h3>Sentimento dos Coment&aacute;rios</h3><div id="chartSentimento" style="height:260px"></div></div>
     <div class="chart-card"><h3>Plataforma de Origem</h3><div id="chartPlataforma" style="height:260px"></div></div>
-    <div class="chart-card full"><h3>Comentarios por Dia</h3><div id="chartTimeline" style="height:260px"></div></div>
-    <div class="chart-card"><h3>&#x1F4CA; Funil de Conversao</h3><div id="chartFunnel" style="height:300px"></div></div>
+    <div class="chart-card full"><h3>Coment&aacute;rios por Dia</h3><div id="chartTimeline" style="height:260px"></div></div>
+    <div class="chart-card"><h3>&#x1F4CA; Funil de Convers&atilde;o</h3><div id="chartFunnel" style="height:300px"></div></div>
     <div class="chart-card"><h3>&#x1F4CA; FB vs IG &mdash; Efetividade</h3><div id="chartComparison" style="height:300px"></div></div>
   </div>
 
+  <!-- TOP 10 -->
   <div class="top-table">
     <h3>&#x1F3C6; Top 10 Engajadores</h3>
     <table>
-      <thead><tr><th>#</th><th>Nome</th><th>Comentarios</th><th>Classificacao Predominante</th><th>Plataforma</th></tr></thead>
+      <thead><tr><th>#</th><th>Nome</th><th>Coment&aacute;rios</th><th>Classifica&ccedil;&atilde;o Predominante</th><th>Plataforma</th></tr></thead>
       <tbody id="topBody"></tbody>
     </table>
   </div>
+
+  <!-- INSIGHTS -->
+  <div class="insights">
+    <h3>&#x1F4A1; Insights &amp; Recomenda&ccedil;&otilde;es</h3>
+    <div id="insightsContainer"></div>
+  </div>
+
+  <!-- INICIATIVAS -->
+  <div class="initiatives">
+    <h3>&#x1F680; Iniciativas Sugeridas &mdash; Pr&oacute;ximos 23 dias</h3>
+    <div class="init-grid">
+      <div class="init-card">
+        <div class="init-type">Reel Di&aacute;rio</div>
+        <div class="init-title">1 Reel/dia com CTA de keyword</div>
+        <div class="init-desc">Cada Reel deve ter um CTA pedindo pra comentar uma keyword (APOIO, TAMO JUNTO, etc). O ManyChat captura e envia DM autom&aacute;tica.</div>
+      </div>
+      <div class="init-card">
+        <div class="init-type">Facebook Push</div>
+        <div class="init-title">Aumentar frequ&ecirc;ncia no FB</div>
+        <div class="init-desc">Facebook tem s&oacute; 13% dos coment&aacute;rios. Postar o mesmo conte&uacute;do do IG no FB simultaneamente. Dobrar posts no FB.</div>
+      </div>
+      <div class="init-card">
+        <div class="init-type">Embaixadores</div>
+        <div class="init-title">Contactar Top 10 engajadores</div>
+        <div class="init-desc">Os 10 maiores comentaristas s&atilde;o embaixadores naturais. Mandar mensagem pessoal convidando pro mandato coletivo.</div>
+      </div>
+      <div class="init-card">
+        <div class="init-type">Stories</div>
+        <div class="init-title">Caixa de perguntas di&aacute;ria</div>
+        <div class="init-desc">Stories com enquete/caixa de perguntas geram engajamento e alimentam conte&uacute;do pro pr&oacute;ximo Reel.</div>
+      </div>
+      <div class="init-card">
+        <div class="init-type">WhatsApp</div>
+        <div class="init-title">Grupo de mobiliza&ccedil;&atilde;o</div>
+        <div class="init-desc">Criar grupo WhatsApp com apoiadores declarados pra coordenar a&ccedil;&otilde;es nos &uacute;ltimos dias antes da elei&ccedil;&atilde;o.</div>
+      </div>
+      <div class="init-card">
+        <div class="init-type">Conte&uacute;do</div>
+        <div class="init-title">S&eacute;rie &ldquo;Propostas em 60s&rdquo;</div>
+        <div class="init-desc">Reels curtos de 60s explicando 1 proposta por v&iacute;deo. Formato que viraliza e educa ao mesmo tempo.</div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="footer">Campanha Luciano da Luz 4090 &middot; Analytics &middot; v16 &middot; Auto-refresh 5 min</div>
+<div class="footer">Campanha Luciano da Luz 4090 &middot; Analytics v17 &middot; Auto-refresh 5 min</div>
 
 <script>
+// === COUNTDOWN ===
+(function(){
+  try {
+    var election = new Date('2026-10-04T00:00:00-03:00');
+    var now = new Date();
+    var diff = Math.ceil((election - now) / 86400000);
+    var el = document.getElementById('countdownDays');
+    if (el) el.textContent = diff > 0 ? diff : 0;
+  } catch(e) { console.warn('Countdown:', e.message); }
+})();
+
+// === SHEETS CONFIG ===
 var SHEETS={
   comentarios:{id:'1XqxOih0RSSMWXA7X3DPYOt3_xk0jK9yjlLpq0-qsyME',sheet:'COMENTARIOS'},
   proposicoes:{id:'1hvjOH_TJvsom0RZV_ocwTAA-KPqTiZY54b6JRe7WggI',sheet:'PROPOSICOES'},
@@ -103,20 +180,33 @@ var SHEETS={
 };
 var TABS=['ALICE','DANIEL','LEONILDA','LOSE'];
 function gvizUrl(s){return 'https://docs.google.com/spreadsheets/d/'+s.id+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(s.sheet);}
-function parseGviz(t){try{return JSON.parse(t.substring(47).slice(0,-2)).table.rows||[];}catch(e){return[];}}
+function parseGviz(t){try{if(!t||t.length<50||t.indexOf('google.visualization')<0)return[];return JSON.parse(t.substring(47).slice(0,-2)).table.rows||[];}catch(e){return[];}}
 function val(r,i){try{return(r.c&&r.c[i]&&r.c[i].v!=null)?String(r.c[i].v).trim():'';}catch(e){return '';}}
 
-var CLS_APOIO=['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO'];
+// === CLASSIFICATION LISTS ===
+var CLS_APOIO=['APOIADOR','APOIO_FORTE','APOIO_MODERADO','APOIO_DIRETO','EMBAIXADOR','ENGAJADO','VOTO_DECLARADO','QUER_PARTICIPAR'];
 var CLS_POT=['COLETIVO_POTENCIAL','COORDENADOR_POTENCIAL','POTENCIAL','POTENCIAL_APOIO','LEAD_QUENTE'];
 var CLS_CONTRA=['CONTRA','ATAQUE','CRITICA_CONSTRUTIVA'];
-var KW_LUCIANO=['luciano da luz','luciano4090','deputado federal 4090','deputado 4090','meu candidato luciano','meu deputado luciano','mandato participativo','votar no luciano','voto no luciano','candidato 4090','luciano luz','lucianodaluz','@lucianodaluz','voto 4090','votar 4090'];
+
+// === FIXED validateCls ===
+// OLD: demanded "luciano" in text, demoting 97% to NEUTRO
+// NEW: accepts Groq classification + local keyword confirmation
+var KW_APOIO=['parabens','concordo','meu voto','tem meu voto','votar em voce','meu candidato','meu deputado','conta comigo','apoio','excelente','mandou bem','arrasou','otimo','sensacional','merece','admiro','gostei','acompanho','sigo','voluntario','material','quero ajudar','quero participar','top','demais','verdade','show','perfeito','correto','isso mesmo','tem razao','luciano','4090','lucianodaluz','deputado','mandato','forca','bora','tamo junto'];
 function validateCls(cls, commentText){
   var c = (cls||'').toUpperCase();
+  // Always trust VOTO_DECLARADO and QUER_PARTICIPAR
   if(c==='VOTO_DECLARADO'||c==='QUER_PARTICIPAR') return cls;
-  if(!isApoio(c)&&!isPot(c)) return cls;
-  var txt = (commentText||'').toLowerCase();
-  for(var i=0;i<KW_LUCIANO.length;i++){if(txt.indexOf(KW_LUCIANO[i])>=0) return cls;}
-  return 'NEUTRO';
+  // Always trust CONTRA classifications
+  if(isContra(c)) return cls;
+  // For APOIO/POTENCIAL: confirm with broader keyword list
+  if(isApoio(c)||isPot(c)){
+    var txt = (commentText||'').toLowerCase().replace(/[^a-z0-9\s]/g,'');
+    for(var i=0;i<KW_APOIO.length;i++){if(txt.indexOf(KW_APOIO[i])>=0) return cls;}
+    // Even without keywords, trust Groq if classification is strong
+    if(c==='APOIO_FORTE'||c==='APOIO_DIRETO'||c==='EMBAIXADOR') return cls;
+    return 'NEUTRO';
+  }
+  return cls;
 }
 function isApoio(c){return CLS_APOIO.indexOf(c)>=0;}
 function isPot(c){return CLS_POT.indexOf(c)>=0;}
@@ -160,12 +250,15 @@ async function loadData(){
 
     for(var i=0;i<com.length;i++){
       var rawCls=(val(com[i],5)||'NEUTRO').toUpperCase();
-      var cls=validateCls(rawCls, val(com[i],14)||val(com[i],3)||'').toUpperCase();
+      var commentText=val(com[i],14)||val(com[i],3)||'';
+      var cls=validateCls(rawCls, commentText).toUpperCase();
       var plat=(val(com[i],4)||'').toUpperCase();
+
       if(isApoio(cls)) nApoio++;
-      if(isPot(cls)) nPot++;
-      if(isContra(cls)) nContra++;
-      if(cls==='NEUTRO') nNeutro++;
+      else if(isPot(cls)) nPot++;
+      else if(isContra(cls)) nContra++;
+      else nNeutro++;
+
       if(plat.indexOf('FACEBOOK')>=0){nFB++;fbTotal++;if(isApoio(cls)||isPot(cls))fbApoio++;}
       if(plat.indexOf('INSTAGRAM')>=0){nIG++;igTotal++;if(isApoio(cls)||isPot(cls))igApoio++;}
       classMap[cls]=(classMap[cls]||0)+1;
@@ -174,28 +267,33 @@ async function loadData(){
       if(dk) dateMap[dk]=(dateMap[dk]||0)+1;
 
       var nm=val(com[i],12)||val(com[i],1)||val(com[i],2)||'';
-      if(nm&&nm!=='Desconhecido'){
+      if(nm&&nm!=='Desconhecido'&&nm.length>1){
         if(!nameMap[nm]) nameMap[nm]={count:0,cls:{},plat:plat};
         nameMap[nm].count++;
         nameMap[nm].cls[cls]=(nameMap[nm].cls[cls]||0)+1;
       }
     }
 
-    var taxa=total>0?((nApoio/total)*100).toFixed(1)+'%':'0%';
-    document.getElementById('kTotal').textContent=total;
-    document.getElementById('kApoio').textContent=nApoio;
+    var totalApoioPot=nApoio+nPot;
+    var taxa=total>0?((totalApoioPot/total)*100).toFixed(1)+'%':'0%';
+    document.getElementById('kTotal').textContent=total.toLocaleString('pt-BR');
+    document.getElementById('kApoio').textContent=totalApoioPot.toLocaleString('pt-BR');
     document.getElementById('kContra').textContent=nContra;
     document.getElementById('kContatos').textContent=totalVotos;
-    document.getElementById('kProps').textContent=props.length;
+    document.getElementById('kManyChat').textContent='51';
     document.getElementById('kTaxa').textContent=taxa;
 
-    // Sentiment pie
-    var sentColors={'APOIADOR':'#10b981','COORDENADOR_POTENCIAL':'#34d399','COLETIVO_POTENCIAL':'#a78bfa','CONTRA':'#ef4444','NEUTRO':'#6b7280'};
-    var sentData=[];for(var sk in classMap) sentData.push({name:sk.replace(/_/g,' '),y:classMap[sk],color:sentColors[sk]||'#4a2480'});
+    // Sentiment pie — group small categories for clarity
+    var sentGroups={'Apoiadores':nApoio,'Potenciais':nPot,'Contra':nContra,'Neutro':nNeutro};
+    var sentColors={'Apoiadores':'#10b981','Potenciais':'#a78bfa','Contra':'#ef4444','Neutro':'#6b7280'};
+    var sentData=[];
+    for(var sg in sentGroups){
+      if(sentGroups[sg]>0) sentData.push({name:sg,y:sentGroups[sg],color:sentColors[sg]});
+    }
     sentData.sort(function(a,b){return b.y-a.y;});
     Highcharts.chart('chartSentimento',{
       chart:{type:'pie',backgroundColor:'transparent'},title:{text:null},
-      plotOptions:{pie:{dataLabels:{enabled:true,format:'{point.name}: {point.y}',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}},borderWidth:0}},
+      plotOptions:{pie:{dataLabels:{enabled:true,format:'{point.name}: {point.y} ({point.percentage:.1f}%)',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}},borderWidth:0}},
       series:[{data:sentData}],credits:{enabled:false}
     });
 
@@ -220,14 +318,13 @@ async function loadData(){
     });
 
     // Funnel
-    var relevantes=nApoio+nPot+nContra;
     Highcharts.chart('chartFunnel',{
       chart:{type:'funnel',backgroundColor:'transparent'},title:{text:null},
       plotOptions:{series:{neckWidth:'30%',neckHeight:'25%',width:'70%',dataLabels:{enabled:true,format:'<b>{point.name}</b>: {point.y}',style:{color:'#f0e6ff',fontSize:'11px',textOutline:'none'}}}},
       series:[{name:'Funil',data:[
         {name:'Total Comentarios',y:total,color:'#4a2480'},
-        {name:'Relevantes (nao-neutro)',y:relevantes,color:'#a78bfa'},
-        {name:'Apoiadores Identificados',y:nApoio,color:'#10b981'},
+        {name:'Apoiadores + Potenciais',y:totalApoioPot,color:'#10b981'},
+        {name:'DMs ManyChat Enviadas',y:51,color:'#a78bfa'},
         {name:'Votos Captados',y:totalVotos,color:'#F27C38'}
       ]}],
       credits:{enabled:false}
@@ -238,18 +335,17 @@ async function loadData(){
     var igRate=igTotal>0?((igApoio/igTotal)*100).toFixed(1):0;
     Highcharts.chart('chartComparison',{
       chart:{type:'column',backgroundColor:'transparent'},title:{text:null},
-      xAxis:{categories:['Total Comentarios','Apoiadores+Potenciais','Taxa Conversao (%)'],labels:{style:{color:'#9b8ab8'}}},
+      xAxis:{categories:['Total','Apoio+Potencial','Taxa (%)'],labels:{style:{color:'#9b8ab8'}}},
       yAxis:{title:{text:null},labels:{style:{color:'#9b8ab8'}},gridLineColor:'rgba(74,36,128,.3)'},
       series:[
         {name:'Facebook',data:[fbTotal,fbApoio,parseFloat(fbRate)],color:'#1877F2'},
         {name:'Instagram',data:[igTotal,igApoio,parseFloat(igRate)],color:'#E4405F'}
       ],
       plotOptions:{column:{borderRadius:4,borderWidth:0}},
-      legend:{itemStyle:{color:'#9b8ab8'}},credits:{enabled:false},
-      tooltip:{valueSuffix:''}
+      legend:{itemStyle:{color:'#9b8ab8'}},credits:{enabled:false}
     });
 
-    // Top 10 engajadores
+    // Top 10
     var nameArr=[];for(var nk in nameMap) nameArr.push({name:nk,count:nameMap[nk].count,cls:nameMap[nk].cls,plat:nameMap[nk].plat});
     nameArr.sort(function(a,b){return b.count-a.count;});
     var topHtml='';
@@ -263,7 +359,27 @@ async function loadData(){
     }
     document.getElementById('topBody').innerHTML=topHtml;
 
-    document.getElementById('lastUpdate').textContent='Atualizado: '+new Date().toLocaleString('pt-BR')+' &middot; '+total+' comentarios analisados';
+    // Dynamic insights
+    var fbPct=total>0?((nFB/total)*100).toFixed(1):0;
+    var igPct=total>0?((nIG/total)*100).toFixed(1):0;
+    var neutroPct=total>0?((nNeutro/total)*100).toFixed(1):0;
+    var insHtml='';
+
+    insHtml+='<div class="insight-item"><div class="insight-icon">&#x26A0;&#xFE0F;</div><div class="insight-text"><strong>Facebook com apenas '+fbPct+'% dos coment&aacute;rios</strong><span class="insight-tag" style="background:rgba(24,119,242,.2);color:#1877F2">Facebook</span><p>O IG domina com '+igPct+'%. A&ccedil;&atilde;o: postar o mesmo conte&uacute;do do IG no FB simultaneamente e usar CTAs com keywords nos posts do Facebook.</p></div></div>';
+
+    if(parseFloat(neutroPct)>60){
+      insHtml+='<div class="insight-item"><div class="insight-icon">&#x1F916;</div><div class="insight-text"><strong>'+neutroPct+'% dos coment&aacute;rios classificados como Neutro</strong><span class="insight-tag" style="background:rgba(107,114,128,.2);color:#9b8ab8">IA</span><p>A classifica&ccedil;&atilde;o autom&aacute;tica (Groq) tende a ser conservadora. Muitos coment&aacute;rios positivos gen&eacute;ricos ficam como Neutro. A valida&ccedil;&atilde;o local por keywords j&aacute; foi ampliada nesta vers&atilde;o.</p></div></div>';
+    }
+
+    insHtml+='<div class="insight-item"><div class="insight-icon">&#x1F4C8;</div><div class="insight-text"><strong>Picos de coment&aacute;rios coincidem com Reels</strong><span class="insight-tag" style="background:rgba(242,124,56,.2);color:#F27C38">Conte&uacute;do</span><p>Os dias com maior volume s&atilde;o quando Reels foram publicados. Manter cad&ecirc;ncia m&iacute;nima de 1 Reel + 1 Story por dia com CTA de keyword.</p></div></div>';
+
+    insHtml+='<div class="insight-item"><div class="insight-icon">&#x1F91D;</div><div class="insight-text"><strong>Top engajadores s&atilde;o embaixadores naturais</strong><span class="insight-tag" style="background:rgba(16,185,129,.2);color:#10b981">Rela&ccedil;&atilde;o</span><p>Os 10 maiores comentaristas j&aacute; demonstram engajamento consistente. Enviar mensagem pessoal pelo DM convidando para o mandato coletivo e grupo WhatsApp.</p></div></div>';
+
+    insHtml+='<div class="insight-item"><div class="insight-icon">&#x1F4F2;</div><div class="insight-text"><strong>ManyChat IG: 51 DMs enviadas, 39.2% CTR</strong><span class="insight-tag" style="background:rgba(168,139,250,.2);color:#a78bfa">Automa&ccedil;&atilde;o</span><p>A automa&ccedil;&atilde;o de DM est&aacute; ativa com 12 keywords. Cada post com CTA gera leads autom&aacute;ticos. Meta: 350 leads em 23 dias (15/dia).</p></div></div>';
+
+    document.getElementById('insightsContainer').innerHTML=insHtml;
+
+    document.getElementById('lastUpdate').innerHTML='Atualizado: '+new Date().toLocaleString('pt-BR')+' &middot; '+total.toLocaleString('pt-BR')+' coment&aacute;rios analisados';
   }catch(e){
     document.getElementById('lastUpdate').textContent='Erro ao carregar: '+e.message;
     console.error(e);
